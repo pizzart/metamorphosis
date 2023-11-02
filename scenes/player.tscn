@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://dph8pd3qblx44"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_bsqet"]
+[ext_resource type="Texture2D" uid="uid://b8v0l3bhmg4v8" path="res://sprites/char.png" id="2_pia0g"]
+[ext_resource type="Texture2D" uid="uid://bx51yc7ha0vy1" path="res://sprites/hand.png" id="3_ieto2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_onp71"]
+size = Vector2(16, 16)
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+collision_mask = 11
+script = ExtResource("1_bsqet")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_onp71")
+debug_color = Color(0.305882, 0.615686, 0.356863, 0.419608)
+
+[node name="PlayerSprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_pia0g")
+
+[node name="Camera" type="Camera2D" parent="."]
+process_callback = 0
+position_smoothing_enabled = true
+position_smoothing_speed = 25.0
+
+[node name="HandSprite" type="Sprite2D" parent="."]
+texture = ExtResource("3_ieto2")
+
+[node name="ShootTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]
