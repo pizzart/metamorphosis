@@ -1,34 +1,49 @@
 extends CharacterBody2D
 
-const BULLET = preload("res://scenes/bullet.tscn")
-const SPEED = 150.0
+const HEALTH_TO_WEIGHT = 100
 const SHOOT_TIMEOUT = 0.2
-var hand_position: Vector2
-var can_shoot: bool = true
+var speed = 100
+var max_health: int = 10
+var health: int = max_health
+var weight: int = 0
+var speed_multiplier: float = 1
+
 @onready var cam = $Camera
+@onready var gun = $Gun
 
 func _physics_process(delta):
 	var direction = Input.get_vector("left", "right", "up", "down")
-	velocity = direction * SPEED
-
+	velocity = direction * speed * speed_multiplier
+	if direction.y > 0:
+		$Sprite.animation = "front"
+	if direction.y < 0:
+		$Sprite.animation = "back"
+	if direction.x > 0:
+		$Sprite.animation = "side"
+		$Sprite.flip_h = true
+	if direction.x < 0:
+		$Sprite.animation = "side"
+		$Sprite.flip_h = false
+	
 	move_and_slide()
-
+	
 func _process(delta):
-	cam.offset = (get_global_mouse_position() - global_position) / 4
-	hand_position = (get_global_mouse_position() - global_position).limit_length(20)
-	$HandSprite.position = hand_position
+	var offset = get_global_mouse_position() - global_position
+	cam.offset = offset / 4
+	gun.position = offset.limit_length(20)
+	weight = gun.weight
+	UI.get_node("Control/MarginContainer/Label").text = "%s/%s" % [weight, health * HEALTH_TO_WEIGHT]
+	if weight > health * HEALTH_TO_WEIGHT:
+		speed_multiplier = 0.5
+	else:
+		speed_multiplier = 1
 
 func _input(event):
-	if event.is_action_pressed("attack") and can_shoot:
-		var bullet = BULLET.instantiate()
-		bullet.velocity = global_position.direction_to(get_global_mouse_position()) * 15
-		bullet.acceleration = -0.01
-		bullet.global_position = to_global(hand_position)
-		bullet.set_by_player()
-		get_parent().add_child(bullet)
-		
-		can_shoot = false
-		$ShootTimer.start(SHOOT_TIMEOUT)
+	if event.is_action_pressed("change_gun"):
+		gun.queue_free()
+		gun = Rifle.new()
+		add_child(gun)
+		add_child(SpeedUpgrade.new())
 
-func _on_shoot_timer_timeout():
-	can_shoot = true
+func hit(damage: int):
+	health -= damage

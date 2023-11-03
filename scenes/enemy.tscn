@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://de4iuv4mo41us"]
+[gd_scene load_steps=4 format=3 uid="uid://de4iuv4mo41us"]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1_d0kgx"]
+[ext_resource type="Texture2D" uid="uid://dh6c2u6fxb8m3" path="res://sprites/enemy.png" id="2_ttjpd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_juhwm"]
-size = Vector2(24, 24)
 
 [node name="Enemy" type="CharacterBody2D" groups=["enemy"]]
 collision_layer = 2
@@ -27,6 +27,9 @@ autostart = true
 [node name="ShootTimer" type="Timer" parent="."]
 wait_time = 4.0
 autostart = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_ttjpd")
 
 [connection signal="timeout" from="NavigationTimer" to="." method="_on_navigation_timer_timeout"]
 [connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]
