@@ -1,0 +1,42 @@
+[gd_scene load_steps=2 format=3 uid="uid://c1mu7ajeocvkt"]
+
+[ext_resource type="FontFile" uid="uid://b8fccd6b7ns3m" path="res://misc/font.png" id="1_wsns8"]
+
+[node name="SelectionMenu" type="CanvasLayer"]
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Option1" type="Button" parent="Control/PanelContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_wsns8")
+
+[node name="Option2" type="Button" parent="Control/PanelContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_wsns8")
+
+[node name="Option3" type="Button" parent="Control/PanelContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_wsns8")
+
+[node name="Option4" type="Button" parent="Control/PanelContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_wsns8")

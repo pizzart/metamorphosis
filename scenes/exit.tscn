@@ -5,7 +5,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2kcqq"]
 size = Vector2(24, 24)
 
-[node name="Exit" type="Area2D"]
+[node name="Exit" type="Area2D" groups=["exit"]]
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

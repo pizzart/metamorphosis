@@ -2,12 +2,14 @@ extends CharacterBody2D
 
 const BULLET = preload("res://scenes/bullet.tscn")
 var movement_speed: float = 80.0
+var health: int = 3
 var RNG = RandomNumberGenerator.new()
 @onready var navigation_agent: NavigationAgent2D = $NavigationAgent2D
 @onready var player = get_tree().get_first_node_in_group("player")
 
 func _ready():
 	call_deferred("actor_setup")
+	$NavigationTimer.start(RNG.randf_range(2, 9))
 
 func _physics_process(delta):
 	var new_velocity: Vector2
@@ -30,13 +32,18 @@ func set_movement_target(movement_target: Vector2):
 	navigation_agent.target_position = movement_target
 
 func _on_navigation_timer_timeout():
-	$NavigationTimer.start(RNG.randf_range(4, 9))
+	$NavigationTimer.start(RNG.randf_range(2, 9))
 	set_movement_target(get_close_position())
-	while not navigation_agent.is_target_reachable():
-		set_movement_target(get_close_position())
+#	while not navigation_agent.is_target_reachable():
+#		set_movement_target(get_close_position())
 
 func get_close_position():
-	return global_position + Vector2(RNG.randfn(0, 30), RNG.randfn(0, 30))
+	return global_position + Vector2(RNG.randf_range(-30, 30), RNG.randf_range(-30, 30))
+
+func hit(damage: int):
+	health -= damage
+	if health <= 0:
+		queue_free()
 
 func die():
 	queue_free()

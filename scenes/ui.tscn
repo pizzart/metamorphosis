@@ -1,4 +1,18 @@
-[gd_scene format=3 uid="uid://xijpue6425q1"]
+[gd_scene load_steps=7 format=3 uid="uid://xijpue6425q1"]
+
+[ext_resource type="Texture2D" uid="uid://diuosv8ka8uun" path="res://sprites/ui/bar_over.png" id="1_jgcq4"]
+[ext_resource type="Texture2D" uid="uid://cg2ptfwshkf6l" path="res://sprites/ui/health_progress.png" id="2_ba42w"]
+[ext_resource type="Texture2D" uid="uid://cub1t701b1251" path="res://sprites/ui/weight_progress.png" id="3_e57ry"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gc6vu"]
+content_margin_bottom = 3.0
+bg_color = Color(0.141176, 0.141176, 0.141176, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5yxo1"]
+bg_color = Color(0.862745, 0.733333, 0.466667, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dgymx"]
+bg_color = Color(0.87451, 0.458824, 0.466667, 1)
 
 [node name="UI" type="CanvasLayer"]
 
@@ -10,7 +24,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="Control"]
+[node name="M" type="MarginContainer" parent="Control"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,8 +36,39 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Label" type="Label" parent="Control/MarginContainer"]
+[node name="V" type="VBoxContainer" parent="Control/M"]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="Weight" type="ProgressBar" parent="Control/M/V"]
+visible = false
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 size_flags_horizontal = 8
-size_flags_vertical = 0
-text = "0/1000"
+theme_override_styles/background = SubResource("StyleBoxFlat_gc6vu")
+theme_override_styles/fill = SubResource("StyleBoxFlat_5yxo1")
+fill_mode = 1
+show_percentage = false
+
+[node name="Health" type="ProgressBar" parent="Control/M/V"]
+visible = false
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_styles/background = SubResource("StyleBoxFlat_gc6vu")
+theme_override_styles/fill = SubResource("StyleBoxFlat_dgymx")
+max_value = 10.0
+value = 10.0
+show_percentage = false
+
+[node name="HealthBar" type="TextureProgressBar" parent="Control/M/V"]
+layout_mode = 2
+value = 50.0
+texture_over = ExtResource("1_jgcq4")
+texture_progress = ExtResource("2_ba42w")
+
+[node name="WeightBar" type="TextureProgressBar" parent="Control/M/V"]
+layout_mode = 2
+value = 50.0
+texture_over = ExtResource("1_jgcq4")
+texture_progress = ExtResource("3_e57ry")

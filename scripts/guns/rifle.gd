@@ -2,11 +2,7 @@ class_name Rifle
 extends Gun
 
 func _init():
-	reload_speed = 0.5
-	weight = 200
-	knockback = 0.1
-	bullet_speed = 13
-	bullet_acceleration = -0.01
+	super._init(0.5, 150, 2, 13, -0.01, preload("res://sprites/gun/rifle.png"), "rifle")
 
 func shoot():
 	for i in range(3):

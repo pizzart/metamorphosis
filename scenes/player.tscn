@@ -1,38 +1,46 @@
-[gd_scene load_steps=8 format=3 uid="uid://dph8pd3qblx44"]
+[gd_scene load_steps=11 format=3 uid="uid://dph8pd3qblx44"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_bsqet"]
-[ext_resource type="Texture2D" uid="uid://bfm2ipqws04ae" path="res://sprites/character/char-back.png" id="2_oiko0"]
-[ext_resource type="Texture2D" uid="uid://b8v0l3bhmg4v8" path="res://sprites/character/char.png" id="2_oy4mg"]
-[ext_resource type="Texture2D" uid="uid://wivbkmtv3h5t" path="res://sprites/character/char-side.png" id="4_0ui3l"]
+[ext_resource type="Texture2D" uid="uid://rri45pfbqlox" path="res://sprites/character/player_front.png" id="2_88o10"]
+[ext_resource type="Texture2D" uid="uid://qnrmj3whsmx0" path="res://sprites/light.png" id="4_7jsic"]
 [ext_resource type="Script" path="res://scripts/guns/pistol.gd" id="6_ba4qy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_onp71"]
-size = Vector2(14, 10)
+size = Vector2(20, 6)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ff03"]
+atlas = ExtResource("2_88o10")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knj0g"]
+atlas = ExtResource("2_88o10")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rdxwh"]
+atlas = ExtResource("2_88o10")
+region = Rect2(48, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d430c"]
+atlas = ExtResource("2_88o10")
+region = Rect2(72, 0, 24, 24)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_nunea"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_oiko0")
-}],
-"loop": true,
-"name": &"back",
-"speed": 5.0
+"texture": SubResource("AtlasTexture_6ff03")
 }, {
-"frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_oy4mg")
+"texture": SubResource("AtlasTexture_knj0g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rdxwh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d430c")
 }],
 "loop": true,
 "name": &"front",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("4_0ui3l")
-}],
-"loop": true,
-"name": &"side",
 "speed": 5.0
 }]
 
@@ -42,7 +50,7 @@ collision_mask = 27
 script = ExtResource("1_bsqet")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 4)
+position = Vector2(0, 2)
 shape = SubResource("RectangleShape2D_onp71")
 debug_color = Color(0.305882, 0.615686, 0.356863, 0.419608)
 
@@ -50,6 +58,7 @@ debug_color = Color(0.305882, 0.615686, 0.356863, 0.419608)
 position = Vector2(0, -7)
 sprite_frames = SubResource("SpriteFrames_nunea")
 animation = &"front"
+autoplay = "front"
 
 [node name="Camera" type="Camera2D" parent="."]
 process_callback = 0
@@ -59,5 +68,11 @@ position_smoothing_speed = 25.0
 
 [node name="Gun" type="Node2D" parent="."]
 script = ExtResource("6_ba4qy")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+visible = false
+shadow_enabled = true
+shadow_color = Color(0, 0, 0, 1)
+texture = ExtResource("4_7jsic")
 
 [connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]
