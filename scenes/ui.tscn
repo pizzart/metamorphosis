@@ -72,3 +72,9 @@ layout_mode = 2
 value = 50.0
 texture_over = ExtResource("1_jgcq4")
 texture_progress = ExtResource("3_e57ry")
+
+[node name="AmmoBar" type="TextureProgressBar" parent="Control/M/V"]
+layout_mode = 2
+value = 50.0
+texture_over = ExtResource("1_jgcq4")
+texture_progress = ExtResource("3_e57ry")

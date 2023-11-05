@@ -1,6 +1,6 @@
 extends Node2D
 
-const MAP_SIZE = 15
+const MAP_SIZE = 10
 const INTERMISSION_SIZE = 5
 const ENEMY = preload("res://scenes/enemy.tscn")
 const EXIT = preload("res://scenes/exit.tscn")
@@ -19,7 +19,19 @@ func _ready():
 
 func generate_map(size):
 	var island_count = RNG.randi_range(1, 4)
-	place_islands(island_count, MAP_SIZE)
+	var positions = place_islands(island_count, MAP_SIZE)
+	if island_count > 1:
+		for i in range(positions.size()):
+			var j = i + 1
+			if j >= positions.size():
+				j = 0
+			if positions[i].distance_to(positions[j]) < 200:
+#				positions.remove_at(i)
+				continue
+			
+			var teleporter = Teleporter.new(positions[j])
+			teleporter.global_position = positions[i]
+			call_deferred("add_child", teleporter)
 #	place_walls(0.97)
 	place_enemies(5)
 	place_exit(false)
@@ -36,6 +48,7 @@ func generate_intermission():
 	$TileMap.clear()
 	get_tree().call_group("enemy", "queue_free")
 	get_tree().call_group("exit", "queue_free")
+	get_tree().call_group("teleporter", "queue_free")
 	place_islands(1, INTERMISSION_SIZE)
 	place_pickups()
 	place_exit(true)
@@ -45,15 +58,22 @@ func place_player():
 	player.global_position = $TileMap.map_to_local($TileMap.get_used_cells_by_id(0, 0).pick_random())
 
 func place_islands(count: int, size: int):
+	var init_positions = []
 	var cells: Array[Vector2i] = []
 	for i in range(count):
 		var island_start = Vector2i.ZERO
 		if i > 0:
-			island_start = Vector2i(RNG.randi_range(-5, 5), RNG.randi_range(-5, 5))
-		cells.append_array(place_tile(cells, size, island_start, 0.9))
+			island_start = Vector2i(RNG.randi_range(-15, 15), RNG.randi_range(-15, 15))
+		cells.append_array(place_tile(cells, size, island_start, 0.1))
+		init_positions.append($TileMap.map_to_local(island_start))
 	$TileMap.set_cells_terrain_connect(0, cells, 0, 0)
-	for cell in place_borders(cells):
-		$TileMap.set_cell(0, cell, 1, Vector2i.ZERO)
+	var borders = place_borders(cells)
+	for cell in borders.keys():
+		if borders[cell]:
+			$TileMap.set_cell(0, cell, 2, Vector2i.ZERO)
+		else:
+			$TileMap.set_cell(0, cell, 1, Vector2i.ZERO)
+	return init_positions
 
 func place_tile(cells: Array[Vector2i], count: int, placement: Vector2i, chance: float):
 	if placement in cells:
@@ -72,11 +92,17 @@ func place_tile(cells: Array[Vector2i], count: int, placement: Vector2i, chance:
 #		$TileMap.set_cell(0, placement, 1, Vector2i.ZERO)
 
 func place_borders(used_cells: Array[Vector2i]):
-	var border_cells = []
+	var border_cells = {}
 	for cell in used_cells:
 		for i in [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.UP, Vector2i.DOWN]:
-			if not cell + i in used_cells:
-				border_cells.append(cell + i)
+			if cell + i in used_cells:
+				continue
+			
+			if cell + i in border_cells.keys():
+				if not border_cells[cell + i] and i == Vector2i.DOWN:
+					border_cells[cell + i] = true
+			else:
+				border_cells[cell + i] = i == Vector2i.DOWN
 	return border_cells
 
 func place_enemies(count: int):

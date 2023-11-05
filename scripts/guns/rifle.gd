@@ -2,7 +2,7 @@ class_name Rifle
 extends Gun
 
 func _init():
-	super._init(0.5, 150, 2, 13, -0.01, preload("res://sprites/gun/rifle.png"), "rifle")
+	super._init(30, 0.5, 150, 2, 13, -0.01, preload("res://sprites/gun/rifle.png"), "rifle")
 
 func shoot():
 	for i in range(3):

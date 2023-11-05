@@ -99,7 +99,7 @@ debug_color = Color(0.305882, 0.615686, 0.356863, 0.419608)
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -7)
 sprite_frames = SubResource("SpriteFrames_nunea")
-animation = &"back"
+animation = &"front"
 autoplay = "front"
 
 [node name="Camera" type="Camera2D" parent="."]
