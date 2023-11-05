@@ -15,16 +15,16 @@ func _physics_process(delta):
 	var direction = Input.get_vector("left", "right", "up", "down")
 	velocity = lerp(velocity, direction * speed * speed_multiplier + offset_velocity, 0.3)
 	offset_velocity = lerp(offset_velocity, Vector2.ZERO, 0.4)
-#	if direction.y > 0:
-#		$Sprite.animation = "front"
-#	if direction.y < 0:
-#		$Sprite.animation = "back"
-#	if direction.x > 0:
-#		$Sprite.animation = "side"
-#		$Sprite.flip_h = true
-#	if direction.x < 0:
-#		$Sprite.animation = "side"
-#		$Sprite.flip_h = false
+	if direction.x > 0:
+		$Sprite.animation = "side"
+		$Sprite.flip_h = false
+	if direction.x < 0:
+		$Sprite.animation = "side"
+		$Sprite.flip_h = true
+	if direction.y > 0:
+		$Sprite.animation = "front"
+	if direction.y < 0:
+		$Sprite.animation = "back"
 	
 	move_and_slide()
 	
