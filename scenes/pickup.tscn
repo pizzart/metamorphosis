@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://dg6cdxkh72qgd"]
 
+[ext_resource type="Script" path="res://scripts/pickups/gun_pickup.gd" id="1_7w6oa"]
 [ext_resource type="Texture2D" uid="uid://bank5bhfbawkc" path="res://sprites/testtile.png" id="1_daiko"]
-[ext_resource type="Script" path="res://scripts/pickup.gd" id="1_eettc"]
 [ext_resource type="FontFile" uid="uid://b8fccd6b7ns3m" path="res://misc/font.png" id="2_4tya5"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_p8niw"]
@@ -10,7 +10,7 @@ radius = 24.0
 [node name="Pickup" type="Area2D" groups=["pickup"]]
 y_sort_enabled = true
 collision_layer = 0
-script = ExtResource("1_eettc")
+script = ExtResource("1_7w6oa")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_p8niw")

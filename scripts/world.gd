@@ -9,6 +9,7 @@ var RNG = RandomNumberGenerator.new()
 var pickup_pool = [
 	Pistol,
 	Rifle,
+	Shotgun,
 ]
 @onready var player: Player = $Player
 
@@ -64,7 +65,7 @@ func place_islands(count: int, size: int):
 		var island_start = Vector2i.ZERO
 		if i > 0:
 			island_start = Vector2i(RNG.randi_range(-15, 15), RNG.randi_range(-15, 15))
-		cells.append_array(place_tile(cells, size, island_start, 0.1))
+		cells.append_array(place_tile(cells, size, island_start, 0.9))
 		init_positions.append($TileMap.map_to_local(island_start))
 	$TileMap.set_cells_terrain_connect(0, cells, 0, 0)
 	var borders = place_borders(cells)
@@ -145,8 +146,8 @@ func place_pickups():
 		var placement = cells.pop_at(RNG.randi() % cells.size())
 		placement = $TileMap.map_to_local(placement)
 		var gun = pickup_pool.pick_random().new()
-		var pickup = PICKUP.instantiate()
-		pickup.init_properties(placement, gun.gun_name, gun)
+		var pickup = GunPickup.new(gun.weapon_name, gun)
+		pickup.global_position = placement
 		call_deferred("add_child", pickup)
 
 func _input(event):

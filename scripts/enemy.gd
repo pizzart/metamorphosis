@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 const BULLET = preload("res://scenes/bullet.tscn")
+const DROP_CHANCE = 0.02
 var movement_speed: float = 80.0
 var health: int = 3
 var RNG = RandomNumberGenerator.new()
@@ -43,15 +44,18 @@ func get_close_position():
 func hit(damage: int):
 	health -= damage
 	if health <= 0:
-		queue_free()
+		die()
 
 func die():
+	if RNG.randf() <= DROP_CHANCE:
+		var coin = CoinPickup.new()
+		coin.global_position = global_position
+		get_parent().add_child(coin)
+	$CollisionShape2D.set_deferred("disabled", true)
 	queue_free()
 
 func _on_shoot_timer_timeout():
-	var bullet = BULLET.instantiate()
-	bullet.velocity = global_position.direction_to(player.global_position) * 5
-	bullet.acceleration = -0.02
+	$ShootTimer.start(RNG.randf_range(2, 5))
+	var bullet = Bullet.new(global_position.direction_to(player.global_position) * 5, -0.02, false)
 	bullet.global_position = global_position
-	bullet.set_by_enemy()
 	get_parent().add_child(bullet)
