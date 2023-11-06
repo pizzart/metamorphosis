@@ -7,6 +7,7 @@ const INIT_HEALTH = 10
 var speed = INIT_SPEED
 var speed_multiplier: float = 1
 var offset_velocity: Vector2
+var can_move: bool = true
 var max_health: int = INIT_HEALTH
 var health: int = max_health
 var weight: int = 0
@@ -19,6 +20,9 @@ var coins: int
 @onready var melee: Weapon = $Melee
 
 func _physics_process(delta):
+	if not can_move:
+		return
+	
 	var direction = Input.get_vector("left", "right", "up", "down")
 	velocity = lerp(velocity, direction * speed * speed_multiplier + offset_velocity, 0.3)
 	offset_velocity = lerp(offset_velocity, Vector2.ZERO, 0.4)
@@ -62,6 +66,8 @@ func knockback(value: Vector2):
 
 func hit(damage: int):
 	health -= damage
+	if health <= 0:
+		get_tree().reload_current_scene()
 
 func replace_gun(new_gun: Gun):
 	var old_gun = gun

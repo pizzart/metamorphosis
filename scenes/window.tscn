@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://cja4576fq57wx"]
+
+[ext_resource type="Script" path="res://scripts/window.gd" id="1_08afb"]
+
+[node name="Window" type="Window"]
+transparent_bg = true
+transient = true
+unresizable = true
+borderless = true
+transparent = true
+script = ExtResource("1_08afb")

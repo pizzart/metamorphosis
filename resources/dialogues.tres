@@ -1,0 +1,24 @@
+[gd_resource type="Resource" load_steps=6 format=3 uid="uid://c65ufkk7ws7ec"]
+
+[ext_resource type="Script" path="res://resources/dialogue.gd" id="1_n86de"]
+[ext_resource type="Script" path="res://resources/dialogue_line.gd" id="1_smqrh"]
+
+[sub_resource type="Resource" id="Resource_ft06s"]
+script = ExtResource("1_smqrh")
+line = "do you remember being born"
+speaker = 1
+
+[sub_resource type="Resource" id="Resource_vxn60"]
+script = ExtResource("1_smqrh")
+line = "no
+i do not remember anything"
+speaker = 0
+
+[sub_resource type="Resource" id="Resource_78q6s"]
+script = ExtResource("1_smqrh")
+line = "it happens"
+speaker = 1
+
+[resource]
+script = ExtResource("1_n86de")
+lines = Array[ExtResource("1_smqrh")]([SubResource("Resource_ft06s"), SubResource("Resource_vxn60"), SubResource("Resource_78q6s")])

@@ -1,7 +1,8 @@
 class_name Teleporter
 extends Area2D
 
-const TIMEOUT = 5
+const ARROW = preload("res://sprites/arrow.png")
+const TIMEOUT = 2.5
 var next_position: Vector2
 var inside: bool
 var can_interact: bool = true
@@ -16,9 +17,15 @@ func _init(_next_position):
 	sprite.texture = preload("res://icon.svg")
 	sprite.modulate = Color.RED
 	sprite.scale = Vector2(0.3, 0.3)
+	var arrow_sprite = Sprite2D.new()
+	var direction = global_position.direction_to(_next_position)
+	arrow_sprite.texture = ARROW
+	arrow_sprite.position = direction * 25
+	arrow_sprite.rotation = direction.angle()
 	add_child(collision_shape)
 	add_child(sprite)
-	z_index = -1
+	add_child(arrow_sprite)
+	z_index = -2
 	
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)

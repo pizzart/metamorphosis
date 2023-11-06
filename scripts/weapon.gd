@@ -31,6 +31,8 @@ func _init(_recharge_speed: float, _weight: int, _knockback: float, _texture: Te
 	sprite.texture = texture
 	add_child(timer)
 	add_child(sprite)
+	
+	z_index = -1
 
 func _process(delta):
 	if is_equipped:
@@ -42,7 +44,7 @@ func _process(delta):
 		position = Vector2.ZERO
 
 func _input(event):
-	if event.is_action_pressed("attack") and can_attack and is_equipped:
+	if event.is_action_pressed("attack") and can_attack and is_equipped and player.can_move:
 		attack()
 
 func attack():

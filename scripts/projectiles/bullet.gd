@@ -9,12 +9,13 @@ var type: BulletType
 var velocity: Vector2
 var acceleration: float
 
+var sprite = Sprite2D.new()
+
 func _init(_velocity: Vector2, _acceleration: float, is_player: bool):
 	var collision_shape = CollisionShape2D.new()
 	var rect = RectangleShape2D.new()
 	rect.size = Vector2(24, 12)
 	collision_shape.shape = rect
-	var sprite = Sprite2D.new()
 	sprite.texture = preload("res://sprites/bullet.png")
 	add_child(collision_shape)
 	add_child(sprite)
@@ -43,10 +44,12 @@ func _physics_process(delta):
 func set_by_player():
 	type = BulletType.PLAYER
 	set_collision_mask_value(2, true)
+	sprite.material = preload("res://misc/outline_mat_player.tres")
 
 func set_by_enemy():
 	type = BulletType.ENEMY
 	set_collision_mask_value(1, true)
+	sprite.material = preload("res://misc/outline_mat_enemy.tres")
 
 func _on_body_entered(body):
 	# reads mask layer 2: enemy

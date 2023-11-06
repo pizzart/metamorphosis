@@ -10,7 +10,7 @@ func _init():
 	collision_shape.shape = rect
 	var sprite = Sprite2D.new()
 	sprite.texture = preload("res://sprites/bullet.png")
-	timer.wait_time = 0.5
+	timer.wait_time = 0.39
 	timer.autostart = true
 	add_child(collision_shape)
 	add_child(sprite)
