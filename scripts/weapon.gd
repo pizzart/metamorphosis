@@ -9,6 +9,7 @@ var texture: Texture2D
 var weapon_name: String = "weapon"
 
 var offset_position: float = OFFSET
+var offset_rotation: float = 0
 var can_attack: bool = true
 var is_equipped: bool = false
 
@@ -38,18 +39,22 @@ func _process(delta):
 	if is_equipped:
 		offset_position = lerpf(offset_position, OFFSET, 0.05)
 		position = (get_global_mouse_position() - player.global_position).limit_length(offset_position)
-		sprite.rotation = player.global_position.direction_to(get_global_mouse_position()).angle()
+		sprite.position = position.rotated(offset_rotation) - position
+		sprite.rotation = player.global_position.direction_to(get_global_mouse_position()).angle() + offset_rotation
 		sprite.flip_v = sprite.rotation < -PI / 2 or sprite.rotation > PI / 2
 	else:
 		position = Vector2.ZERO
 
 func _input(event):
-	if event.is_action_pressed("attack") and can_attack and is_equipped and player.can_move:
+	if event.is_action_pressed("attack") and can_attack_fr():
 		attack()
 
 func attack():
 	can_attack = false
 	timer.start(recharge_speed)
+
+func can_attack_fr():
+	return can_attack and is_equipped and player.can_move
 
 func _on_timer_timeout():
 	can_attack = true

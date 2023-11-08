@@ -4,6 +4,7 @@ extends CharacterBody2D
 const INIT_AMMO = 100
 const INIT_SPEED = 120
 const INIT_HEALTH = 10
+const HAT_Y = -4
 var speed = INIT_SPEED
 var speed_multiplier: float = 1
 var offset_velocity: Vector2
@@ -56,6 +57,7 @@ func _process(delta):
 #	else:
 #		speed_multiplier = 1
 #	ammo = clampf(ammo + delta * 15, 0, max_ammo)
+	$Sprite/Hat.position.y = HAT_Y + $Sprite.frame % 2
 
 func _input(event):
 	if event.is_action_pressed("change_gun"):

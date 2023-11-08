@@ -12,6 +12,7 @@ var acceleration: float
 var sprite = Sprite2D.new()
 
 func _init(_velocity: Vector2, _acceleration: float, is_player: bool):
+	super._init()
 	var collision_shape = CollisionShape2D.new()
 	var rect = RectangleShape2D.new()
 	rect.size = Vector2(24, 12)

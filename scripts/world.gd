@@ -5,7 +5,6 @@ const INTERMISSION_SIZE = 5
 const CITY_SIZE = 12
 const ENEMY = preload("res://scenes/enemy.tscn")
 const EXIT = preload("res://scenes/exit.tscn")
-const PICKUP = preload("res://scenes/pickup.tscn")
 const WINDOW = preload("res://scenes/window.tscn")
 const BOSS = preload("res://scenes/bosses/boss_1.tscn")
 var RNG = RandomNumberGenerator.new()
@@ -14,6 +13,7 @@ var pickup_pool = [
 	Rifle,
 	Shotgun,
 ]
+var current_area: int
 @onready var player: Player = $Player
 
 func _ready():
@@ -193,5 +193,6 @@ func _input(event):
 func _on_exit_entered(_body: Node2D, is_intermission: bool):
 	if is_intermission:
 		regenerate_map(MAP_SIZE)
+		current_area += 1
 	else:
 		generate_intermission()

@@ -14,15 +14,14 @@ func _init(_pickup_name: String, _item: Gun):
 
 func _draw():
 	if can_pick_up:
-		draw_string(FONT, Vector2(0, -24), pickup_name)
+		draw_string(FONT, Vector2(-pickup_name.length() * 4, -24), pickup_name)
 
 func _on_body_entered(body):
-	player = body
-	can_pick_up = true
+	super._on_body_entered(body)
 	queue_redraw()
 
-func _on_body_exited(_body):
-	can_pick_up = false
+func _on_body_exited(body):
+	super._on_body_exited(body)
 	queue_redraw()
 
 func _input(event):

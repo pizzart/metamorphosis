@@ -4,12 +4,15 @@ extends Projectile
 var timer = Timer.new()
 
 func _init():
+	super._init()
 	var collision_shape = CollisionShape2D.new()
 	var rect = RectangleShape2D.new()
-	rect.size = Vector2(48, 48)
+	rect.size = Vector2(64, 64)
 	collision_shape.shape = rect
-	var sprite = Sprite2D.new()
-	sprite.texture = preload("res://sprites/bullet.png")
+	var sprite = AnimatedSprite2D.new()
+	sprite.sprite_frames = preload("res://resources/slash.tres")
+	sprite.play("default")
+	sprite.rotation = PI / 2
 	timer.wait_time = 0.39
 	timer.autostart = true
 	add_child(collision_shape)
@@ -31,7 +34,7 @@ func _on_body_entered(body):
 	# reads mask layer 2: enemy
 	if body.is_in_group("enemy"):
 		body.hit(damage)
-		queue_free()
+		set_deferred("monitoring", false)
 
 func _on_timeout():
 	queue_free()

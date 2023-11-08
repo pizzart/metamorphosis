@@ -20,8 +20,11 @@ func _init(shape: Shape2D, texture: Texture2D):
 	set_collision_mask_value(1, true)
 	z_index = -1
 
-func _on_body_entered(_body):
-	pass
+func _on_body_entered(body):
+	for pickup in get_tree().get_nodes_in_group("pickup"):
+		pickup.emit_signal("body_exited", body)
+	player = body
+	can_pick_up = true
 
 func _on_body_exited(_body):
-	pass
+	can_pick_up = false
