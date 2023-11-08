@@ -1,0 +1,31 @@
+[gd_resource type="Resource" load_steps=7 format=3 uid="uid://t53yke54a13r"]
+
+[ext_resource type="Script" path="res://resources/dialogue_line.gd" id="1_5nnkt"]
+[ext_resource type="Script" path="res://resources/dialogue.gd" id="2_pkncn"]
+
+[sub_resource type="Resource" id="Resource_ft06s"]
+script = ExtResource("1_5nnkt")
+line = "are you a human"
+speaker = 1
+
+[sub_resource type="Resource" id="Resource_vxn60"]
+script = ExtResource("1_5nnkt")
+line = "i used to be a human
+i am trying to get my memories back
+then i might be human once more"
+speaker = 0
+
+[sub_resource type="Resource" id="Resource_78q6s"]
+script = ExtResource("1_5nnkt")
+line = "you are a robot though
+how did you lose your memory"
+speaker = 1
+
+[sub_resource type="Resource" id="Resource_e30mn"]
+script = ExtResource("1_5nnkt")
+line = "my memory was never transferred to this form"
+speaker = 0
+
+[resource]
+script = ExtResource("2_pkncn")
+lines = Array[ExtResource("1_5nnkt")]([SubResource("Resource_ft06s"), SubResource("Resource_vxn60"), SubResource("Resource_78q6s"), SubResource("Resource_e30mn")])

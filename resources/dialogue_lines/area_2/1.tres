@@ -1,0 +1,28 @@
+[gd_resource type="Resource" load_steps=7 format=3 uid="uid://66ymrs6qrc61"]
+
+[ext_resource type="Script" path="res://resources/dialogue_line.gd" id="1_m6c0k"]
+[ext_resource type="Script" path="res://resources/dialogue.gd" id="2_ih35n"]
+
+[sub_resource type="Resource" id="Resource_ft06s"]
+script = ExtResource("1_m6c0k")
+line = "what are you"
+speaker = 1
+
+[sub_resource type="Resource" id="Resource_vxn60"]
+script = ExtResource("1_m6c0k")
+line = "i am a robot designed to hold the mind of a human"
+speaker = 0
+
+[sub_resource type="Resource" id="Resource_78q6s"]
+script = ExtResource("1_m6c0k")
+line = "do you not have a human mind"
+speaker = 1
+
+[sub_resource type="Resource" id="Resource_v7smf"]
+script = ExtResource("1_m6c0k")
+line = "at the moment i do not"
+speaker = 0
+
+[resource]
+script = ExtResource("2_ih35n")
+lines = Array[ExtResource("1_m6c0k")]([SubResource("Resource_ft06s"), SubResource("Resource_vxn60"), SubResource("Resource_78q6s"), SubResource("Resource_v7smf")])

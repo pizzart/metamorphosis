@@ -16,7 +16,7 @@ speaker = 0
 
 [sub_resource type="Resource" id="Resource_78q6s"]
 script = ExtResource("1_smqrh")
-line = "it happens"
+line = "how curious"
 speaker = 1
 
 [resource]
