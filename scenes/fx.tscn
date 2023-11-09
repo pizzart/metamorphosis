@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3 uid="uid://j44t5hdt8nmc"]
+
+[ext_resource type="Shader" path="res://misc/bloom.gdshader" id="1_1t6hs"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8wfhm"]
+shader = ExtResource("1_1t6hs")
+shader_parameter/scanlines_shown = false
+shader_parameter/curvature_shown = false
+shader_parameter/warp_shown = false
+shader_parameter/aberration_amount = 1.0
+shader_parameter/static_intensity = 0.0
+shader_parameter/time_scale = 1.0
+shader_parameter/warp_amount = 0.05
+shader_parameter/scanlines_opacity = 0.1
+shader_parameter/scanlines_amount = 100.0
+shader_parameter/scanlines_speed = 0.02
+shader_parameter/scanlines_width = 0.2
+shader_parameter/bloom_threshold = 0.16
+shader_parameter/bloom_strength = 1.2
+shader_parameter/bloom_size = 4.0
+shader_parameter/vignette_opacity = 0.035
+
+[node name="FX" type="CanvasLayer"]
+layer = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_8wfhm")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

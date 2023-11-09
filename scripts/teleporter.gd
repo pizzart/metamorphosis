@@ -8,7 +8,7 @@ var inside: bool
 var can_interact: bool = true
 var player: Player
 
-func _init(_next_position):
+func _init(_position, _next_position):
 	var collision_shape = CollisionShape2D.new()
 	var rect = RectangleShape2D.new()
 	rect.size = Vector2(40, 40)
@@ -18,7 +18,7 @@ func _init(_next_position):
 	sprite.modulate = Color.RED
 	sprite.scale = Vector2(0.3, 0.3)
 	var arrow_sprite = Sprite2D.new()
-	var direction = global_position.direction_to(_next_position)
+	var direction = _position.direction_to(_next_position)
 	arrow_sprite.texture = ARROW
 	arrow_sprite.position = direction * 25
 	arrow_sprite.rotation = direction.angle()
@@ -32,6 +32,7 @@ func _init(_next_position):
 	add_to_group("teleporter")
 	
 	next_position = _next_position
+	global_position = _position
 
 func _input(event):
 	if event.is_action_pressed("use") and inside and can_interact:
@@ -40,8 +41,10 @@ func _input(event):
 
 func make_inactive():
 	can_interact = false
+	modulate.a = 0.5
 	await get_tree().create_timer(TIMEOUT).timeout
 	can_interact = true
+	modulate.a = 1
 
 func _on_body_entered(body):
 	player = body

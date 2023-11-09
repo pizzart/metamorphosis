@@ -1,10 +1,16 @@
 class_name Generator
 extends Node
 
+enum GenerationType {
+	Action,
+	Intermission,
+	Boss,
+	Town,
+}
 const MAP_SIZE = 10
 const ISLAND_SPREAD = 15
 const INTERMISSION_SIZE = 5
-const CITY_SIZE = 12
+const TOWN_SIZE = 12
 
 const ENEMY = preload("res://scenes/enemy.tscn")
 const EXIT = preload("res://scenes/exit.tscn")
@@ -22,58 +28,67 @@ var current_area: int
 
 var player: Player
 var tilemap: TileMap
-var world: Node2D
+@onready var world: Node2D = get_parent()
 
-func _init(_player, _tilemap, parent):
+func _init(_player, _tilemap):
 	player = _player
 	tilemap = _tilemap
-	world = parent
 
 func generate_map(size):
 	var island_count = rng.randi_range(1, 4)
 	var positions = place_islands(island_count, MAP_SIZE)
 	if island_count > 1:
+		var new_positions = []
 		for i in range(positions.size()):
+			if i - 1 >= 0:
+				if positions[i].distance_to(positions[i - 1]) < 100:
+					continue
+			new_positions.append(positions[i])
+		for i in range(new_positions.size()):
 			var j = i + 1
-			if j >= positions.size():
+			if j >= new_positions.size():
 				j = 0
 #			if positions[i].distance_to(positions[j]) < 200:
 #				positions.remove_at(i)
 #				continue
 			
-			var teleporter = Teleporter.new(positions[j])
-			teleporter.global_position = positions[i]
+			var teleporter = Teleporter.new(new_positions[i], new_positions[j])
 			world.call_deferred("add_child", teleporter)
 #	place_walls(0.97)
-	place_enemies(5)
+	var enemy_count = 0
+	for i in range(island_count):
+		enemy_count += rng.randi_range(3, 5)
+	place_enemies(enemy_count)
 
 func regenerate_map(size):
-	tilemap.clear()
-	get_tree().call_group("enemy", "queue_free")
-	get_tree().call_group("pickup", "queue_free")
-	get_tree().call_group("exit", "queue_free")
+	cleanup()
 	generate_map(size)
-	var exit_placement = place_exit(false)
+	var exit_placement = place_exit(GenerationType.Intermission)
 	place_player(exit_placement)
 
 func generate_intermission():
-	tilemap.clear()
-	get_tree().call_group("enemy", "queue_free")
-	get_tree().call_group("exit", "queue_free")
-	get_tree().call_group("teleporter", "queue_free")
+	cleanup()
 	place_islands(1, INTERMISSION_SIZE)
 	place_pickups()
-	var exit_placement = place_exit(true)
+	var gen_type = GenerationType.Action
+	if current_map == 0:
+		gen_type = GenerationType.Boss
+	var exit_placement = place_exit(gen_type)
 	place_player(exit_placement)
 
-func generate_city():
-	tilemap.clear()
-	get_tree().call_group("enemy", "queue_free")
-	get_tree().call_group("exit", "queue_free")
-	get_tree().call_group("teleporter", "queue_free")
-	place_islands(1, CITY_SIZE)
-	var exit_placement = place_exit(true)
+func generate_town():
+	cleanup()
+	place_islands(1, TOWN_SIZE)
+	var exit_placement = place_exit(GenerationType.Action)
 	place_player(exit_placement)
+
+func generate_boss():
+	tilemap.clear()
+	cleanup()
+	tilemap.set_pattern(0, Vector2i.ZERO, tilemap.tile_set.get_pattern(1))
+	var exit_placement = place_exit(GenerationType.Town)
+	place_player(exit_placement)
+	world.init_boss_1()
 
 func place_player(exit_placement: Vector2):
 	var placement = Vector2i.ZERO
@@ -152,7 +167,7 @@ func place_walls(chance: float):
 #			for i in range(3):
 #				tilemap.set_cell(2, cell - Vector2i(0, i), 3, Vector2i.ZERO)
 
-func place_exit(is_intermission: bool) -> Vector2i:
+func place_exit(next_gen_type: GenerationType) -> Vector2i:
 	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, 0)
 	var placement = cells[0]
 	var center = tilemap.get_used_rect().get_center()
@@ -161,7 +176,7 @@ func place_exit(is_intermission: bool) -> Vector2i:
 			placement = cell
 	var exit = EXIT.instantiate()
 	exit.global_position = tilemap.map_to_local(placement)
-	exit.body_entered.connect(_on_exit_entered.bind(is_intermission))
+	exit.body_entered.connect(_on_exit_entered.bind(next_gen_type))
 	world.call_deferred("add_child", exit)
 	return placement
 
@@ -175,9 +190,21 @@ func place_pickups():
 		pickup.global_position = placement
 		world.call_deferred("add_child", pickup)
 
-func _on_exit_entered(_body: Node2D, is_intermission: bool):
-	if is_intermission:
-		regenerate_map(MAP_SIZE)
-		current_map += 1
-	else:
-		generate_intermission()
+func cleanup():
+	tilemap.clear()
+	get_tree().call_group("enemy", "queue_free")
+	get_tree().call_group("pickup", "queue_free")
+	get_tree().call_group("teleporter", "queue_free")
+	get_tree().call_group("exit", "queue_free")
+
+func _on_exit_entered(_body: Node2D, next_gen_type: GenerationType):
+	match next_gen_type:
+		GenerationType.Action:
+			regenerate_map(MAP_SIZE)
+			current_map += 1
+		GenerationType.Intermission:
+			generate_intermission()
+		GenerationType.Boss:
+			generate_boss()
+		GenerationType.Town:
+			generate_town()

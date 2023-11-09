@@ -160,8 +160,19 @@ texture = ExtResource("3_46xsb")
 [node name="Camera" type="Camera2D" parent="."]
 process_callback = 0
 position_smoothing_speed = 25.0
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+drag_left_margin = 0.1
+drag_top_margin = 0.1
+drag_right_margin = 0.1
+drag_bottom_margin = 0.1
+editor_draw_drag_margin = true
 
 [node name="ShootTimer" type="Timer" parent="."]
+
+[node name="InvTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 visible = false
@@ -176,3 +187,4 @@ script = ExtResource("5_gs5rs")
 script = ExtResource("6_n5gtl")
 
 [connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]
+[connection signal="timeout" from="InvTimer" to="." method="_on_inv_timer_timeout"]
