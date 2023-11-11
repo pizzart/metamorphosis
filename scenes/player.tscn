@@ -44,14 +44,11 @@ drag_right_margin = 0.1
 drag_bottom_margin = 0.1
 editor_draw_drag_margin = true
 
-[node name="ShootTimer" type="Timer" parent="."]
-
 [node name="InvTimer" type="Timer" parent="."]
 wait_time = 0.1
 one_shot = true
 
-[node name="PointLight2D" type="PointLight2D" parent="."]
-visible = false
+[node name="Light" type="PointLight2D" parent="."]
 shadow_enabled = true
 shadow_color = Color(0, 0, 0, 1)
 texture = ExtResource("4_7jsic")
@@ -62,5 +59,4 @@ script = ExtResource("5_gs5rs")
 [node name="Melee" type="Node2D" parent="."]
 script = ExtResource("6_n5gtl")
 
-[connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]
 [connection signal="timeout" from="InvTimer" to="." method="_on_inv_timer_timeout"]

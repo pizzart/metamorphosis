@@ -39,7 +39,7 @@ func _physics_process(delta):
 	
 	move_and_slide()
 	
-	$PointLight2D.texture_scale = rng.randf_range(0.96, 1.04)
+	$Light.texture_scale = rng.randf_range(0.95, 1.04)
 	
 	$Sprite.speed_scale = velocity.length() / speed
 	$Sprite.flip_h = direction.x < 0

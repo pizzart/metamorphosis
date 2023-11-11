@@ -17,15 +17,16 @@ enum Area {
 const AREA_TILES = {
 	0: [1, 2],
 	1: [3, 4],
-	2: [3, 4],
+	2: [5, 4],
 }
 
 const ISLAND_SIZE = 9
+const ISLAND_CITY_SIZE = 15
 const ISLAND_SPREAD = 15
 const INTERMISSION_SIZE = 5
 const TOWN_SIZE = 13
 const MAP_COUNT = 2
-const MIN_TELEPORTER_DISTANCE = 150
+const MIN_TELEPORTER_DISTANCE = 50
 
 const ENEMY = preload("res://scenes/enemy.tscn")
 const NPC = preload("res://scenes/npc.tscn")
@@ -39,8 +40,8 @@ var pickup_pool = [
 	Rifle,
 	Shotgun,
 ]
-var current_map: int = 2
-var current_area: Area = 1
+var current_map: int = 0
+var current_area: Area = Area.Abyss
 
 var player: Player
 var tilemap: TileMap
@@ -52,18 +53,17 @@ func _init(_player, _tilemap):
 
 func generate_map(size):
 	var island_count = rng.randi_range(1, 4)
-	var positions = place_islands(island_count, ISLAND_SIZE)
+	var positions = place_islands(island_count, size)
 	if island_count > 1:
-		var new_positions = []
-		for i in range(positions.size()):
-			var to_add = true
-			for j in range(positions.size()):
-				if positions[i].distance_to(positions[j]) < MIN_TELEPORTER_DISTANCE:
-					to_add = false
-					break
-			if to_add:
-				new_positions.append(positions[i])
-			new_positions.append(positions[i])
+		var new_positions = positions # what the hell
+#		for i in range(positions.size()):
+#			var to_add = true
+#			for j in range(positions.size()):
+#				if positions[i].distance_to(positions[j]) < MIN_TELEPORTER_DISTANCE:
+#					to_add = false
+#					break
+#			if to_add:
+#			new_positions.append(positions[i])
 		if new_positions.size() > 1:
 			for i in range(new_positions.size()):
 				var j = i + 1
@@ -74,7 +74,7 @@ func generate_map(size):
 #	place_walls(0.97)
 	var enemy_count = 0
 	for i in range(island_count):
-		enemy_count += rng.randi_range(3, 5)
+		enemy_count += rng.randi_range(3, 5 + rng.randi_range(0, current_map))
 	place_enemies(enemy_count)
 
 func regenerate_map(size):
@@ -103,7 +103,7 @@ func generate_town():
 func generate_boss():
 	tilemap.clear()
 	cleanup()
-	tilemap.set_pattern(0, Vector2i.ZERO, tilemap.tile_set.get_pattern(1))
+	tilemap.set_pattern(0, Vector2i.ZERO, tilemap.tile_set.get_pattern(0))
 	var exit_placement = place_exit(GenerationType.Town)
 	place_player(exit_placement)
 	world.init_boss_1()
@@ -235,7 +235,10 @@ func _on_exit_entered(_body: Node2D, next_gen_type: GenerationType):
 		GenerationType.Action:
 			if current_map == MAP_COUNT:
 				current_area += 1
-			regenerate_map(ISLAND_SIZE)
+			var island_size = ISLAND_SIZE
+			if current_area == Area.City:
+				island_size = ISLAND_CITY_SIZE
+			regenerate_map(island_size)
 			current_map += 1
 		GenerationType.Intermission:
 			generate_intermission()

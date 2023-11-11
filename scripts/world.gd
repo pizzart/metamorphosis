@@ -19,11 +19,12 @@ func _ready():
 #	$Window.world_2d = get_window().world_2d
 
 func _process(delta):
-	$BG1/ParallaxLayer.motion_offset.x -= delta * 10
-	$BG1/ParallaxLayer3.motion_offset.x -= delta * 7
-	$BG1/ParallaxLayer4.motion_offset.x -= delta * 13
-	$BG1/ParallaxLayer5.motion_offset.x -= delta * 3
-	$BG1/ParallaxLayer7.motion_offset.x -= delta * 5
+	if generator.current_area == Generator.Area.Sky:
+		$BG1/ParallaxLayer.motion_offset.x -= delta * 10
+		$BG1/ParallaxLayer3.motion_offset.x -= delta * 7
+		$BG1/ParallaxLayer4.motion_offset.x -= delta * 13
+		$BG1/ParallaxLayer5.motion_offset.x -= delta * 3
+		$BG1/ParallaxLayer7.motion_offset.x -= delta * 5
 
 func init_boss_1():
 	get_window().set_canvas_cull_mask_bit(2, false)

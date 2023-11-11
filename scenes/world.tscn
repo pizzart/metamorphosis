@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://64kdpv3e4j6m"]
+[gd_scene load_steps=19 format=3 uid="uid://64kdpv3e4j6m"]
 
 [ext_resource type="Script" path="res://scripts/world.gd" id="1_eoi30"]
 [ext_resource type="PackedScene" uid="uid://dph8pd3qblx44" path="res://scenes/player.tscn" id="1_wk3e0"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://bgogdrqjly2tk" path="res://sprites/bgs/1/clouds2.png" id="9_nbadq"]
 [ext_resource type="Texture2D" uid="uid://645mlkk68ti8" path="res://sprites/bgs/1/clouds3.png" id="10_eb2fp"]
 [ext_resource type="Texture2D" uid="uid://c2vbm3ognyrw4" path="res://sprites/bgs/3/bg3_2.png" id="10_gyw7h"]
+[ext_resource type="Texture2D" uid="uid://bwnvd63cs8345" path="res://sprites/bgs/2/bg2_0.png" id="11_6w7jm"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_k3f30"]
 noise_type = 5
@@ -61,6 +62,7 @@ layer_2/z_index = 1
 layer_2/tile_data = PackedInt32Array()
 
 [node name="BG1" type="ParallaxBackground" parent="."]
+visible = false
 
 [node name="ParallaxLayer2" type="ParallaxLayer" parent="BG1"]
 motion_scale = Vector2(0.05, 0)
@@ -121,8 +123,36 @@ motion_mirroring = Vector2(640, 480)
 modulate = Color(1, 1, 1, 0.12549)
 texture = ExtResource("6_3tv2d")
 
-[node name="BG3" type="ParallaxBackground" parent="."]
+[node name="BG2" type="ParallaxBackground" parent="."]
 visible = false
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="BG2"]
+modulate = Color(0.835294, 0.835294, 0.835294, 1)
+motion_scale = Vector2(0.05, 0.05)
+motion_mirroring = Vector2(640, 480)
+
+[node name="Sprite2D" type="Sprite2D" parent="BG2/ParallaxLayer"]
+texture = ExtResource("11_6w7jm")
+
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="BG2"]
+visible = false
+modulate = Color(0.760784, 0.760784, 0.760784, 1)
+motion_scale = Vector2(0.1, 0.1)
+motion_mirroring = Vector2(640, 480)
+
+[node name="ColorRect" type="ColorRect" parent="BG2/ParallaxLayer3"]
+z_index = -5
+z_as_relative = false
+material = SubResource("ShaderMaterial_5m35t")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 640.0
+offset_bottom = 480.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BG3" type="ParallaxBackground" parent="."]
 
 [node name="Bg30" type="Sprite2D" parent="BG3"]
 texture = ExtResource("8_fhbtx")
@@ -133,6 +163,7 @@ motion_scale = Vector2(0.05, 0.05)
 motion_mirroring = Vector2(640, 480)
 
 [node name="Sprite2D" type="Sprite2D" parent="BG3/ParallaxLayer"]
+modulate = Color(0.533333, 0.533333, 0.533333, 1)
 texture = ExtResource("9_ktfkt")
 
 [node name="ParallaxLayer2" type="ParallaxLayer" parent="BG3"]
@@ -141,6 +172,7 @@ motion_scale = Vector2(0.1, 0.1)
 motion_mirroring = Vector2(640, 480)
 
 [node name="Sprite2D" type="Sprite2D" parent="BG3/ParallaxLayer2"]
+modulate = Color(0.533333, 0.533333, 0.533333, 1)
 texture = ExtResource("10_gyw7h")
 
 [node name="ParallaxLayer3" type="ParallaxLayer" parent="BG3"]
@@ -162,4 +194,12 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
+visible = false
 color = Color(0.752941, 0.658824, 0.52549, 1)
+
+[node name="CanvasModulate2" type="CanvasModulate" parent="."]
+visible = false
+color = Color(0.505882, 0.47451, 0.580392, 1)
+
+[node name="CanvasModulate3" type="CanvasModulate" parent="."]
+color = Color(0.305882, 0.27451, 0.282353, 1)
