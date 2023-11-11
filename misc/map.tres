@@ -1,10 +1,11 @@
-[gd_resource type="TileSet" load_steps=16 format=3 uid="uid://uvyca8uwcqd5"]
+[gd_resource type="TileSet" load_steps=19 format=3 uid="uid://uvyca8uwcqd5"]
 
 [ext_resource type="Texture2D" uid="uid://1tkhy35nge17" path="res://sprites/tilesets/tiles_1.png" id="1_qj672"]
 [ext_resource type="Texture2D" uid="uid://jtapwh5xquos" path="res://sprites/tilesets/bottom_tile_1.png" id="2_dfg74"]
 [ext_resource type="Texture2D" uid="uid://klii2t0gv6db" path="res://sprites/tilesets/tiles_2.png" id="3_abq28"]
 [ext_resource type="Texture2D" uid="uid://dldf2rh65wqq2" path="res://sprites/tilesets/bottom_tile_2.png" id="4_eatyx"]
 [ext_resource type="Texture2D" uid="uid://c1dl5374ydsqy" path="res://sprites/tilesets/tiles_3.png" id="5_j6tsn"]
+[ext_resource type="Texture2D" uid="uid://b80xeg20jc8tn" path="res://sprites/tilesets/bottom_tile_3.png" id="6_er4e0"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_gkity"]
 tile_data = PackedInt32Array(65536, 0, 0, 131072, 0, 0, 196608, 0, 0, 262144, 0, 0, 327680, 0, 0, 393216, 0, 0, 458752, 0, 0, 524288, 0, 0, 589824, 0, 0, 1, 0, 0, 65537, 1, 0, 131073, 1, 1, 196609, 1, 1, 262145, 1, 1, 327681, 1, 1, 393217, 1, 1, 458753, 1, 1, 524289, 1, 1, 589825, 1, 2, 655361, 2, 0, 2, 0, 0, 65538, 65537, 0, 131074, 327681, 1, 196610, 131073, 1, 262146, 131073, 1, 327682, 131073, 1, 393218, 327681, 2, 458754, 65537, 1, 524290, 65537, 1, 589826, 65537, 2, 655362, 2, 0, 3, 0, 0, 65539, 65537, 0, 131075, 65537, 2, 196611, 2, 0, 262147, 0, 0, 327683, 0, 0, 393219, 65537, 0, 458755, 65537, 1, 524291, 65537, 1, 589827, 65537, 2, 655363, 2, 0, 4, 0, 0, 65540, 327681, 0, 131076, 131073, 2, 196612, 2, 0, 262148, 1, 0, 327684, 1, 1, 393220, 393217, 2, 458756, 65537, 1, 524292, 65537, 1, 589828, 65537, 2, 655364, 2, 0, 5, 0, 0, 65541, 65537, 3, 131077, 2, 0, 196613, 1, 0, 262149, 393217, 2, 327685, 65537, 1, 393221, 327681, 1, 458757, 131073, 1, 524293, 131073, 1, 589829, 327681, 3, 655365, 2, 0, 6, 0, 0, 65542, 393217, 0, 131078, 1, 1, 196614, 393217, 2, 262150, 65537, 1, 327686, 65537, 1, 393222, 65537, 2, 458758, 2, 0, 524294, 0, 0, 589830, 65537, 3, 655366, 2, 0, 7, 0, 0, 65543, 65537, 0, 131079, 65537, 1, 196615, 65537, 1, 262151, 65537, 1, 327687, 65537, 1, 393223, 393217, 1, 458759, 1, 1, 524295, 1, 1, 589831, 393217, 3, 655367, 2, 0, 8, 0, 0, 65544, 65537, 0, 131080, 65537, 1, 196616, 65537, 1, 262152, 65537, 1, 327688, 65537, 1, 393224, 65537, 1, 458760, 65537, 1, 524296, 65537, 1, 589832, 65537, 2, 655368, 2, 0, 9, 0, 0, 65545, 65537, 0, 131081, 65537, 1, 196617, 65537, 1, 262153, 65537, 1, 327689, 65537, 1, 393225, 65537, 1, 458761, 65537, 1, 524297, 65537, 1, 589833, 65537, 2, 655369, 2, 0, 10, 0, 0, 65546, 131073, 0, 131082, 131073, 1, 196618, 131073, 1, 262154, 131073, 1, 327690, 131073, 1, 393226, 131073, 1, 458762, 131073, 1, 524298, 131073, 1, 589834, 131073, 2, 655370, 2, 0, 65547, 0, 0, 131083, 0, 0, 196619, 0, 0, 262155, 0, 0, 327691, 0, 0, 393227, 0, 0, 458763, 0, 0, 524299, 0, 0, 589835, 0, 0)
@@ -1665,6 +1666,25 @@ texture_region_size = Vector2i(24, 24)
 8:4/0/terrains_peering_bit/left_side = 0
 8:4/0/terrains_peering_bit/top_side = 0
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i1su6"]
+texture = ExtResource("6_er4e0")
+texture_region_size = Vector2i(24, 24)
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-12, -12, 12, -12, 12, 12, -12, 12)
+0:0/0/physics_layer_1/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_1/angular_velocity = 0.0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rjv3n"]
+texture = ExtResource("6_er4e0")
+texture_region_size = Vector2i(24, 24)
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:0/0/physics_layer_1/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_1/angular_velocity = 0.0
+
 [resource]
 tile_size = Vector2i(24, 24)
 occlusion_layer_0/light_mask = 1
@@ -1688,4 +1708,6 @@ sources/1 = SubResource("TileSetAtlasSource_tomji")
 sources/3 = SubResource("TileSetAtlasSource_no58l")
 sources/4 = SubResource("TileSetAtlasSource_jloli")
 sources/5 = SubResource("TileSetAtlasSource_gcjbd")
+sources/6 = SubResource("TileSetAtlasSource_i1su6")
+sources/8 = SubResource("TileSetAtlasSource_rjv3n")
 pattern_0 = SubResource("TileMapPattern_gkity")

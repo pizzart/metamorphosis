@@ -17,7 +17,7 @@ enum Area {
 const AREA_TILES = {
 	0: [1, 2],
 	1: [3, 4],
-	2: [5, 4],
+	2: [5, 6],
 }
 
 const ISLAND_SIZE = 9
@@ -27,6 +27,8 @@ const INTERMISSION_SIZE = 5
 const TOWN_SIZE = 13
 const MAP_COUNT = 2
 const MIN_TELEPORTER_DISTANCE = 50
+
+const GLITCH_MAT = preload("res://misc/glitch_mat.tres")
 
 const ENEMY = preload("res://scenes/enemy.tscn")
 const NPC = preload("res://scenes/npc.tscn")
@@ -40,8 +42,8 @@ var pickup_pool = [
 	Rifle,
 	Shotgun,
 ]
-var current_map: int = 0
-var current_area: Area = Area.Abyss
+var current_map: int = 2
+var current_area: Area = Area.Sky
 
 var player: Player
 var tilemap: TileMap
@@ -235,11 +237,25 @@ func _on_exit_entered(_body: Node2D, next_gen_type: GenerationType):
 		GenerationType.Action:
 			if current_map == MAP_COUNT:
 				current_area += 1
+				current_map = 0
+				match current_area:
+					Area.City:
+						world.get_node("SkyBG").hide()
+						world.get_node("SkyModulate").hide()
+						world.get_node("CityBG").show()
+						world.get_node("CityModulate").show()
+					Area.Abyss:
+						world.get_node("CityBG").hide()
+						world.get_node("CityModulate").hide()
+						world.get_node("AbyssBG").show()
+						world.get_node("AbyssModulate").show()
+						tilemap.material = GLITCH_MAT
+			else:
+				current_map += 1
 			var island_size = ISLAND_SIZE
 			if current_area == Area.City:
 				island_size = ISLAND_CITY_SIZE
 			regenerate_map(island_size)
-			current_map += 1
 		GenerationType.Intermission:
 			generate_intermission()
 		GenerationType.Boss:
@@ -249,6 +265,6 @@ func _on_exit_entered(_body: Node2D, next_gen_type: GenerationType):
 				Area.City:
 					get_tree().change_scene_to_file("res://scenes/3d/world_3d.tscn")
 				Area.Abyss:
-					pass
+					print("final boss!")
 		GenerationType.Town:
 			generate_town()

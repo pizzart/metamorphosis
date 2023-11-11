@@ -60,87 +60,93 @@ layer_2/y_sort_enabled = true
 layer_2/y_sort_origin = 0
 layer_2/z_index = 1
 layer_2/tile_data = PackedInt32Array()
+layer_3/name = "Underground"
+layer_3/enabled = true
+layer_3/modulate = Color(1, 1, 1, 1)
+layer_3/y_sort_enabled = false
+layer_3/y_sort_origin = 0
+layer_3/z_index = -4
+layer_3/tile_data = PackedInt32Array()
 
-[node name="BG1" type="ParallaxBackground" parent="."]
-visible = false
+[node name="SkyBG" type="ParallaxBackground" parent="."]
 
-[node name="ParallaxLayer2" type="ParallaxLayer" parent="BG1"]
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="SkyBG"]
 motion_scale = Vector2(0.05, 0)
 motion_offset = Vector2(0, 40)
 motion_mirroring = Vector2(640, 480)
 
-[node name="Sprite2D" type="Sprite2D" parent="BG1/ParallaxLayer2"]
+[node name="Sprite2D" type="Sprite2D" parent="SkyBG/ParallaxLayer2"]
 modulate = Color(0.670588, 0.670588, 0.670588, 1)
 texture = ExtResource("7_jgl2r")
 
-[node name="ParallaxLayer6" type="ParallaxLayer" parent="BG1"]
+[node name="ParallaxLayer6" type="ParallaxLayer" parent="SkyBG"]
 motion_scale = Vector2(0.05, 0.01)
 motion_offset = Vector2(0, 40)
 motion_mirroring = Vector2(640, 480)
 
-[node name="Sprite2D" type="Sprite2D" parent="BG1/ParallaxLayer6"]
+[node name="Sprite2D" type="Sprite2D" parent="SkyBG/ParallaxLayer6"]
 modulate = Color(0.670588, 0.670588, 0.670588, 1)
 texture = ExtResource("8_nwf71")
 
-[node name="ParallaxLayer5" type="ParallaxLayer" parent="BG1"]
+[node name="ParallaxLayer5" type="ParallaxLayer" parent="SkyBG"]
 motion_scale = Vector2(0.05, 0.05)
 motion_offset = Vector2(50, 200)
 motion_mirroring = Vector2(576, 576)
 
-[node name="Sprite2D" type="Sprite2D" parent="BG1/ParallaxLayer5"]
+[node name="Sprite2D" type="Sprite2D" parent="SkyBG/ParallaxLayer5"]
 texture = ExtResource("8_k0vh2")
 
-[node name="ParallaxLayer" type="ParallaxLayer" parent="BG1"]
+[node name="ParallaxLayer" type="ParallaxLayer" parent="SkyBG"]
 motion_scale = Vector2(0.05, 0.05)
 motion_offset = Vector2(0, 50)
 motion_mirroring = Vector2(448, 368)
 
-[node name="Sprite2D" type="Sprite2D" parent="BG1/ParallaxLayer"]
+[node name="Sprite2D" type="Sprite2D" parent="SkyBG/ParallaxLayer"]
 texture = ExtResource("8_npq8y")
 
-[node name="ParallaxLayer3" type="ParallaxLayer" parent="BG1"]
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="SkyBG"]
 motion_scale = Vector2(0.07, 0.07)
 motion_offset = Vector2(0, 120)
 motion_mirroring = Vector2(448, 368)
 
-[node name="Sprite2D" type="Sprite2D" parent="BG1/ParallaxLayer3"]
+[node name="Sprite2D" type="Sprite2D" parent="SkyBG/ParallaxLayer3"]
 texture = ExtResource("9_nbadq")
 
-[node name="ParallaxLayer4" type="ParallaxLayer" parent="BG1"]
+[node name="ParallaxLayer4" type="ParallaxLayer" parent="SkyBG"]
 motion_scale = Vector2(0.02, 0.02)
 motion_offset = Vector2(-50, 160)
 motion_mirroring = Vector2(448, 368)
 
-[node name="Sprite2D" type="Sprite2D" parent="BG1/ParallaxLayer4"]
+[node name="Sprite2D" type="Sprite2D" parent="SkyBG/ParallaxLayer4"]
 texture = ExtResource("10_eb2fp")
 
-[node name="ParallaxLayer7" type="ParallaxLayer" parent="BG1"]
+[node name="ParallaxLayer7" type="ParallaxLayer" parent="SkyBG"]
 motion_scale = Vector2(0.05, 0.01)
 motion_offset = Vector2(0, 40)
 motion_mirroring = Vector2(640, 480)
 
-[node name="Sprite2D" type="Sprite2D" parent="BG1/ParallaxLayer7"]
+[node name="Sprite2D" type="Sprite2D" parent="SkyBG/ParallaxLayer7"]
 modulate = Color(1, 1, 1, 0.12549)
 texture = ExtResource("6_3tv2d")
 
-[node name="BG2" type="ParallaxBackground" parent="."]
+[node name="CityBG" type="ParallaxBackground" parent="."]
 visible = false
 
-[node name="ParallaxLayer" type="ParallaxLayer" parent="BG2"]
+[node name="ParallaxLayer" type="ParallaxLayer" parent="CityBG"]
 modulate = Color(0.835294, 0.835294, 0.835294, 1)
 motion_scale = Vector2(0.05, 0.05)
 motion_mirroring = Vector2(640, 480)
 
-[node name="Sprite2D" type="Sprite2D" parent="BG2/ParallaxLayer"]
+[node name="Sprite2D" type="Sprite2D" parent="CityBG/ParallaxLayer"]
 texture = ExtResource("11_6w7jm")
 
-[node name="ParallaxLayer3" type="ParallaxLayer" parent="BG2"]
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="CityBG"]
 visible = false
 modulate = Color(0.760784, 0.760784, 0.760784, 1)
 motion_scale = Vector2(0.1, 0.1)
 motion_mirroring = Vector2(640, 480)
 
-[node name="ColorRect" type="ColorRect" parent="BG2/ParallaxLayer3"]
+[node name="ColorRect" type="ColorRect" parent="CityBG/ParallaxLayer3"]
 z_index = -5
 z_as_relative = false
 material = SubResource("ShaderMaterial_5m35t")
@@ -152,36 +158,37 @@ offset_bottom = 480.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="BG3" type="ParallaxBackground" parent="."]
+[node name="AbyssBG" type="ParallaxBackground" parent="."]
+visible = false
 
-[node name="Bg30" type="Sprite2D" parent="BG3"]
+[node name="Bg30" type="Sprite2D" parent="AbyssBG"]
 texture = ExtResource("8_fhbtx")
 
-[node name="ParallaxLayer" type="ParallaxLayer" parent="BG3"]
+[node name="ParallaxLayer" type="ParallaxLayer" parent="AbyssBG"]
 modulate = Color(0.835294, 0.835294, 0.835294, 1)
 motion_scale = Vector2(0.05, 0.05)
 motion_mirroring = Vector2(640, 480)
 
-[node name="Sprite2D" type="Sprite2D" parent="BG3/ParallaxLayer"]
-modulate = Color(0.533333, 0.533333, 0.533333, 1)
+[node name="Sprite2D" type="Sprite2D" parent="AbyssBG/ParallaxLayer"]
+modulate = Color(0.380392, 0.380392, 0.380392, 1)
 texture = ExtResource("9_ktfkt")
 
-[node name="ParallaxLayer2" type="ParallaxLayer" parent="BG3"]
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="AbyssBG"]
 modulate = Color(0.760784, 0.760784, 0.760784, 1)
 motion_scale = Vector2(0.1, 0.1)
 motion_mirroring = Vector2(640, 480)
 
-[node name="Sprite2D" type="Sprite2D" parent="BG3/ParallaxLayer2"]
+[node name="Sprite2D" type="Sprite2D" parent="AbyssBG/ParallaxLayer2"]
 modulate = Color(0.533333, 0.533333, 0.533333, 1)
 texture = ExtResource("10_gyw7h")
 
-[node name="ParallaxLayer3" type="ParallaxLayer" parent="BG3"]
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="AbyssBG"]
 visible = false
 modulate = Color(0.760784, 0.760784, 0.760784, 1)
 motion_scale = Vector2(0.1, 0.1)
 motion_mirroring = Vector2(640, 480)
 
-[node name="ColorRect" type="ColorRect" parent="BG3/ParallaxLayer3"]
+[node name="ColorRect" type="ColorRect" parent="AbyssBG/ParallaxLayer3"]
 z_index = -5
 z_as_relative = false
 material = SubResource("ShaderMaterial_5m35t")
@@ -193,13 +200,13 @@ offset_bottom = 480.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
-visible = false
+[node name="SkyModulate" type="CanvasModulate" parent="."]
 color = Color(0.752941, 0.658824, 0.52549, 1)
 
-[node name="CanvasModulate2" type="CanvasModulate" parent="."]
+[node name="CityModulate" type="CanvasModulate" parent="."]
 visible = false
 color = Color(0.505882, 0.47451, 0.580392, 1)
 
-[node name="CanvasModulate3" type="CanvasModulate" parent="."]
+[node name="AbyssModulate" type="CanvasModulate" parent="."]
+visible = false
 color = Color(0.305882, 0.27451, 0.282353, 1)

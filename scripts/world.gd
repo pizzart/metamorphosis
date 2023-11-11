@@ -20,14 +20,15 @@ func _ready():
 
 func _process(delta):
 	if generator.current_area == Generator.Area.Sky:
-		$BG1/ParallaxLayer.motion_offset.x -= delta * 10
-		$BG1/ParallaxLayer3.motion_offset.x -= delta * 7
-		$BG1/ParallaxLayer4.motion_offset.x -= delta * 13
-		$BG1/ParallaxLayer5.motion_offset.x -= delta * 3
-		$BG1/ParallaxLayer7.motion_offset.x -= delta * 5
+		$SkyBG/ParallaxLayer.motion_offset.x -= delta * 10
+		$SkyBG/ParallaxLayer3.motion_offset.x -= delta * 7
+		$SkyBG/ParallaxLayer4.motion_offset.x -= delta * 13
+		$SkyBG/ParallaxLayer5.motion_offset.x -= delta * 3
+		$SkyBG/ParallaxLayer7.motion_offset.x -= delta * 5
 
 func init_boss_1():
-	get_window().set_canvas_cull_mask_bit(2, false)
+	pass
+#	get_window().set_canvas_cull_mask_bit(2, false)
 	
 #	var tilemap_window = WINDOW.instantiate()
 #	tilemap_window.world_2d = get_window().world_2d
@@ -36,12 +37,14 @@ func init_boss_1():
 #	add_child(tilemap_window)
 #	remove_child(tilemap)
 #	tilemap_window.add_child(tilemap)
-	var enemy_window = WINDOW.instantiate()
-	var boss = BOSS.instantiate()
-	enemy_window.camera = boss.get_node("Camera")
-	enemy_window.world_2d = get_window().world_2d
-#	enemy_window.set_canvas_cull_mask_bit(1, false)
-	enemy_window.set_canvas_cull_mask_bit(3, false)
-	add_child(enemy_window)
-	enemy_window.add_child(boss)
+
+#	var enemy_window = WINDOW.instantiate()
+#	var boss = BOSS.instantiate()
+#	enemy_window.camera = boss.get_node("Camera")
+#	enemy_window.world_2d = get_window().world_2d
+##	enemy_window.set_canvas_cull_mask_bit(1, false)
+#	enemy_window.set_canvas_cull_mask_bit(3, false)
+#	add_child(enemy_window)
+#	enemy_window.add_child(boss)
+	
 #	get_window().mode = Window.MODE_FULLSCREEN
