@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://qyk1wq0h6ttu"]
+
+[ext_resource type="Script" path="res://scripts/3d/player.gd" id="1_i5ib5"]
+[ext_resource type="PackedScene" uid="uid://0284mnhe44cj" path="res://3d/revolver.glb" id="2_gjged"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lnfi8"]
+height = 1.5
+
+[node name="Player" type="CharacterBody3D" groups=["player_3d"]]
+collision_layer = 4
+script = ExtResource("1_i5ib5")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_lnfi8")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+
+[node name="Ray" type="RayCast3D" parent="Camera3D"]
+target_position = Vector3(0, 0, -50)
+collision_mask = 2
+
+[node name="Revolver" parent="Camera3D" instance=ExtResource("2_gjged")]
+transform = Transform3D(-0.619206, 0, -0.0313676, 0, 0.62, 0, 0.0313676, 0, -0.619206, 0.147, -0.105, -0.187)

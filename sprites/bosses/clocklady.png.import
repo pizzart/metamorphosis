@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dnrvqqrn1kt3u"
-path.s3tc="res://.godot/imported/panel.png-94ec3c9f0aeabb877c45546a89d87ac7.s3tc.ctex"
+uid="uid://c4naefxdaxf6t"
+path.s3tc="res://.godot/imported/clocklady.png-bf2eec014c119f5ee610df1cc7272447.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://sprites/ui/panel.png"
-dest_files=["res://.godot/imported/panel.png-94ec3c9f0aeabb877c45546a89d87ac7.s3tc.ctex"]
+source_file="res://sprites/bosses/clocklady.png"
+dest_files=["res://.godot/imported/clocklady.png-bf2eec014c119f5ee610df1cc7272447.s3tc.ctex"]
 
 [params]
 

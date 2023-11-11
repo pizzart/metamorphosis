@@ -4,8 +4,12 @@
 
 [node name="Window" type="Window"]
 transparent_bg = true
+canvas_cull_mask = 4294967294
+initial_position = 2
+size = Vector2i(64, 64)
 transient = true
 unresizable = true
 borderless = true
+always_on_top = true
 transparent = true
 script = ExtResource("1_08afb")

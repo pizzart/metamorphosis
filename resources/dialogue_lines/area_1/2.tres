@@ -17,7 +17,7 @@ speaker = 0
 
 [sub_resource type="Resource" id="Resource_78q6s"]
 script = ExtResource("1_jrogy")
-line = "you are a robot though
+line = "but you are a robot
 how did you lose your memory"
 speaker = 1
 

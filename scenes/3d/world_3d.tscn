@@ -1,0 +1,109 @@
+[gd_scene load_steps=13 format=3 uid="uid://cb2nik6dxv76u"]
+
+[ext_resource type="Script" path="res://scripts/3d/world_3d.gd" id="1_c4r3l"]
+[ext_resource type="PackedScene" uid="uid://qyk1wq0h6ttu" path="res://scenes/3d/player.tscn" id="1_deg81"]
+[ext_resource type="Texture2D" uid="uid://dnrvqqrn1kt3u" path="res://sprites/ui/panel.png" id="2_hkjmt"]
+[ext_resource type="PackedScene" uid="uid://b237fa8wat8sd" path="res://scenes/3d/boss.tscn" id="2_x7rkd"]
+[ext_resource type="TileSet" uid="uid://uvyca8uwcqd5" path="res://misc/map.tres" id="3_l5rhc"]
+[ext_resource type="SpriteFrames" uid="uid://decjog7dp6jgi" path="res://resources/player.tres" id="4_b8vrn"]
+[ext_resource type="Texture2D" uid="uid://b48tjc1xo0f3c" path="res://sprites/crosshair.png" id="5_mr8ux"]
+[ext_resource type="Texture2D" uid="uid://diuosv8ka8uun" path="res://sprites/ui/bar_over.png" id="7_6hrpk"]
+[ext_resource type="Texture2D" uid="uid://cg2ptfwshkf6l" path="res://sprites/ui/health_progress.png" id="8_xw0mn"]
+
+[sub_resource type="Environment" id="Environment_jdqxf"]
+background_mode = 3
+background_canvas_max_layer = 1
+ambient_light_source = 2
+ambient_light_color = Color(0.160784, 0.172549, 0.211765, 1)
+ssao_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0faaf"]
+albedo_texture = ExtResource("2_hkjmt")
+uv1_triplanar = true
+texture_filter = 0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yhtcf"]
+
+[node name="World3D" type="Node3D"]
+script = ExtResource("1_c4r3l")
+
+[node name="Player" parent="." instance=ExtResource("1_deg81")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_jdqxf")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
+use_collision = true
+size = Vector3(50, 1, 50)
+material = SubResource("StandardMaterial3D_0faaf")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.55604, -0.367513, -10.6901)
+use_collision = true
+size = Vector3(6.67057, 2.74758, 5.39879)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.5, 0.866025, 0, -0.866025, -0.5, 0, 0, 0)
+light_color = Color(0.231373, 0.231373, 0.419608, 1)
+shadow_enabled = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TileMap" type="TileMap" parent="CanvasLayer"]
+position = Vector2(-8, 0)
+tile_set = ExtResource("3_l5rhc")
+format = 2
+layer_0/tile_data = PackedInt32Array(0, 327683, 1, 65536, 131075, 1, 131072, 131075, 1, 196608, 131075, 1, 262144, 131075, 1, 327680, 131075, 1, 393216, 131075, 1, 458752, 131075, 1, 524288, 131075, 1, 589824, 327683, 2, 589825, 65539, 0, 589826, 65539, 0, 589827, 65539, 0, 589828, 65539, 0, 589829, 65539, 0, 589832, 65539, 0, 589833, 65539, 0, 589834, 65539, 0, 589835, 65539, 0, 589836, 65539, 0, 524301, 3, 1, 458765, 3, 1, 589837, 393219, 2, 393229, 3, 1, 327693, 3, 1, 262157, 3, 1, 196621, 3, 1, 131085, 3, 1, 65549, 3, 1, 13, 393219, 1, 12, 65539, 2, 11, 65539, 2, 10, 65539, 2, 9, 65539, 2, 8, 65539, 2, 7, 65539, 2, 6, 65539, 2, 5, 65539, 2, 4, 65539, 2, 3, 65539, 2, 2, 65539, 2, 1, 65539, 2)
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="Sprite" type="AnimatedSprite2D" parent="CanvasLayer2"]
+position = Vector2(160, 227)
+sprite_frames = ExtResource("4_b8vrn")
+animation = &"back"
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer2"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer2/CenterContainer"]
+layout_mode = 2
+texture = ExtResource("5_mr8ux")
+
+[node name="M" type="MarginContainer" parent="CanvasLayer2"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 6
+
+[node name="BossBar" type="TextureProgressBar" parent="CanvasLayer2/M"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+max_value = 30.0
+value = 30.0
+texture_over = ExtResource("7_6hrpk")
+texture_progress = ExtResource("8_xw0mn")
+
+[node name="Boss" parent="." instance=ExtResource("2_x7rkd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.5724)
+
+[node name="NextArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.32228, -1.00719, -7.49342)
+collision_layer = 0
+collision_mask = 4
+monitoring = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NextArea"]
+shape = SubResource("BoxShape3D_yhtcf")
+
+[connection signal="damaged" from="Boss" to="." method="_on_boss_damaged"]
+[connection signal="killed" from="Boss" to="." method="_on_boss_killed"]
+[connection signal="body_entered" from="NextArea" to="." method="_on_next_area_body_entered"]

@@ -1,0 +1,34 @@
+[gd_resource type="Resource" load_steps=8 format=3 uid="uid://dws7xvdu4nam7"]
+
+[ext_resource type="Script" path="res://resources/dialogue_line.gd" id="1_bhek2"]
+[ext_resource type="Script" path="res://resources/dialogue.gd" id="2_beygn"]
+
+[sub_resource type="Resource" id="Resource_ft06s"]
+script = ExtResource("1_bhek2")
+line = "do not worry
+you will be reborn and your issues will be disposed"
+speaker = 1
+
+[sub_resource type="Resource" id="Resource_vxn60"]
+script = ExtResource("1_bhek2")
+line = "what will happen to the memories i obtain during this experience when that happens"
+speaker = 0
+
+[sub_resource type="Resource" id="Resource_qy8e6"]
+script = ExtResource("1_bhek2")
+line = "the only part of the journey that you will remember is the feeling of being in this state"
+speaker = 1
+
+[sub_resource type="Resource" id="Resource_jc1h1"]
+script = ExtResource("1_bhek2")
+line = "you have got a long way to go"
+speaker = 1
+
+[sub_resource type="Resource" id="Resource_0rkb3"]
+script = ExtResource("1_bhek2")
+line = "i wish you good luck"
+speaker = 1
+
+[resource]
+script = ExtResource("2_beygn")
+lines = Array[ExtResource("1_bhek2")]([SubResource("Resource_ft06s"), SubResource("Resource_vxn60"), SubResource("Resource_qy8e6"), SubResource("Resource_jc1h1"), SubResource("Resource_0rkb3")])

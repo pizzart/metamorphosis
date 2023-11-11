@@ -5,3 +5,4 @@ var damage: int = 0
 
 func _init():
 	z_index = 1
+	add_to_group("projectile")

@@ -18,7 +18,6 @@ debug_color = Color(0.976471, 0, 0.415686, 0.419608)
 path_desired_distance = 5.0
 target_desired_distance = 3.0
 path_max_distance = 50.0
-debug_enabled = true
 
 [node name="NavigationTimer" type="Timer" parent="."]
 wait_time = 5.0

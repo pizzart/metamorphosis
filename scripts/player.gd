@@ -3,7 +3,7 @@ extends CharacterBody2D
 
 const INIT_AMMO = 100
 const INIT_SPEED = 120
-const INIT_HEALTH = 10
+const INIT_HEALTH = 15
 const HAT_Y = -4
 
 var speed = INIT_SPEED
@@ -13,6 +13,7 @@ var can_move: bool = true
 var invincible: bool = false
 var max_health: int = INIT_HEALTH
 var health: int = max_health
+var buffer_health: int = 0
 var weight: int = 0
 var max_ammo: float = INIT_AMMO
 var ammo: float = max_ammo
@@ -22,6 +23,11 @@ var rng = RandomNumberGenerator.new()
 @onready var cam: Camera2D = $Camera
 @onready var gun: Gun = $Gun
 @onready var melee: Weapon = $Melee
+
+func _ready():
+	weight = gun.weight + melee.weight
+	buffer_health = weight
+	health = max_health - weight
 
 func _physics_process(delta):
 	if not can_move:
@@ -55,14 +61,15 @@ func _physics_process(delta):
 func _process(delta):
 	var offset = get_global_mouse_position() - global_position
 	cam.offset = offset / 4
-	weight = gun.weight + ceili(ammo / 10)
 	UI.get_node("Control/M/V/WeightBar").value = weight
 	UI.get_node("Control/M/V/WeightBar").max_value = max_health
 	UI.get_node("Control/M/V/HealthBar").value = health
 	UI.get_node("Control/M/V/HealthBar").max_value = max_health
+	UI.get_node("Control/M/V/HealthBar/Buffer").max_value = max_health
+	UI.get_node("Control/M/V/HealthBar/Buffer").value = buffer_health
 	UI.get_node("Control/M/V/AmmoBar").value = ammo
 	UI.get_node("Control/M/V/AmmoBar").max_value = max_ammo
-	UI.get_node("Control/M/V/Coins").text = str(coins)
+#	UI.get_node("Control/M/V/Coins").text = str(coins)
 #	if weight > health:
 #		speed_multiplier = 0.5
 #	else:
@@ -88,6 +95,18 @@ func hit(damage: int):
 	$InvTimer.start()
 
 func replace_gun(new_gun: Gun):
+	if new_gun.weight > gun.weight:
+		var free = max_health - health
+		var buffer = free - new_gun.weight
+		if buffer < 0:
+			buffer_health = abs(buffer)
+			health -= buffer_health
+	elif new_gun.weight < gun.weight:
+		var released = gun.weight - new_gun.weight
+		var new_buffer = max(buffer_health - released, 0)
+		health += buffer_health - new_buffer
+		buffer_health = new_buffer
+	weight = new_gun.weight + melee.weight
 	var old_gun = gun
 	remove_child(old_gun)
 	gun = new_gun
@@ -100,6 +119,13 @@ func add_coin():
 
 func add_ammo(amount: float):
 	ammo = clampf(ammo + amount, 0, max_ammo)
+
+func is_less_gun_weight(gun_weight: int):
+	return max_health - melee.weight - gun_weight > 0
+
+#func add_weight(added: int):
+#	weight += added
+#	health = min(health, max_health - weight - added)
 
 func _on_inv_timer_timeout():
 	invincible = false

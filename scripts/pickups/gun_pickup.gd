@@ -26,8 +26,9 @@ func _on_body_exited(body):
 
 func _input(event):
 	if event.is_action_pressed("use") and can_pick_up:
-		var gun = player.replace_gun(item)
-		var new_pickup = GunPickup.new(gun.weapon_name, gun)
-		new_pickup.global_position = player.global_position
-		get_parent().add_child(new_pickup)
-		queue_free()
+		if player.is_less_gun_weight(item.weight):
+			var gun = player.replace_gun(item)
+			var new_pickup = GunPickup.new(gun.weapon_name, gun)
+			new_pickup.global_position = player.global_position
+			get_parent().add_child(new_pickup)
+			queue_free()

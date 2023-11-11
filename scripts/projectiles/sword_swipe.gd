@@ -7,7 +7,7 @@ func _init():
 	super._init()
 	var collision_shape = CollisionShape2D.new()
 	var rect = RectangleShape2D.new()
-	rect.size = Vector2(64, 64)
+	rect.size = Vector2(80, 64)
 	collision_shape.shape = rect
 	var sprite = AnimatedSprite2D.new()
 	sprite.sprite_frames = preload("res://resources/slash.tres")

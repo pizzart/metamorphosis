@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://b237fa8wat8sd"]
+
+[ext_resource type="Script" path="res://scripts/3d/boss.gd" id="1_xjeio"]
+[ext_resource type="Texture2D" uid="uid://c4naefxdaxf6t" path="res://sprites/bosses/clocklady.png" id="2_rkwnb"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6713a"]
+size = Vector3(1.5, 2, 1.5)
+
+[node name="Boss" type="CharacterBody3D"]
+collision_layer = 2
+script = ExtResource("1_xjeio")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_6713a")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0358221, 0)
+pixel_size = 0.03
+billboard = 2
+texture_filter = 0
+texture = ExtResource("2_rkwnb")

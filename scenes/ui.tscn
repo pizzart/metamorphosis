@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://xijpue6425q1"]
+[gd_scene load_steps=8 format=3 uid="uid://xijpue6425q1"]
 
 [ext_resource type="Texture2D" uid="uid://diuosv8ka8uun" path="res://sprites/ui/bar_over.png" id="1_jgcq4"]
 [ext_resource type="Texture2D" uid="uid://cg2ptfwshkf6l" path="res://sprites/ui/health_progress.png" id="2_ba42w"]
 [ext_resource type="Texture2D" uid="uid://cub1t701b1251" path="res://sprites/ui/weight_progress.png" id="3_e57ry"]
+[ext_resource type="Texture2D" uid="uid://b7qkexmjknn2b" path="res://sprites/ui/buffer_progress.png" id="3_mbx27"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gc6vu"]
 content_margin_bottom = 3.0
@@ -15,6 +16,7 @@ bg_color = Color(0.862745, 0.733333, 0.466667, 1)
 bg_color = Color(0.87451, 0.458824, 0.466667, 1)
 
 [node name="UI" type="CanvasLayer"]
+layer = 2
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -67,6 +69,18 @@ value = 50.0
 texture_over = ExtResource("1_jgcq4")
 texture_progress = ExtResource("2_ba42w")
 
+[node name="Buffer" type="TextureProgressBar" parent="Control/M/V/HealthBar"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+max_value = 15.0
+fill_mode = 1
+texture_progress = ExtResource("3_mbx27")
+
 [node name="WeightBar" type="TextureProgressBar" parent="Control/M/V"]
 layout_mode = 2
 value = 50.0
@@ -80,5 +94,6 @@ texture_over = ExtResource("1_jgcq4")
 texture_progress = ExtResource("3_e57ry")
 
 [node name="Coins" type="Label" parent="Control/M/V"]
+visible = false
 layout_mode = 2
 text = "0"

@@ -1,7 +1,7 @@
 extends Area2D
 
 const DIALOGUE_BOX = preload("res://scenes/dialogue_box.tscn")
-const LINES = preload("res://resources/dialogue_lines/area_1/2.tres")
+const LINES = preload("res://resources/dialogue_lines/area_1/3.tres")
 const CHARACTER_SIZE = 8
 
 var can_start: bool
