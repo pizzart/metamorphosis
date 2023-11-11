@@ -5,6 +5,7 @@ const BOSS = preload("res://scenes/bosses/boss_1.tscn")
 const WINDOW = preload("res://scenes/window.tscn")
 
 var generator: Generator
+var starts_end: bool
 
 @onready var player: Player = $Player
 @onready var tilemap: TileMap = $TileMap
@@ -12,9 +13,9 @@ var generator: Generator
 func _ready():
 	generator = Generator.new(player, tilemap)
 	add_child(generator)
-	generator.generate_map(Generator.ISLAND_SIZE)
-	var exit_placement = generator.place_exit(Generator.GenerationType.Intermission)
-	generator.place_player(exit_placement)
+	if starts_end:
+		generator.current_area = Generator.Area.Abyss
+	generator.generate_map_full(Generator.ISLAND_SIZE)
 #	generator.generate_boss()
 #	$Window.world_2d = get_window().world_2d
 

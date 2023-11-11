@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cb0djbpiq2oxd"
-path="res://.godot/imported/testgroundtile.png-6687fba1067f09dc92c7adbe08fdf301.ctex"
+uid="uid://dwkh87vg1o2cy"
+path="res://.godot/imported/boss3test.png-8d7704ebbc7d25ec664bea7c0415edee.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/testgroundtile.png"
-dest_files=["res://.godot/imported/testgroundtile.png-6687fba1067f09dc92c7adbe08fdf301.ctex"]
+source_file="res://sprites/bosses/boss3test.png"
+dest_files=["res://.godot/imported/boss3test.png-8d7704ebbc7d25ec664bea7c0415edee.ctex"]
 
 [params]
 

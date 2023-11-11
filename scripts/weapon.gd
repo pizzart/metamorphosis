@@ -12,6 +12,7 @@ var offset_position: float = OFFSET
 var offset_rotation: float = 0
 var can_attack: bool = true
 var is_equipped: bool = false
+var direction: Vector2
 
 var timer = Timer.new()
 var sprite = Sprite2D.new()
@@ -38,16 +39,22 @@ func _init(_recharge_speed: float, _weight: int, _knockback: float, _texture: Te
 func _process(delta):
 	if is_equipped:
 		offset_position = lerpf(offset_position, OFFSET, 0.05)
-		position = (get_global_mouse_position() - player.global_position).limit_length(offset_position)
+		var input_dir = Input.get_vector("aim_left", "aim_right", "aim_up", "aim_down")
+		if input_dir:
+			position = input_dir * offset_position
+		else:
+			position = (get_global_mouse_position() - player.global_position).limit_length(offset_position)
 		sprite.position = position.rotated(offset_rotation) - position
-		sprite.rotation = player.global_position.direction_to(get_global_mouse_position()).angle() + offset_rotation
+		sprite.rotation = direction.angle() + offset_rotation
 		sprite.flip_v = sprite.rotation < -PI / 2 or sprite.rotation > PI / 2
 	else:
 		position = Vector2.ZERO
 
 func _input(event):
-	if event.is_action_pressed("attack") and can_attack_fr():
-		attack()
+	if event is InputEventMouseMotion:
+		direction = player.global_position.direction_to(get_global_mouse_position())
+	if event is InputEventJoypadMotion:
+		direction = Input.get_vector("aim_left", "aim_right", "aim_up", "aim_down")
 
 func attack():
 	can_attack = false

@@ -43,7 +43,7 @@ var pickup_pool = [
 	Shotgun,
 ]
 var current_map: int = 2
-var current_area: Area = Area.Sky
+var current_area: Area = Area.City
 
 var player: Player
 var tilemap: TileMap
@@ -52,6 +52,20 @@ var tilemap: TileMap
 func _init(_player, _tilemap):
 	player = _player
 	tilemap = _tilemap
+
+func _ready():
+	match current_area:
+		Area.City:
+			world.get_node("SkyBG").hide()
+			world.get_node("SkyModulate").hide()
+			world.get_node("CityBG").show()
+			world.get_node("CityModulate").show()
+		Area.Abyss:
+			world.get_node("CityBG").hide()
+			world.get_node("CityModulate").hide()
+			world.get_node("AbyssBG").show()
+			world.get_node("AbyssModulate").show()
+			tilemap.material = GLITCH_MAT
 
 func generate_map(size):
 	var island_count = rng.randi_range(1, 4)
@@ -73,13 +87,13 @@ func generate_map(size):
 					j = 0
 				var teleporter = Teleporter.new(new_positions[i], new_positions[j])
 				world.call_deferred("add_child", teleporter)
-#	place_walls(0.97)
+	place_walls(0.98)
 	var enemy_count = 0
 	for i in range(island_count):
 		enemy_count += rng.randi_range(3, 5 + rng.randi_range(0, current_map))
 	place_enemies(enemy_count)
 
-func regenerate_map(size):
+func generate_map_full(size):
 	cleanup()
 	generate_map(size)
 	var exit_placement = place_exit(GenerationType.Intermission)
@@ -181,11 +195,43 @@ func place_enemies(count: int):
 
 func place_walls(chance: float):
 	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, AREA_TILES[current_area][0])
+	var new_cells: Array[Vector2i] = []
 	for cell in cells:
 		if rng.randf() > chance:
-			tilemap.set_cell(1, cell, 2, Vector2i.ZERO)
-#			for i in range(3):
-#				tilemap.set_cell(2, cell - Vector2i(0, i), 3, Vector2i.ZERO)
+#			tilemap.set_cell(1, cell, 2, Vector2i.ZERO)
+			var width = rng.randi_range(3, 5)
+			var height = rng.randi_range(2, 5)
+			for x in range(width):
+				for y in range(height):
+					var layer = 1
+					if y != 0:
+						layer = 2
+					
+					var tile_pos = Vector2i.ZERO
+					if y == 0:
+						tile_pos.y = 2
+					elif y != height - 1:
+						tile_pos.y = 1
+					if x == width - 1:
+						tile_pos.x = 2
+					elif x != 0:
+						tile_pos.x = 1
+					
+					tilemap.set_cell(layer, cell + Vector2i(x, -y), 7, tile_pos)
+				for xx in range(-1, 2):
+					for yy in range(-1, 2):
+						var dir = Vector2i(xx, yy)
+						if not cell + dir in cells:
+							cells.append(cell + dir)
+							new_cells.append(cell + dir)
+	tilemap.set_cells_terrain_connect(0, cells, current_area, 0)
+	for cell in new_cells:
+		for dir in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]:
+			if not cell + dir in tilemap.get_surrounding_cells(cell):
+				var tile = 0
+				if dir == Vector2i.DOWN:
+					tile = AREA_TILES[current_area][1]
+				tilemap.set_cell(0, cell + dir, tile, Vector2i.ZERO)
 
 func place_exit(next_gen_type: GenerationType) -> Vector2i:
 	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, AREA_TILES[current_area][0])
@@ -255,7 +301,7 @@ func _on_exit_entered(_body: Node2D, next_gen_type: GenerationType):
 			var island_size = ISLAND_SIZE
 			if current_area == Area.City:
 				island_size = ISLAND_CITY_SIZE
-			regenerate_map(island_size)
+			generate_map_full(island_size)
 		GenerationType.Intermission:
 			generate_intermission()
 		GenerationType.Boss:

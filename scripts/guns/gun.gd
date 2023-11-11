@@ -19,6 +19,7 @@ func _init(_ammo_cost: float, _reload_speed: float, _knockback: float, _spread: 
 	is_equipped = true
 
 func _input(event):
+	super._input(event)
 	if event.is_action_pressed("attack") and can_attack_fr():
 		if player.ammo >= ammo_cost:
 			attack()
@@ -28,9 +29,9 @@ func attack():
 	player.ammo -= ammo_cost
 
 func send_bullet():
-	var bullet = Bullet.new(player.global_position.direction_to(get_global_mouse_position()).rotated(rng.randfn(0, spread)) * bullet_speed, bullet_acceleration, true)
+	var bullet = Bullet.new(direction.rotated(rng.randfn(0, spread)) * bullet_speed, bullet_acceleration, true)
 	bullet.global_position = global_position
 	player.get_parent().add_child(bullet)
 	
 	offset_position = OFFSET / 4
-	player.knockback(-player.global_position.direction_to(get_global_mouse_position()) * knockback)
+	player.knockback(-direction * knockback)

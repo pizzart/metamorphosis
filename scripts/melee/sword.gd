@@ -26,6 +26,7 @@ func _process(delta):
 		buffered = false
 
 func _input(event):
+	super._input(event)
 	if event.is_action_pressed("attack"):
 		buffered = true
 	if event.is_action_released("attack"):
@@ -48,7 +49,7 @@ func attack():
 	projectile.global_rotation = sprite.global_rotation
 	projectile.body_entered.connect(_on_projectile_hit)
 	add_child(projectile)
-	player.knockback(player.global_position.direction_to(get_global_mouse_position()) * knockback)
+	player.knockback(direction * knockback)
 	
 	offset_position = OFFSET_ATTACK
 	swing_sprite()
@@ -73,5 +74,5 @@ func _on_combo_lost():
 	timer.start(recharge_speed)
 
 func _on_projectile_hit(body):
-	player.knockback(-player.global_position.direction_to(body.global_position) * knockback / 4)
+	player.knockback(-direction * knockback / 4)
 	player.add_ammo(10)
