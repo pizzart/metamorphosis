@@ -2,7 +2,7 @@ class_name Rifle
 extends Gun
 
 const NAME = "RIFLE"
-const TEXTURE = preload("res://sprites/weapon/rifle.png")
+const TEXTURE = preload("res://sprites/weapons/rifle.png")
 
 func _init():
 	super._init(30, 0.5, 100, 0.07, 2, 13, -0.01, TEXTURE, NAME)

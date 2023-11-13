@@ -1,7 +1,7 @@
 class_name Weapon
 extends Node2D
 
-const OFFSET = 20
+const OFFSET = 15
 var recharge_speed: float
 var weight: int
 var knockback: float
@@ -35,6 +35,7 @@ func _init(_recharge_speed: float, _weight: int, _knockback: float, _texture: Te
 	add_child(sprite)
 	
 	z_index = -1
+#	Global.weapon_pool.append(weapon_name)
 
 func _process(delta):
 	if is_equipped:

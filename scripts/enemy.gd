@@ -3,6 +3,7 @@ extends CharacterBody2D
 const BULLET = preload("res://scenes/bullet.tscn")
 const DROP_CHANCE = 0.02
 const STUN_TIME = 0.2
+const MAX_DISTANCE = 300
 var movement_speed: float = 80.0
 var health: int = 3
 var rng = RandomNumberGenerator.new()
@@ -28,6 +29,8 @@ func _physics_process(delta):
 		velocity = lerp(velocity, new_velocity, 0.1)
 
 	move_and_slide()
+	
+	shoot_timer.paused = global_position.distance_to(player.global_position) > MAX_DISTANCE
 
 func actor_setup():
 	await get_tree().physics_frame

@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://crqtpeg1savcq"]
+
+[ext_resource type="Script" path="res://scripts/vending_machine.gd" id="1_acxbu"]
+[ext_resource type="Texture2D" uid="uid://bdhev42bi6rjy" path="res://sprites/props/vending.png" id="1_j03e0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6ioch"]
+size = Vector2(26, 56)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_chaq8"]
+size = Vector2(22, 11)
+
+[node name="VendingMachine" type="Area2D" groups=["prop"]]
+y_sort_enabled = true
+collision_layer = 0
+script = ExtResource("1_acxbu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 6)
+shape = SubResource("RectangleShape2D_6ioch")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_j03e0")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 32
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, 10.5)
+shape = SubResource("RectangleShape2D_chaq8")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

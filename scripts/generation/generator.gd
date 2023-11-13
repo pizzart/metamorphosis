@@ -35,13 +35,9 @@ const NPC = preload("res://scenes/npc.tscn")
 const EXIT = preload("res://scenes/exit.tscn")
 const WINDOW = preload("res://scenes/window.tscn")
 const BOSS = preload("res://scenes/bosses/boss_1.tscn")
+const VENDING = preload("res://scenes/vending_machine.tscn")
 
 var rng = RandomNumberGenerator.new()
-var pickup_pool = [
-	Pistol,
-	Rifle,
-	Shotgun,
-]
 var current_map: int = 2
 var current_area: Area = Area.City
 
@@ -54,18 +50,7 @@ func _init(_player, _tilemap):
 	tilemap = _tilemap
 
 func _ready():
-	match current_area:
-		Area.City:
-			world.get_node("SkyBG").hide()
-			world.get_node("SkyModulate").hide()
-			world.get_node("CityBG").show()
-			world.get_node("CityModulate").show()
-		Area.Abyss:
-			world.get_node("CityBG").hide()
-			world.get_node("CityModulate").hide()
-			world.get_node("AbyssBG").show()
-			world.get_node("AbyssModulate").show()
-			tilemap.material = GLITCH_MAT
+	update_surroundings()
 
 func generate_map(size):
 	var island_count = rng.randi_range(1, 4)
@@ -87,7 +72,8 @@ func generate_map(size):
 					j = 0
 				var teleporter = Teleporter.new(new_positions[i], new_positions[j])
 				world.call_deferred("add_child", teleporter)
-	place_walls(0.98)
+	if current_area == Area.City:
+		place_walls(0.98)
 	var enemy_count = 0
 	for i in range(island_count):
 		enemy_count += rng.randi_range(3, 5 + rng.randi_range(0, current_map))
@@ -115,6 +101,7 @@ func generate_town():
 	var exit_placement = place_exit(GenerationType.Action)
 	place_player(exit_placement)
 	place_npcs()
+	place_vending()
 
 func generate_boss():
 	tilemap.clear()
@@ -251,7 +238,7 @@ func place_pickups():
 	for i in range(3):
 		var placement = cells.pop_at(rng.randi() % cells.size())
 		placement = tilemap.map_to_local(placement)
-		var gun = pickup_pool.pick_random().new()
+		var gun = Global.weapon_pool.pick_random().new()
 		var pickup = GunPickup.new(gun.weapon_name, gun)
 		pickup.global_position = placement
 		world.call_deferred("add_child", pickup)
@@ -270,6 +257,12 @@ func place_npcs():
 		npc.global_position = tilemap.map_to_local(placement)
 		world.call_deferred("add_child", npc)
 
+func place_vending():
+	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, AREA_TILES[current_area][0])
+	var vending = VENDING.instantiate()
+	vending.global_position = tilemap.map_to_local(cells.pick_random())
+	world.call_deferred("add_child", vending)
+
 func cleanup():
 	tilemap.clear()
 	get_tree().call_group("enemy", "queue_free")
@@ -277,6 +270,26 @@ func cleanup():
 	get_tree().call_group("teleporter", "queue_free")
 	get_tree().call_group("exit", "queue_free")
 	get_tree().call_group("projectile", "queue_free")
+	get_tree().call_group("npc", "queue_free")
+	get_tree().call_group("prop", "queue_free")
+
+func update_surroundings():
+	match current_area:
+		Area.City:
+			world.get_node("SkyBG").hide()
+			world.get_node("SkyModulate").hide()
+			world.get_node("CityBG").show()
+			world.get_node("CityModulate").show()
+		Area.Abyss:
+			world.get_node("SkyBG").hide()
+			world.get_node("SkyModulate").hide()
+			world.get_node("CityBG").hide()
+			world.get_node("CityModulate").hide()
+			world.get_node("AbyssBG").show()
+			world.get_node("AbyssModulate").show()
+			
+			world.get_node("AbyssBG/ParallaxLayer/Sprite2D").material = GLITCH_MAT
+			tilemap.material = GLITCH_MAT
 
 func _on_exit_entered(_body: Node2D, next_gen_type: GenerationType):
 	match next_gen_type:
@@ -284,18 +297,7 @@ func _on_exit_entered(_body: Node2D, next_gen_type: GenerationType):
 			if current_map == MAP_COUNT:
 				current_area += 1
 				current_map = 0
-				match current_area:
-					Area.City:
-						world.get_node("SkyBG").hide()
-						world.get_node("SkyModulate").hide()
-						world.get_node("CityBG").show()
-						world.get_node("CityModulate").show()
-					Area.Abyss:
-						world.get_node("CityBG").hide()
-						world.get_node("CityModulate").hide()
-						world.get_node("AbyssBG").show()
-						world.get_node("AbyssModulate").show()
-						tilemap.material = GLITCH_MAT
+				update_surroundings()
 			else:
 				current_map += 1
 			var island_size = ISLAND_SIZE

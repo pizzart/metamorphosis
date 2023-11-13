@@ -6,11 +6,6 @@ float rand(vec2 co) {
     return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
 }
 
-void fragment() {
-//	COLOR.rg = SCREEN_UV.xy;
-//	VERTEX = VERTEX * sin(TIME);
-}
-
 void vertex() {
-	VERTEX = VERTEX + rand(vec2(0.0, sin(TIME) * sin(VERTEX.y))) * vec2(5.0, 0.0);
+	VERTEX.x = VERTEX.x + (rand(vec2(10.0, sin(TIME) * VERTEX.y)) - 0.5) * 5.0;
 }

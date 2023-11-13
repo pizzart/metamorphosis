@@ -2,7 +2,7 @@ class_name Sword
 extends Weapon
 
 const NAME = "SWORD"
-const TEXTURE = preload("res://sprites/weapon/sword.png")
+const TEXTURE = preload("res://sprites/weapons/sword.png")
 const TIMEOUT_BIG = 1
 const TIMEOUT_SMALL = 0.4
 const TIMEOUT_COMBO = 0.6

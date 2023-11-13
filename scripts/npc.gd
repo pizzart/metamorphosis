@@ -20,7 +20,7 @@ func _ready():
 
 func _process(delta):
 	if current_line > -1 and label.visible_ratio < 1:
-		label.visible_ratio = clampf(label.visible_ratio + delta / label.text.length() * 20, 0, 1)
+		label.visible_ratio = clampf(label.visible_ratio + delta / label.text.length() * 25, 0, 1)
 
 func _input(event):
 	if event.is_action_pressed("use") and (can_start or current_line > -1):
@@ -38,11 +38,15 @@ func _input(event):
 		dialogue_box.show()
 		label.text = LINES.lines[current_line].line.to_upper()
 		label.visible_ratio = 0
-		dialogue_box.size = Vector2(CHARACTER_SIZE * 12 + 8, CHARACTER_SIZE * (ceili(float(label.text.length()) / 12) + label.text.count("\n")) + 8)
+		dialogue_box.size = Vector2(CHARACTER_SIZE * 12 + 8, 0)
 
 func _on_body_entered(body):
+	get_tree().call_group("npc", "unfocus")
 	player = body
 	can_start = true
 
 func _on_body_exited(body):
+	can_start = false
+
+func unfocus():
 	can_start = false

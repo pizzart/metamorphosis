@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://j44t5hdt8nmc"]
+[gd_scene load_steps=5 format=3 uid="uid://j44t5hdt8nmc"]
 
 [ext_resource type="Shader" path="res://misc/bloom.gdshader" id="1_1t6hs"]
+[ext_resource type="Shader" path="res://misc/glitchscreen.gdshader" id="2_ab2t0"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8wfhm"]
 shader = ExtResource("1_1t6hs")
@@ -15,10 +16,15 @@ shader_parameter/scanlines_opacity = 0.1
 shader_parameter/scanlines_amount = 100.0
 shader_parameter/scanlines_speed = 0.02
 shader_parameter/scanlines_width = 0.2
-shader_parameter/bloom_threshold = 0.16
+shader_parameter/bloom_threshold = 0.2
 shader_parameter/bloom_strength = 1.0
 shader_parameter/bloom_size = 4.0
 shader_parameter/vignette_opacity = 0.035
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ubojb"]
+shader = ExtResource("2_ab2t0")
+shader_parameter/AMT = 0.1
+shader_parameter/SPEED = 0.6
 
 [node name="FX" type="CanvasLayer"]
 layer = 3
@@ -31,3 +37,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="."]
+copy_mode = 2
+
+[node name="Glitch" type="ColorRect" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_ubojb")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

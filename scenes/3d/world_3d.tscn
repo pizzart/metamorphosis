@@ -104,6 +104,10 @@ monitoring = false
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NextArea"]
 shape = SubResource("BoxShape3D_yhtcf")
 
+[node name="Light" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.31868, -1.01548, -7.53228)
+visible = false
+
 [connection signal="damaged" from="Boss" to="." method="_on_boss_damaged"]
 [connection signal="killed" from="Boss" to="." method="_on_boss_killed"]
 [connection signal="body_entered" from="NextArea" to="." method="_on_next_area_body_entered"]
