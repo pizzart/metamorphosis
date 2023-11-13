@@ -19,7 +19,6 @@ shader_parameter/scanlines_width = 0.2
 shader_parameter/bloom_threshold = 0.2
 shader_parameter/bloom_strength = 1.0
 shader_parameter/bloom_size = 4.0
-shader_parameter/vignette_opacity = 0.035
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ubojb"]
 shader = ExtResource("2_ab2t0")

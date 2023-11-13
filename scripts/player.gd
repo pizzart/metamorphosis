@@ -69,6 +69,10 @@ func _process(delta):
 	UI.get_node("Control/M/V/HealthBar/Buffer").value = buffer_health
 	UI.get_node("Control/M/V/AmmoBar").value = ammo
 	UI.get_node("Control/M/V/AmmoBar").max_value = max_ammo
+	if health < max_health / 3:
+		RenderingServer.global_shader_parameter_set("vignette_opacity", 0.3)
+	else:
+		RenderingServer.global_shader_parameter_set("vignette_opacity", 0.035)
 #	UI.get_node("Control/M/V/Coins").text = str(coins)
 #	if weight > health:
 #		speed_multiplier = 0.5

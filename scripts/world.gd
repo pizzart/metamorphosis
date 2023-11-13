@@ -8,6 +8,9 @@ var generator: Generator
 
 @onready var player: Player = $Player
 @onready var tilemap: TileMap = $TileMap
+@onready var mus = {
+	"boss3": $MusicBoss3
+}
 
 func _ready():
 	generator = Generator.new(player, tilemap)
@@ -48,3 +51,6 @@ func init_boss_1():
 #	enemy_window.add_child(boss)
 	
 #	get_window().mode = Window.MODE_FULLSCREEN
+
+func play_music(key: String):
+	mus[key].play()

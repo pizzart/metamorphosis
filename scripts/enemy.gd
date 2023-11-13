@@ -1,12 +1,16 @@
 extends CharacterBody2D
 
 const BULLET = preload("res://scenes/bullet.tscn")
-const DROP_CHANCE = 0.02
+
+const DROP_CHANCE = 0.5
 const STUN_TIME = 0.2
 const MAX_DISTANCE = 300
+
 var movement_speed: float = 80.0
 var health: int = 3
+
 var rng = RandomNumberGenerator.new()
+
 @onready var navigation_agent: NavigationAgent2D = $NavigationAgent2D
 @onready var player = get_tree().get_first_node_in_group("player")
 @onready var nav_timer = $NavigationTimer

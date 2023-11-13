@@ -15,7 +15,7 @@ uniform float scanlines_width = 0.2;
 uniform float bloom_threshold = 0.15;
 uniform float bloom_strength = 1.5;
 uniform float bloom_size = 4.0;
-uniform float vignette_opacity = 0.7;
+global uniform float vignette_opacity;
 
 vec2 curve(vec2 uv){
 	vec2 delta = uv - 0.5;
