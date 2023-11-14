@@ -2,7 +2,7 @@ class_name Pickup
 extends Area2D
 
 var can_pick_up: bool
-var player: Player
+@onready var player: Player = get_tree().get_first_node_in_group("player")
 
 func _init(shape: Shape2D, texture: Texture2D):
 	var collision_shape = CollisionShape2D.new()
@@ -23,7 +23,6 @@ func _init(shape: Shape2D, texture: Texture2D):
 func _on_body_entered(body):
 	for pickup in get_tree().get_nodes_in_group("pickup"):
 		pickup.emit_signal("body_exited", body)
-	player = body
 	can_pick_up = true
 
 func _on_body_exited(_body):

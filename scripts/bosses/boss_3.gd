@@ -1,13 +1,24 @@
-class_name Boss1
+class_name Boss3
 extends Foe
 
-const SPEED = 50.0
+signal killed
+
+const SPEED = 40.0
 
 func _init():
-	health = 50
+	health = 20
 
 func _physics_process(delta):
 	var direction = global_position.direction_to(player.global_position)
 	velocity = direction * SPEED
 
 	move_and_slide()
+
+func hit(damage: int):
+	health -= damage
+	if health <= 0:
+		die()
+
+func die():
+	killed.emit()
+	queue_free()

@@ -36,7 +36,6 @@ const EXIT = preload("res://scenes/exit.tscn")
 const WINDOW = preload("res://scenes/window.tscn")
 const BOSS = preload("res://scenes/bosses/boss_1.tscn")
 const VENDING = preload("res://scenes/vending_machine.tscn")
-const BOSS3 = preload("res://scenes/bosses/boss_3.tscn")
 
 var rng = RandomNumberGenerator.new()
 var current_map: int = 2
@@ -105,22 +104,18 @@ func generate_town():
 	place_vending()
 
 func generate_boss_1():
-	tilemap.clear()
 	cleanup()
 	tilemap.set_pattern(0, Vector2i.ZERO, tilemap.tile_set.get_pattern(0))
 	var exit_placement = place_exit(GenerationType.Town)
 	place_player(exit_placement)
 	world.init_boss_1()
 
-func generate_boss_3():
-	tilemap.clear()
+func generate_boss3():
 	cleanup()
 	tilemap.set_pattern(0, Vector2i.ZERO, tilemap.tile_set.get_pattern(1))
 	var exit_placement = place_exit(GenerationType.Intermission)
 	place_player(exit_placement)
-	var boss = BOSS3.instantiate()
-	world.add_child(boss)
-	world.play_music("boss3")
+	world.init_boss3()
 
 func place_player(exit_placement: Vector2):
 	var placement = Vector2i.ZERO
@@ -324,6 +319,6 @@ func _on_exit_entered(_body: Node2D, next_gen_type: GenerationType):
 				Area.City:
 					get_tree().change_scene_to_file("res://scenes/3d/world_3d.tscn")
 				Area.Abyss:
-					generate_boss_3()
+					generate_boss3()
 		GenerationType.Town:
 			generate_town()

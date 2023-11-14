@@ -54,7 +54,7 @@ func set_by_enemy():
 
 func _on_body_entered(body):
 	# reads mask layer 2: enemy
-	if type == BulletType.PLAYER and body.is_in_group("enemy"):
+	if type == BulletType.PLAYER and (body.is_in_group("enemy") or body.is_in_group("enemy")):
 		body.hit(damage)
 	if type == BulletType.ENEMY and body.is_in_group("player"):
 		body.hit(damage)

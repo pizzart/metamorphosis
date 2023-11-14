@@ -1,7 +1,8 @@
 class_name World
 extends Node2D
 
-const BOSS = preload("res://scenes/bosses/boss_1.tscn")
+const BOSS1 = preload("res://scenes/bosses/boss_1.tscn")
+const BOSS3 = preload("res://scenes/bosses/boss_3.tscn")
 const WINDOW = preload("res://scenes/window.tscn")
 
 var generator: Generator
@@ -51,6 +52,11 @@ func init_boss_1():
 #	enemy_window.add_child(boss)
 	
 #	get_window().mode = Window.MODE_FULLSCREEN
+
+func init_boss3():
+	var boss = BOSS3.instantiate()
+	call_deferred("add_child", boss)
+	play_music("boss3")
 
 func play_music(key: String):
 	mus[key].play()

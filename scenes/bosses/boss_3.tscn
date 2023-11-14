@@ -1,12 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://dgietfgmu3hjj"]
+[gd_scene load_steps=4 format=3 uid="uid://dgietfgmu3hjj"]
 
+[ext_resource type="Script" path="res://scripts/bosses/boss_3.gd" id="1_g6hhy"]
 [ext_resource type="Texture2D" uid="uid://dwkh87vg1o2cy" path="res://sprites/bosses/boss3test.png" id="1_rxfbw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3wssf"]
 size = Vector2(32, 32)
 
-[node name="Boss3" type="CharacterBody2D"]
+[node name="Boss3" type="CharacterBody2D" groups=["boss"]]
+collision_layer = 2
+collision_mask = 3
 motion_mode = 1
+script = ExtResource("1_g6hhy")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_3wssf")
