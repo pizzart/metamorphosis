@@ -1,0 +1,23 @@
+[gd_resource type="Resource" load_steps=6 format=3 uid="uid://btt7a1dpauluh"]
+
+[ext_resource type="Script" path="res://resources/dialogue_line.gd" id="1_0a1ru"]
+[ext_resource type="Script" path="res://resources/dialogue.gd" id="2_moa1y"]
+
+[sub_resource type="Resource" id="Resource_ft06s"]
+script = ExtResource("1_0a1ru")
+line = "you will meet a very familiar figure at the end of your journey"
+speaker = 1
+
+[sub_resource type="Resource" id="Resource_iw6oq"]
+script = ExtResource("1_0a1ru")
+line = "who is it"
+speaker = 0
+
+[sub_resource type="Resource" id="Resource_1vrha"]
+script = ExtResource("1_0a1ru")
+line = "i cannot tell you yet"
+speaker = 0
+
+[resource]
+script = ExtResource("2_moa1y")
+lines = Array[ExtResource("1_0a1ru")]([SubResource("Resource_ft06s"), SubResource("Resource_iw6oq"), SubResource("Resource_1vrha")])

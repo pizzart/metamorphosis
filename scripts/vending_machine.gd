@@ -1,17 +1,29 @@
-extends Area2D
+extends Interactable
 
-var player: Player
-var can_buy: bool
-var cost: int
+var cost: int = 1
+var time: float
 
 func _input(event):
-	if event.is_action_pressed("use") and can_buy:
+	if event.is_action_pressed("use") and can_interact:
 		if player.coins >= cost:
-			player.coins -= cost
+			player.spend_coins(cost)
+			
+			var weapon = Global.weapon_pool.pick_random().new()
+			var new_pickup = WeaponPickup.new(weapon.weapon_name, weapon)
+			new_pickup.global_position = player.global_position + global_position.direction_to(player.global_position) * 20
+			get_parent().add_child(new_pickup)
+			
+			player.hide_coins()
+			can_interact = false
 
 func _on_body_entered(body):
-	player = body
-	can_buy = true
+	super._on_body_entered(body)
+	player.show_coins(cost)
 
 func _on_body_exited(_body):
-	can_buy = false
+	super._on_body_exited(_body)
+	player.hide_coins()
+
+func unfocus():
+	super.unfocus()
+	player.hide_coins()

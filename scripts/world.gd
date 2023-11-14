@@ -10,15 +10,18 @@ var generator: Generator
 @onready var player: Player = $Player
 @onready var tilemap: TileMap = $TileMap
 @onready var mus = {
-	"boss3": $MusicBoss3
+	"boss3": $MusicBoss3,
+	"abyss_calm": $MusicAbyssCalm,
+	"abyss_intense": $MusicAbyssIntense,
 }
 
 func _ready():
 	generator = Generator.new(player, tilemap)
-	if Global.after_3d:
+	if Global.current_area == Generator.Area.Abyss:
 		generator.current_area = Generator.Area.Abyss
 	add_child(generator)
-	generator.generate_map_full(Generator.ISLAND_SIZE)
+#	generator.generate_map_full(Generator.ISLAND_SIZE)
+	generator.generate_town()
 #	generator.generate_boss()
 #	$Window.world_2d = get_window().world_2d
 
@@ -60,3 +63,11 @@ func init_boss3():
 
 func play_music(key: String):
 	mus[key].play()
+
+func transition_music(key1: String, key2: String):
+	var tween = create_tween().set_parallel()
+	tween.tween_property(mus[key1], "volume_db", -80, 5.0).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
+	tween.tween_property(mus[key2], "volume_db", 0, 5.0).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+	mus[key2].volume_db = -80
+	mus[key2].play()
+	mus[key2].seek(mus[key1].get_playback_position())

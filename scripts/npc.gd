@@ -1,12 +1,10 @@
-extends Area2D
+extends Interactable
 
 const DIALOGUE_BOX = preload("res://scenes/dialogue_box.tscn")
-const LINES = preload("res://resources/dialogue_lines/area_1/3.tres")
+#const LINES = preload("res://resources/dialogue_lines/area_1/3.tres")
 const CHARACTER_SIZE = 8
 
-var can_start: bool
-var player: Player
-
+var lines: DialogueLines
 var current_line: int = -1
 var visible_ratio: float
 
@@ -23,9 +21,9 @@ func _process(delta):
 		label.visible_ratio = clampf(label.visible_ratio + delta / label.text.length() * 25, 0, 1)
 
 func _input(event):
-	if event.is_action_pressed("use") and (can_start or current_line > -1):
+	if event.is_action_pressed("use") and (can_interact or current_line > -1):
 		current_line += 1
-		if current_line >= LINES.lines.size():
+		if current_line >= lines.lines.size():
 			dialogue_box.hide()
 			current_line = -1
 			player.can_move = true
@@ -36,17 +34,6 @@ func _input(event):
 		player.can_move = false
 		
 		dialogue_box.show()
-		label.text = LINES.lines[current_line].line.to_upper()
+		label.text = lines.lines[current_line].line.to_upper()
 		label.visible_ratio = 0
 		dialogue_box.size = Vector2(CHARACTER_SIZE * 12 + 8, 0)
-
-func _on_body_entered(body):
-	get_tree().call_group("npc", "unfocus")
-	player = body
-	can_start = true
-
-func _on_body_exited(body):
-	can_start = false
-
-func unfocus():
-	can_start = false

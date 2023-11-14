@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bdhev42bi6rjy" path="res://sprites/props/vending.png" id="1_j03e0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6ioch"]
-size = Vector2(26, 56)
+size = Vector2(36, 70)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_chaq8"]
 size = Vector2(22, 11)
@@ -28,6 +28,3 @@ collision_mask = 7
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(0, 10.5)
 shape = SubResource("RectangleShape2D_chaq8")
-
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
-[connection signal="body_exited" from="." to="." method="_on_body_exited"]

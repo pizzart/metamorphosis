@@ -6,7 +6,7 @@ var health: int
 var rng = RandomNumberGenerator.new()
 @onready var player = get_tree().get_first_node_in_group("player")
 
-func hit(damage: int):
+func hit(damage: int, force: Vector2):
 	pass
 
 func die():

@@ -20,11 +20,17 @@ const AREA_TILES = {
 	2: [5, 6],
 }
 
+const AREA_NAMES = {
+	Area.Sky: "sky",
+	Area.City: "city",
+	Area.Abyss: "abyss",
+}
+
 const ISLAND_SIZE = 9
-const ISLAND_CITY_SIZE = 15
+const ISLAND_CITY_SIZE = 20
 const ISLAND_SPREAD = 15
 const INTERMISSION_SIZE = 5
-const TOWN_SIZE = 13
+const TOWN_SIZE = 15
 const MAP_COUNT = 2
 const MIN_TELEPORTER_DISTANCE = 50
 
@@ -39,7 +45,7 @@ const VENDING = preload("res://scenes/vending_machine.tscn")
 
 var rng = RandomNumberGenerator.new()
 var current_map: int = 2
-var current_area: Area = Area.Abyss
+var current_area: Area = Area.Sky
 
 var player: Player
 var tilemap: TileMap
@@ -50,7 +56,9 @@ func _init(_player, _tilemap):
 	tilemap = _tilemap
 
 func _ready():
+	Global.current_area = current_area
 	update_surroundings()
+#	world.play_music("abyss_intense")
 
 func generate_map(size):
 	var island_count = rng.randi_range(1, 4)
@@ -245,12 +253,13 @@ func place_pickups():
 		var placement = cells.pop_at(rng.randi() % cells.size())
 		placement = tilemap.map_to_local(placement)
 		var gun = Global.weapon_pool.pick_random().new()
-		var pickup = GunPickup.new(gun.weapon_name, gun)
+		var pickup = WeaponPickup.new(gun.weapon_name, gun)
 		pickup.global_position = placement
 		world.call_deferred("add_child", pickup)
 
 func place_npcs():
 	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, AREA_TILES[current_area][0])
+	var dialogues: Array = Global.DIALOGUES.get(current_area).duplicate()
 	var placements = []
 	for i in range(3):
 		if not cells.is_empty():
@@ -261,6 +270,7 @@ func place_npcs():
 	for placement in placements:
 		var npc = NPC.instantiate()
 		npc.global_position = tilemap.map_to_local(placement)
+		npc.lines = dialogues.pop_at(rng.randi() % dialogues.size())
 		world.call_deferred("add_child", npc)
 
 func place_vending():
@@ -302,16 +312,19 @@ func _on_exit_entered(_body: Node2D, next_gen_type: GenerationType):
 		GenerationType.Action:
 			if current_map == MAP_COUNT:
 				current_area += 1
+				Global.current_area = current_area
 				current_map = 0
 				update_surroundings()
 			else:
 				current_map += 1
+#				world.transition_music("abyss_calm", "abyss_intense")
 			var island_size = ISLAND_SIZE
 			if current_area == Area.City:
 				island_size = ISLAND_CITY_SIZE
 			generate_map_full(island_size)
 		GenerationType.Intermission:
 			generate_intermission()
+#			world.transition_music("abyss_intense", "abyss_calm")
 		GenerationType.Boss:
 			match current_area:
 				Area.Sky:

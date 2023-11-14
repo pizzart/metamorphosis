@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dnrvqqrn1kt3u"
-path="res://.godot/imported/panel.png-94ec3c9f0aeabb877c45546a89d87ac7.ctex"
+uid="uid://cju6qf6nijxw3"
+path="res://.godot/imported/shadow.png-0049ca2c90082486e7f945f45e0bfdde.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/ui/panel.png"
-dest_files=["res://.godot/imported/panel.png-94ec3c9f0aeabb877c45546a89d87ac7.ctex"]
+source_file="res://sprites/shadow.png"
+dest_files=["res://.godot/imported/shadow.png-0049ca2c90082486e7f945f45e0bfdde.ctex"]
 
 [params]
 
@@ -31,4 +31,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

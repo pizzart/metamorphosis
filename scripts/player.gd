@@ -18,16 +18,27 @@ var weight: int = 0
 var max_ammo: float = INIT_AMMO
 var ammo: float = max_ammo
 var coins: int = 0
+
 var rng = RandomNumberGenerator.new()
 
 @onready var cam: Camera2D = $Camera
 @onready var gun: Gun = $Gun
-@onready var melee: Weapon = $Melee
+@onready var melee: Melee = $Melee
+@onready var shadow = $Shadow
 
 func _ready():
 	weight = gun.weight + melee.weight
 	buffer_health = weight
 	health = max_health - weight
+	RenderingServer.global_shader_parameter_set("vignette_opacity", 0.035)
+	
+	remove_child(shadow)
+	get_parent().get_node("TileMap").add_child(shadow)
+	
+	add_coin()
+	add_coin()
+	add_coin()
+	add_coin()
 
 func _physics_process(delta):
 	if not can_move:
@@ -54,25 +65,22 @@ func _physics_process(delta):
 	if direction.y < 0 and abs(direction.x) >= 0.25:
 		$Sprite.animation = "diagonal_back"
 	
+	shadow.global_position = global_position + Vector2(0, 4)
+	
 #	if direction:
 #		$PointLight2D.position = direction * 16
 #		$PointLight2D.rotation = direction.angle() - PI / 2
 	
 func _process(delta):
-	var offset = get_global_mouse_position() - global_position
-	cam.offset = offset / 4
-	UI.get_node("Control/M/V/WeightBar").value = weight
+	UI.get_node("Control/M/V/WeightBar").value = lerp(UI.get_node("Control/M/V/WeightBar").value, float(weight), delta * 10)
 	UI.get_node("Control/M/V/WeightBar").max_value = max_health
-	UI.get_node("Control/M/V/HealthBar").value = health
+	UI.get_node("Control/M/V/HealthBar").value = lerp(UI.get_node("Control/M/V/HealthBar").value, float(health), delta * 10)
 	UI.get_node("Control/M/V/HealthBar").max_value = max_health
-	UI.get_node("Control/M/V/HealthBar/Buffer").max_value = max_health
 	UI.get_node("Control/M/V/HealthBar/Buffer").value = buffer_health
+	UI.get_node("Control/M/V/HealthBar/Buffer").max_value = max_health
 	UI.get_node("Control/M/V/AmmoBar").value = ammo
 	UI.get_node("Control/M/V/AmmoBar").max_value = max_ammo
-	if health < max_health / 3:
-		RenderingServer.global_shader_parameter_set("vignette_opacity", 0.3)
-	else:
-		RenderingServer.global_shader_parameter_set("vignette_opacity", 0.035)
+	$UIBox.global_position = lerp($UIBox.global_position, to_global(Vector2(12, -54)), delta * 10)
 #	UI.get_node("Control/M/V/Coins").text = str(coins)
 #	if weight > health:
 #		speed_multiplier = 0.5
@@ -92,40 +100,123 @@ func knockback(value: Vector2):
 func hit(damage: int):
 	if invincible:
 		return
+	
+	var health_prev = health
+	
 	health -= damage
 	if health <= 0:
 		get_tree().reload_current_scene()
+	
 	invincible = true
 	$InvTimer.start()
+	
+	Global.freeze_frame()
+	
+	if health < max_health / 3 and health_prev >= max_health / 3:
+		var tween = create_tween()
+		tween.tween_method(Global.set_shader_param.bind("vignette_opacity"), 0.035, 0.5, 1.0)
+#	else:
+#		RenderingServer.global_shader_parameter_set("vignette_opacity", 0.035)
 
-func replace_gun(new_gun: Gun):
-	if new_gun.weight > gun.weight:
+func replace_weapon(new_weapon: Weapon):
+	var new_weight = new_weapon.weight
+	
+	var old_weight
+	if new_weapon is Gun:
+		old_weight = gun.weight
+	else:
+		old_weight = melee.weight
+		
+	if new_weight > old_weight:
 		var free = max_health - health
-		var buffer = free - new_gun.weight
-		if buffer < 0:
-			buffer_health = abs(buffer)
-			health -= buffer_health
-	elif new_gun.weight < gun.weight:
-		var released = gun.weight - new_gun.weight
+		var added = new_weight - old_weight
+		if free < added + buffer_health:
+			if health - added > 0:
+				health -= added
+				buffer_health += added
+			else:
+				return new_weapon
+	elif new_weight < old_weight:
+		var released = old_weight - new_weight
 		var new_buffer = max(buffer_health - released, 0)
 		health += buffer_health - new_buffer
 		buffer_health = new_buffer
-	weight = new_gun.weight + melee.weight
-	var old_gun = gun
-	remove_child(old_gun)
-	gun = new_gun
-	gun.is_equipped = old_gun.is_equipped
-	add_child(gun)
-	return old_gun
+	
+	weight = weight - old_weight + new_weight
+	
+	var old_weapon
+	if new_weapon is Gun:
+		old_weapon = gun
+	else:
+		old_weapon = melee
+	
+	remove_child(old_weapon)
+	new_weapon.is_equipped = old_weapon.is_equipped
+	if new_weapon is Gun:
+		gun = new_weapon
+	else:
+		melee = new_weapon
+	add_child(new_weapon)
+	
+	return old_weapon
 
 func add_coin():
+	if coins != 0:
+		var texture = $UIBox/Grid/T.duplicate(8)
+		$UIBox/Grid.add_child(texture)
+	else:
+		$UIBox/Grid/T.show()
 	coins += 1
+
+func spend_coins(amount: int):
+	coins = max(coins - amount, 0)
+	for i in range($UIBox/Grid.get_child_count() - 1, coins - 1, -1):
+		var c = $UIBox/Grid.get_child(i)
+		if not c.get_meta("unavailable", false):
+			if c.name != "T":
+				c.queue_free()
 
 func add_ammo(amount: float):
 	ammo = clampf(ammo + amount, 0, max_ammo)
 
 func is_less_gun_weight(gun_weight: int):
 	return max_health - melee.weight - gun_weight > 0
+
+func is_less_melee_weight(melee_weight: int):
+	return max_health - gun.weight - melee_weight > 0
+
+func show_coins(amount: int):
+	$UIBox.show()
+	for c in $UIBox/Grid.get_children():
+		c.hide()
+	for i in range(amount):
+		if i >= $UIBox/Grid.get_child_count():
+			var texture = $UIBox/Grid/T.duplicate(8)
+			texture.modulate = Color.PALE_VIOLET_RED
+			texture.set_meta("unavailable", true)
+			$UIBox/Grid.add_child(texture)
+		elif i < amount:
+			if not (amount == 1 and coins == 0):
+				$UIBox/Grid.get_child(i).modulate = Color(2, 2, 2)
+			else:
+				$UIBox/Grid.get_child(i).modulate = Color.PALE_VIOLET_RED
+		
+	for c in $UIBox/Grid.get_children():
+		if is_instance_valid(c):
+			c.show()
+			await get_tree().create_timer(0.05).timeout
+#		$UIBox/Grid.get_child(i).hide()
+
+func hide_coins():
+	for c in $UIBox/Grid.get_children():
+		if c.get_meta("unavailable", false):
+			c.queue_free()
+	await get_tree().create_timer(0.1).timeout
+	for c in $UIBox/Grid.get_children():
+		c.modulate = Color.WHITE
+		c.hide()
+		await get_tree().create_timer(0.05).timeout
+	$UIBox.hide()
 
 #func add_weight(added: int):
 #	weight += added

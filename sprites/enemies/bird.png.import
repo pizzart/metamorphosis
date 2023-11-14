@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dnrvqqrn1kt3u"
-path="res://.godot/imported/panel.png-94ec3c9f0aeabb877c45546a89d87ac7.ctex"
+uid="uid://brcor71i8mlyn"
+path="res://.godot/imported/bird.png-747f60158c5bd75dba502e5286f172ce.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/ui/panel.png"
-dest_files=["res://.godot/imported/panel.png-94ec3c9f0aeabb877c45546a89d87ac7.ctex"]
+source_file="res://sprites/enemies/bird.png"
+dest_files=["res://.godot/imported/bird.png-747f60158c5bd75dba502e5286f172ce.ctex"]
 
 [params]
 

@@ -14,7 +14,7 @@ func _physics_process(delta):
 
 	move_and_slide()
 
-func hit(damage: int):
+func hit(damage: int, force: Vector2):
 	health -= damage
 	if health <= 0:
 		die()

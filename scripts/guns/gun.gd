@@ -19,13 +19,13 @@ func _init(_ammo_cost: float, _reload_speed: float, _knockback: float, _spread: 
 	is_equipped = true
 
 func _input(event):
-	super._input(event)
 	if event.is_action_pressed("attack") and can_attack_fr():
 		if player.ammo >= ammo_cost:
 			attack()
 
 func attack():
 	super.attack()
+	player.cam.add_trauma(0.3)
 	player.ammo -= ammo_cost
 
 func send_bullet():

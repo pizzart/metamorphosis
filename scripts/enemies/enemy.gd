@@ -28,13 +28,17 @@ func _physics_process(delta):
 	if not navigation_agent.is_navigation_finished():
 		var next_path_position: Vector2 = navigation_agent.get_next_path_position()
 		new_velocity = (next_path_position - global_position).normalized() * movement_speed
-		velocity = lerp(velocity, new_velocity, 0.1)
-	else:
-		velocity = lerp(velocity, new_velocity, 0.1)
+	velocity = lerp(velocity, new_velocity, 0.1)
 
 	move_and_slide()
 	
 	shoot_timer.paused = global_position.distance_to(player.global_position) > MAX_DISTANCE
+	$AnimatedSprite2D.speed_scale = velocity.length() / movement_speed
+	
+	if velocity.x > 0:
+		$AnimatedSprite2D.flip_h = false
+	if velocity.x < 0:
+		$AnimatedSprite2D.flip_h = true
 
 func actor_setup():
 	await get_tree().physics_frame
@@ -51,10 +55,13 @@ func _on_navigation_timer_timeout():
 func get_close_position():
 	return global_position + Vector2(rng.randf_range(-30, 30), rng.randf_range(-30, 30))
 
-func hit(damage: int):
+func hit(damage: int, force: Vector2):
 	health -= damage
 	if health <= 0:
 		die()
+	
+	velocity += force
+	
 	shoot_timer.paused = true
 	await get_tree().create_timer(STUN_TIME).timeout
 	shoot_timer.paused = false

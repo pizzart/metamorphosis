@@ -55,7 +55,9 @@ func set_by_enemy():
 func _on_body_entered(body):
 	# reads mask layer 2: enemy
 	if type == BulletType.PLAYER and (body.is_in_group("enemy") or body.is_in_group("enemy")):
-		body.hit(damage)
+		body.hit(damage, velocity.normalized() * 70)
 	if type == BulletType.ENEMY and body.is_in_group("player"):
 		body.hit(damage)
-	queue_free()
+	await get_tree().physics_frame
+	if has_overlapping_bodies():
+		queue_free()

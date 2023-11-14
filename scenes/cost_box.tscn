@@ -1,28 +1,30 @@
 [gd_scene load_steps=4 format=3 uid="uid://dyyfpg3oe0gjc"]
 
-[ext_resource type="Texture2D" uid="uid://617in2erupxx" path="res://sprites/panel.png" id="1_qmv71"]
-[ext_resource type="Texture2D" uid="uid://bdl5rl3qs6cdk" path="res://sprites/weight.png" id="2_nmhhr"]
+[ext_resource type="Texture2D" uid="uid://dnrvqqrn1kt3u" path="res://sprites/ui/panel.png" id="1_c6n5i"]
+[ext_resource type="Texture2D" uid="uid://c723pij4wlsxl" path="res://sprites/currency.png" id="2_nvl3j"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1835m"]
-texture = ExtResource("1_qmv71")
-texture_margin_left = 4.0
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fkivy"]
+texture = ExtResource("1_c6n5i")
+texture_margin_left = 3.0
 texture_margin_top = 4.0
-texture_margin_right = 4.0
+texture_margin_right = 3.0
 texture_margin_bottom = 4.0
 axis_stretch_vertical = 1
+modulate_color = Color(1, 1, 1, 0.662745)
 
 [node name="UIBox" type="PanelContainer"]
 self_modulate = Color(1, 1, 1, 0.662745)
 z_index = 4
 anchors_preset = -1
-anchor_right = 0.484375
-anchor_bottom = 0.208333
-theme_override_styles/panel = SubResource("StyleBoxTexture_1835m")
+anchor_right = 0.05625
+anchor_bottom = 0.0833333
+theme_override_styles/panel = SubResource("StyleBoxTexture_fkivy")
 metadata/_edit_use_anchors_ = true
 
-[node name="GridContainer" type="GridContainer" parent="."]
+[node name="Grid" type="GridContainer" parent="."]
 layout_mode = 2
+columns = 4
 
-[node name="TextureRect" type="TextureRect" parent="GridContainer"]
+[node name="T" type="TextureRect" parent="Grid"]
 layout_mode = 2
-texture = ExtResource("2_nmhhr")
+texture = ExtResource("2_nvl3j")

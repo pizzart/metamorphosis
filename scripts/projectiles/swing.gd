@@ -1,9 +1,9 @@
-class_name SwordSwipe
+class_name Swing
 extends Projectile
 
 var timer = Timer.new()
 
-func _init():
+func _init(_damage: int):
 	super._init()
 	var collision_shape = CollisionShape2D.new()
 	var rect = RectangleShape2D.new()
@@ -25,15 +25,15 @@ func _init():
 	set_collision_mask_value(2, true) # enemy
 	set_collision_mask_value(5, true) # wall
 	
-	damage = 1
-	
 	timer.timeout.connect(_on_timeout)
 	body_entered.connect(_on_body_entered)
+	
+	damage = _damage
 
 func _on_body_entered(body):
 	# reads mask layer 2: enemy
 	if body.is_in_group("enemy"):
-		body.hit(damage)
+		body.hit(damage, get_parent().direction * 30)
 		set_deferred("monitoring", false)
 
 func _on_timeout():

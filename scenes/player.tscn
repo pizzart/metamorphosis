@@ -1,11 +1,14 @@
-[gd_scene load_steps=8 format=3 uid="uid://dph8pd3qblx44"]
+[gd_scene load_steps=11 format=3 uid="uid://dph8pd3qblx44"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_bsqet"]
 [ext_resource type="SpriteFrames" uid="uid://decjog7dp6jgi" path="res://resources/player.tres" id="2_p00mm"]
 [ext_resource type="Texture2D" uid="uid://npc0poxhwae6" path="res://sprites/hats/top_hat.png" id="3_46xsb"]
 [ext_resource type="Texture2D" uid="uid://qnrmj3whsmx0" path="res://sprites/light.png" id="4_7jsic"]
+[ext_resource type="Texture2D" uid="uid://cju6qf6nijxw3" path="res://sprites/shadow.png" id="4_8nt6r"]
+[ext_resource type="Script" path="res://scripts/camera.gd" id="4_wndim"]
 [ext_resource type="Script" path="res://scripts/guns/shotgun.gd" id="5_gs5rs"]
 [ext_resource type="Script" path="res://scripts/melee/sword.gd" id="6_n5gtl"]
+[ext_resource type="PackedScene" uid="uid://dyyfpg3oe0gjc" path="res://scenes/cost_box.tscn" id="7_48x62"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_onp71"]
 size = Vector2(20, 6)
@@ -34,6 +37,12 @@ visible = false
 position = Vector2(0, -4)
 texture = ExtResource("3_46xsb")
 
+[node name="Shadow" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.513726)
+z_index = -1
+position = Vector2(0, 4)
+texture = ExtResource("4_8nt6r")
+
 [node name="Camera" type="Camera2D" parent="."]
 process_callback = 0
 position_smoothing_speed = 25.0
@@ -44,6 +53,7 @@ drag_top_margin = 0.1
 drag_right_margin = 0.1
 drag_bottom_margin = 0.1
 editor_draw_drag_margin = true
+script = ExtResource("4_wndim")
 
 [node name="InvTimer" type="Timer" parent="."]
 wait_time = 0.1
@@ -61,5 +71,14 @@ script = ExtResource("5_gs5rs")
 
 [node name="Melee" type="Node2D" parent="."]
 script = ExtResource("6_n5gtl")
+
+[node name="UIBox" parent="." instance=ExtResource("7_48x62")]
+top_level = true
+anchor_left = 0.05
+anchor_top = -0.2
+anchor_right = 0.1125
+anchor_bottom = -0.116667
+grow_horizontal = 2
+grow_vertical = 2
 
 [connection signal="timeout" from="InvTimer" to="." method="_on_inv_timer_timeout"]

@@ -42,20 +42,16 @@ func _process(delta):
 		offset_position = lerpf(offset_position, OFFSET, 0.05)
 		var input_dir = Input.get_vector("aim_left", "aim_right", "aim_up", "aim_down")
 		if input_dir:
-			position = input_dir * offset_position
+			direction = input_dir
+			position = direction * offset_position
 		else:
+			direction = player.global_position.direction_to(get_global_mouse_position())
 			position = (get_global_mouse_position() - player.global_position).limit_length(offset_position)
 		sprite.position = position.rotated(offset_rotation) - position
 		sprite.rotation = direction.angle() + offset_rotation
 		sprite.flip_v = sprite.rotation < -PI / 2 or sprite.rotation > PI / 2
 	else:
 		position = Vector2.ZERO
-
-func _input(event):
-	if event is InputEventMouseMotion:
-		direction = player.global_position.direction_to(get_global_mouse_position())
-	if event is InputEventJoypadMotion:
-		direction = Input.get_vector("aim_left", "aim_right", "aim_up", "aim_down")
 
 func attack():
 	can_attack = false

@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://64kdpv3e4j6m"]
+[gd_scene load_steps=22 format=3 uid="uid://64kdpv3e4j6m"]
 
 [ext_resource type="Script" path="res://scripts/world.gd" id="1_eoi30"]
 [ext_resource type="PackedScene" uid="uid://dph8pd3qblx44" path="res://scenes/player.tscn" id="1_wk3e0"]
@@ -16,6 +16,8 @@
 [ext_resource type="Texture2D" uid="uid://c2vbm3ognyrw4" path="res://sprites/bgs/3/bg3_2.png" id="10_gyw7h"]
 [ext_resource type="Texture2D" uid="uid://bwnvd63cs8345" path="res://sprites/bgs/2/bg2_0.png" id="11_6w7jm"]
 [ext_resource type="AudioStream" uid="uid://bvq8brjhyvtgh" path="res://audio/mus/boss3.ogg" id="16_u4s3l"]
+[ext_resource type="AudioStream" uid="uid://chby56s7kkdnf" path="res://audio/mus/mystique_calm.ogg" id="17_4b642"]
+[ext_resource type="AudioStream" uid="uid://dxjxmgo3vvmu0" path="res://audio/mus/mystique_intense.ogg" id="18_jg8vn"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_k3f30"]
 noise_type = 5
@@ -40,6 +42,7 @@ script = ExtResource("1_eoi30")
 [node name="Player" parent="." instance=ExtResource("1_wk3e0")]
 
 [node name="TileMap" type="TileMap" parent="."]
+clip_children = 2
 visibility_layer = 4
 z_index = -1
 y_sort_enabled = true
@@ -215,3 +218,12 @@ color = Color(0.227451, 0.258824, 0.298039, 1)
 
 [node name="MusicBoss3" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("16_u4s3l")
+bus = &"mus"
+
+[node name="MusicAbyssCalm" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("17_4b642")
+bus = &"mus"
+
+[node name="MusicAbyssIntense" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("18_jg8vn")
+bus = &"mus"
