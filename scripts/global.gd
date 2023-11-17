@@ -1,5 +1,22 @@
 extends Node
 
+enum Items {
+	Wings,
+	Watch,
+}
+
+enum Hat {
+	None,
+	Top,
+	Niko,
+}
+
+const HATS = {
+	Hat.None: ["none", null],
+	Hat.Top: ["top hat", preload("res://sprites/hats/top_hat.png")],
+	Hat.Niko: ["niko", preload("res://sprites/hats/niko_hat.png")],
+}
+
 const DIALOGUES = {
 	0: [
 		preload("res://resources/dialogue_lines/area_1/1.tres"),
@@ -14,7 +31,10 @@ const DIALOGUES = {
 }
 
 var coins: int
-var current_area: Generator.Area = Generator.Area.City
+var current_area: Generator.Area = Generator.Area.Sky
+var equipped_hat: int
+var unlocked_items: Array = []
+
 var weapon_pool = {
 	"gun": [
 		Pistol,

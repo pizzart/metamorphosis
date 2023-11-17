@@ -2,4 +2,4 @@ class_name Upgrade
 extends Node
 
 var weight: int
-@onready var player = get_parent()
+@onready var player: Player = get_parent()

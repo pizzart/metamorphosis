@@ -13,9 +13,18 @@ var generator: Generator
 	"boss3": $MusicBoss3,
 	"abyss_calm": $MusicAbyssCalm,
 	"abyss_intense": $MusicAbyssIntense,
+	"city_calm": $MusicCityCalm,
+	"city_intense": $MusicCityIntense,
+	"sky_calm": $MusicCityCalm,
+	"sky_intense": $MusicCityIntense,
 }
 
 func _ready():
+	if Global.equipped_hat != 0:
+		player.hat.show()
+		player.hat.texture = Global.HATS[Global.equipped_hat][1]
+	
+	play_music("%s_intense" % Generator.AREA_NAMES[Global.current_area])
 	generator = Generator.new(player, tilemap)
 	if Global.current_area == Generator.Area.City:
 		generator.current_area = Generator.Area.City
@@ -24,8 +33,8 @@ func _ready():
 #		generator.generate_map_full(Generator.ISLAND_SIZE)
 		generator.generate_town()
 	else:
-#		generator.generate_town()
-		generator.generate_map_full(Generator.ISLAND_SIZE)
+		generator.generate_town()
+#		generator.generate_map_full(Generator.ISLAND_SIZE)
 #	generator.generate_boss()
 #	$Window.world_2d = get_window().world_2d
 

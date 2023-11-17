@@ -3,7 +3,7 @@ extends Area3D
 var velocity: Vector3
 var acceleration: Vector3
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	position += velocity
 	velocity += acceleration
 

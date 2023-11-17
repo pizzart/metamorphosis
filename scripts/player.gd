@@ -27,6 +27,7 @@ var rng = RandomNumberGenerator.new()
 @onready var melee: Melee = $Melee
 @onready var shadow = $Shadow
 @onready var coin_box = $CoinBox
+@onready var hat = $Sprite/Hat
 
 func _ready():
 	weight = gun.weight + melee.weight
@@ -55,20 +56,28 @@ func _physics_process(delta):
 	$Light.texture_scale = rng.randf_range(0.95, 1.04)
 	
 	$Sprite.speed_scale = velocity.length() / speed
+	$Sprite/Sprite.speed_scale = velocity.length() / speed
 	if direction.x < 0:
 		$Sprite.flip_h = true
+		$Sprite/Sprite.flip_h = true
 	if direction.x > 0:
 		$Sprite.flip_h = false
+		$Sprite/Sprite.flip_h = false
 	if abs(direction.x) > 0 and abs(direction.y) < 0.25:
 		$Sprite.animation = "side"
+		$Sprite/Sprite.animation = "side"
 	if direction.y > 0 and abs(direction.x) >= 0.25:
 		$Sprite.animation = "diagonal_front"
+		$Sprite/Sprite.animation = "diagonal_front"
 	if direction.y > 0 and abs(direction.x) < 0.25:
 		$Sprite.animation = "front"
+		$Sprite/Sprite.animation = "front"
 	if direction.y < 0 and abs(direction.x) < 0.25:
 		$Sprite.animation = "back"
+		$Sprite/Sprite.animation = "back"
 	if direction.y < 0 and abs(direction.x) >= 0.25:
 		$Sprite.animation = "diagonal_back"
+		$Sprite/Sprite.animation = "diagonal_back"
 	
 	shadow.global_position = global_position + Vector2(0, 4)
 	
@@ -92,7 +101,7 @@ func _process(delta):
 #	else:
 #		speed_multiplier = 1
 #	ammo = clampf(ammo + delta * 15, 0, max_ammo)
-	$Sprite/Hat.position.y = HAT_Y + $Sprite.frame % 2
+	hat.position.y = HAT_Y + $Sprite.frame % 2
 
 func _input(event):
 	if event.is_action_pressed("change_gun"):
@@ -227,7 +236,7 @@ func hide_coins():
 	coins_visible = false
 	var disappear_time = 0.05
 	var tween = create_tween()
-	tween.tween_property($UIBox, "scale", Vector2(1, 0), disappear_time * coin_box.get_node("Grid").get_child_count() + 0.1).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
+	tween.tween_property(coin_box, "scale", Vector2(1, 0), disappear_time * coin_box.get_node("Grid").get_child_count() + 0.1).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
 	
 	for c in coin_box.get_node("Grid").get_children():
 		if c.get_meta("unavailable", false):

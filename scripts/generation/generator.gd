@@ -45,7 +45,8 @@ const VENDING = preload("res://scenes/vending_machine.tscn")
 
 var rng = RandomNumberGenerator.new()
 var current_map: int = 2
-var current_area: Area = Area.Sky
+var current_area: Area = Area.Sky # modify in Global.gd
+var last_player_spawn: Vector2
 
 var player: Player
 var tilemap: TileMap
@@ -131,6 +132,7 @@ func place_player(exit_placement: Vector2):
 		if Vector2(cell).distance_to(exit_placement) > Vector2(placement).distance_to(exit_placement):
 			placement = cell
 	player.global_position = tilemap.map_to_local(placement)
+	last_player_spawn = player.global_position
 
 func place_islands(count: int, size: int):
 	var init_positions = []
@@ -326,14 +328,14 @@ func _on_exit_entered(_body: Node2D, next_gen_type: GenerationType):
 				update_surroundings()
 			else:
 				current_map += 1
-#				world.transition_music("abyss_calm", "abyss_intense")
+				world.transition_music("%s_calm" % AREA_NAMES[current_area], "%s_intense" % AREA_NAMES[current_area])
 			var island_size = ISLAND_SIZE
 			if current_area == Area.City:
 				island_size = ISLAND_CITY_SIZE
 			generate_map_full(island_size)
 		GenerationType.Intermission:
 			generate_intermission()
-#			world.transition_music("abyss_intense", "abyss_calm")
+			world.transition_music("%s_intense" % AREA_NAMES[current_area], "%s_calm" % AREA_NAMES[current_area])
 		GenerationType.Boss:
 			match current_area:
 				Area.Sky:

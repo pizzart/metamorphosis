@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://chi1psou7ac1m"]
+[gd_scene load_steps=4 format=3 uid="uid://chi1psou7ac1m"]
 
 [ext_resource type="Texture2D" uid="uid://dh6c2u6fxb8m3" path="res://sprites/enemy.png" id="1_f8kbd"]
 [ext_resource type="Script" path="res://scripts/npc.gd" id="1_vojk4"]
-[ext_resource type="FontFile" uid="uid://b8fccd6b7ns3m" path="res://misc/font.png" id="3_ehvnw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vns46"]
 size = Vector2(48, 48)
@@ -17,13 +16,3 @@ shape = SubResource("RectangleShape2D_vns46")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.392157, 0.34902, 1, 1)
 texture = ExtResource("1_f8kbd")
-
-[node name="Text" type="RichTextLabel" parent="."]
-z_index = 2
-offset_left = 11.0
-offset_top = -35.0
-offset_right = 144.0
-offset_bottom = -13.0
-theme_override_fonts/normal_font = ExtResource("3_ehvnw")
-fit_content = true
-autowrap_mode = 2

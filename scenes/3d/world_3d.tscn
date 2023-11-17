@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://cb2nik6dxv76u"]
+[gd_scene load_steps=26 format=3 uid="uid://cb2nik6dxv76u"]
 
 [ext_resource type="Script" path="res://scripts/3d/world_3d.gd" id="1_c4r3l"]
 [ext_resource type="PackedScene" uid="uid://qyk1wq0h6ttu" path="res://scenes/3d/player.tscn" id="1_deg81"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://cg2ptfwshkf6l" path="res://sprites/ui/health_progress.png" id="8_xw0mn"]
 [ext_resource type="Script" path="res://addons/cyclops_level_builder/nodes/cyclops_blocks.gd" id="10_m4d7m"]
 [ext_resource type="Script" path="res://addons/cyclops_level_builder/nodes/cyclops_convex_block.gd" id="11_82eei"]
+[ext_resource type="AudioStream" uid="uid://ckqyy8hk8bj2b" path="res://audio/mus/clock.ogg" id="12_10gg4"]
 [ext_resource type="Script" path="res://addons/cyclops_level_builder/resources/convex_block_data.gd" id="12_edhv6"]
 
 [sub_resource type="Environment" id="Environment_jdqxf"]
@@ -361,6 +362,11 @@ block_data = SubResource("Resource_6qfqy")
 [node name="Block_5" type="Node" parent="CyclopsBlocks"]
 script = ExtResource("11_82eei")
 block_data = SubResource("Resource_mp2hj")
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_10gg4")
+autoplay = true
+bus = &"mus"
 
 [connection signal="damaged" from="Boss" to="." method="_on_boss_damaged"]
 [connection signal="killed" from="Boss" to="." method="_on_boss_killed"]

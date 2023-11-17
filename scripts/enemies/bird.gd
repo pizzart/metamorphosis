@@ -135,14 +135,14 @@ func hit(damage: int, force: Vector2):
 	
 	velocity += force
 	
-	attack_timer.paused = true
-	await get_tree().create_timer(STUN_TIME).timeout
-	attack_timer.paused = false
-	
 	if attacking:
 		set_movement_target(global_position + force.normalized() * 20)
 		await get_tree().create_timer(STUN_TIME).timeout
 		stop_attacking()
+	
+	attack_timer.paused = true
+	await get_tree().create_timer(STUN_TIME).timeout
+	attack_timer.paused = false
 
 func die():
 	if rng.randf() <= DROP_CHANCE:

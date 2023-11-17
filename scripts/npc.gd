@@ -3,6 +3,7 @@ extends Interactable
 const DIALOGUE_BOX = preload("res://scenes/dialogue_box.tscn")
 #const LINES = preload("res://resources/dialogue_lines/area_1/3.tres")
 const CHARACTER_SIZE = 8
+const BOX_OFFSET = Vector2(8, -30)
 
 var lines: DialogueLines
 var current_line: int = -1
@@ -12,12 +13,16 @@ var visible_ratio: float
 @onready var label = dialogue_box.get_node("Text")
 
 func _ready():
-	dialogue_box.position = Vector2(8, -6)
+	dialogue_box.position = BOX_OFFSET
 	dialogue_box.hide()
 	add_child(dialogue_box)
 
 func _process(delta):
 	if current_line > -1 and label.visible_ratio < 1:
+		if lines.lines[current_line].speaker == DialogueLine.Speaker.You:
+			dialogue_box.position = lerp(dialogue_box.position, to_local(player.global_position) + BOX_OFFSET, delta * 20)
+		else:
+			dialogue_box.position = lerp(dialogue_box.position, BOX_OFFSET, delta * 20)
 		label.visible_ratio = clampf(label.visible_ratio + delta / label.text.length() * 25, 0, 1)
 
 func _input(event):

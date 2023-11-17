@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dph8pd3qblx44"]
+[gd_scene load_steps=12 format=3 uid="uid://dph8pd3qblx44"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_bsqet"]
 [ext_resource type="SpriteFrames" uid="uid://decjog7dp6jgi" path="res://resources/player.tres" id="2_p00mm"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://scripts/guns/shotgun.gd" id="5_gs5rs"]
 [ext_resource type="Script" path="res://scripts/melee/sword.gd" id="6_n5gtl"]
 [ext_resource type="PackedScene" uid="uid://dyyfpg3oe0gjc" path="res://scenes/cost_box.tscn" id="7_48x62"]
+[ext_resource type="Script" path="res://scripts/upgrades/wings.gd" id="10_2lw6s"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_onp71"]
 size = Vector2(20, 6)
@@ -82,5 +83,8 @@ anchor_right = 0.1125
 anchor_bottom = -0.116667
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="WingsUpgrade" type="Node" parent="."]
+script = ExtResource("10_2lw6s")
 
 [connection signal="timeout" from="InvTimer" to="." method="_on_inv_timer_timeout"]

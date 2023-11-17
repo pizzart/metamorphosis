@@ -1,7 +1,8 @@
 [gd_resource type="AudioBusLayout" format=3 uid="uid://cjnjg3qs2qw5g"]
 
 [resource]
-bus/0/volume_db = -0.130497
+bus/0/mute = true
+bus/0/volume_db = -14.0622
 bus/1/name = &"mus"
 bus/1/solo = false
 bus/1/mute = false

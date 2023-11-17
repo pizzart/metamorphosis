@@ -77,9 +77,9 @@ func _physics_process(delta):
 	camera.rotation.z = lerpf(camera.rotation.z, -input_dir.x * TILT_AMOUNT, 0.1)
 	camera.fov = lerpf(camera.fov, 60 * clampf(velocity.length() / MAX_VELOCITY / 3 + 1, 1, 2), 0.05)
 
-func accelerate(direction: Vector3, prev_velocity: Vector3, accelerate: float, max_velocity: float):
+func accelerate(direction: Vector3, prev_velocity: Vector3, acceleration: float, max_velocity: float):
 	var proj_velocity = velocity.dot(direction)
-	var accel_vel = accelerate
+	var accel_vel = acceleration
 	if proj_velocity + accel_vel > max_velocity:
 		accel_vel = max_velocity - proj_velocity
 	return prev_velocity + direction * accel_vel
