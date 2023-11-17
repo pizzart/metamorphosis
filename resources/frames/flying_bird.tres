@@ -1,0 +1,14 @@
+[gd_resource type="SpriteFrames" load_steps=2 format=3 uid="uid://oh8eelaa850f"]
+
+[ext_resource type="Texture2D" uid="uid://c07ev4ugd7otv" path="res://sprites/enemies/flying_bird.png" id="1_shjt5"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_shjt5")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}]

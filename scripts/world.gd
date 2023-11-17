@@ -17,11 +17,15 @@ var generator: Generator
 
 func _ready():
 	generator = Generator.new(player, tilemap)
-	if Global.current_area == Generator.Area.Abyss:
-		generator.current_area = Generator.Area.Abyss
+	if Global.current_area == Generator.Area.City:
+		generator.current_area = Generator.Area.City
 	add_child(generator)
-#	generator.generate_map_full(Generator.ISLAND_SIZE)
-	generator.generate_town()
+	if Global.current_area == Generator.Area.City:
+#		generator.generate_map_full(Generator.ISLAND_SIZE)
+		generator.generate_town()
+	else:
+#		generator.generate_town()
+		generator.generate_map_full(Generator.ISLAND_SIZE)
 #	generator.generate_boss()
 #	$Window.world_2d = get_window().world_2d
 

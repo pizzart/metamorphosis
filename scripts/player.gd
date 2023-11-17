@@ -18,6 +18,7 @@ var weight: int = 0
 var max_ammo: float = INIT_AMMO
 var ammo: float = max_ammo
 var coins: int = 0
+var coins_visible: bool
 
 var rng = RandomNumberGenerator.new()
 
@@ -25,6 +26,7 @@ var rng = RandomNumberGenerator.new()
 @onready var gun: Gun = $Gun
 @onready var melee: Melee = $Melee
 @onready var shadow = $Shadow
+@onready var coin_box = $CoinBox
 
 func _ready():
 	weight = gun.weight + melee.weight
@@ -53,7 +55,10 @@ func _physics_process(delta):
 	$Light.texture_scale = rng.randf_range(0.95, 1.04)
 	
 	$Sprite.speed_scale = velocity.length() / speed
-	$Sprite.flip_h = direction.x < 0
+	if direction.x < 0:
+		$Sprite.flip_h = true
+	if direction.x > 0:
+		$Sprite.flip_h = false
 	if abs(direction.x) > 0 and abs(direction.y) < 0.25:
 		$Sprite.animation = "side"
 	if direction.y > 0 and abs(direction.x) >= 0.25:
@@ -80,7 +85,7 @@ func _process(delta):
 	UI.get_node("Control/M/V/HealthBar/Buffer").max_value = max_health
 	UI.get_node("Control/M/V/AmmoBar").value = ammo
 	UI.get_node("Control/M/V/AmmoBar").max_value = max_ammo
-	$UIBox.global_position = lerp($UIBox.global_position, to_global(Vector2(12, -54)), delta * 10)
+	coin_box.global_position = lerp(coin_box.global_position, to_global(Vector2(12, -54)), delta * 10)
 #	UI.get_node("Control/M/V/Coins").text = str(coins)
 #	if weight > health:
 #		speed_multiplier = 0.5
@@ -110,6 +115,7 @@ func hit(damage: int):
 	invincible = true
 	$InvTimer.start()
 	
+	cam.add_trauma(float(damage) / 8)
 	Global.freeze_frame()
 	
 	if health < max_health / 3 and health_prev >= max_health / 3:
@@ -162,16 +168,16 @@ func replace_weapon(new_weapon: Weapon):
 
 func add_coin():
 	if coins != 0:
-		var texture = $UIBox/Grid/T.duplicate(8)
-		$UIBox/Grid.add_child(texture)
+		var texture = coin_box.get_node("Grid/T").duplicate(8)
+		coin_box.get_node("Grid").add_child(texture)
 	else:
-		$UIBox/Grid/T.show()
+		coin_box.get_node("Grid/T").show()
 	coins += 1
 
 func spend_coins(amount: int):
 	coins = max(coins - amount, 0)
-	for i in range($UIBox/Grid.get_child_count() - 1, coins - 1, -1):
-		var c = $UIBox/Grid.get_child(i)
+	for i in range(coin_box.get_node("Grid").get_child_count() - 1, coins - 1, -1):
+		var c = coin_box.get_node("Grid").get_child(i)
 		if not c.get_meta("unavailable", false):
 			if c.name != "T":
 				c.queue_free()
@@ -186,37 +192,56 @@ func is_less_melee_weight(melee_weight: int):
 	return max_health - gun.weight - melee_weight > 0
 
 func show_coins(amount: int):
-	$UIBox.show()
-	for c in $UIBox/Grid.get_children():
+	coins_visible = true
+	
+	coin_box.show()
+	coin_box.scale = Vector2.ONE
+	
+	var tween = create_tween()
+	tween.tween_interval(0.15)
+	tween.tween_callback(coin_box.hide)
+	tween.tween_interval(0.05)
+	tween.tween_callback(coin_box.show)
+	
+	for c in coin_box.get_node("Grid").get_children():
 		c.hide()
 	for i in range(amount):
-		if i >= $UIBox/Grid.get_child_count():
-			var texture = $UIBox/Grid/T.duplicate(8)
+		if i >= coin_box.get_node("Grid").get_child_count():
+			var texture = coin_box.get_node("Grid/T").duplicate(8)
 			texture.modulate = Color.PALE_VIOLET_RED
 			texture.set_meta("unavailable", true)
-			$UIBox/Grid.add_child(texture)
+			coin_box.get_node("Grid").add_child(texture)
 		elif i < amount:
 			if not (amount == 1 and coins == 0):
-				$UIBox/Grid.get_child(i).modulate = Color(2, 2, 2)
+				coin_box.get_node("Grid").get_child(i).modulate = Color(2, 2, 2)
 			else:
-				$UIBox/Grid.get_child(i).modulate = Color.PALE_VIOLET_RED
+				coin_box.get_node("Grid").get_child(i).modulate = Color.PALE_VIOLET_RED
 		
-	for c in $UIBox/Grid.get_children():
-		if is_instance_valid(c):
+	for c in coin_box.get_node("Grid").get_children():
+		if is_instance_valid(c) and coins_visible:
 			c.show()
 			await get_tree().create_timer(0.05).timeout
-#		$UIBox/Grid.get_child(i).hide()
+#		coin_box.get_node("Grid").get_child(i).hide()
 
 func hide_coins():
-	for c in $UIBox/Grid.get_children():
+	coins_visible = false
+	var disappear_time = 0.05
+	var tween = create_tween()
+	tween.tween_property($UIBox, "scale", Vector2(1, 0), disappear_time * coin_box.get_node("Grid").get_child_count() + 0.1).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
+	
+	for c in coin_box.get_node("Grid").get_children():
 		if c.get_meta("unavailable", false):
 			c.queue_free()
 	await get_tree().create_timer(0.1).timeout
-	for c in $UIBox/Grid.get_children():
+	for c in coin_box.get_node("Grid").get_children():
+		if coins_visible:
+			continue
 		c.modulate = Color.WHITE
 		c.hide()
-		await get_tree().create_timer(0.05).timeout
-	$UIBox.hide()
+		await get_tree().create_timer(disappear_time).timeout
+	if not coins_visible:
+		coin_box.hide()
+		coin_box.scale = Vector2.ONE
 
 #func add_weight(added: int):
 #	weight += added

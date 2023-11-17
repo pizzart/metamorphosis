@@ -1,51 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://de4iuv4mo41us"]
+[gd_scene load_steps=5 format=3 uid="uid://de4iuv4mo41us"]
 
 [ext_resource type="Script" path="res://scripts/enemies/enemy.gd" id="1_v8vcq"]
-[ext_resource type="Texture2D" uid="uid://brcor71i8mlyn" path="res://sprites/enemies/bird.png" id="2_0aoja"]
 [ext_resource type="Texture2D" uid="uid://cju6qf6nijxw3" path="res://sprites/shadow.png" id="2_e3mcq"]
+[ext_resource type="SpriteFrames" uid="uid://ccwbtbvt6gquf" path="res://resources/frames/bird.tres" id="3_qfxl2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_juhwm"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_c4lcs"]
-atlas = ExtResource("2_0aoja")
-region = Rect2(0, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_2om7f"]
-atlas = ExtResource("2_0aoja")
-region = Rect2(32, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_fhvwj"]
-atlas = ExtResource("2_0aoja")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_10jj5"]
-atlas = ExtResource("2_0aoja")
-region = Rect2(32, 0, 32, 32)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_je6pu"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_c4lcs")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_2om7f")
-}],
-"loop": true,
-"name": &"attack",
-"speed": 10.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_fhvwj")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_10jj5")
-}],
-"loop": true,
-"name": &"idle",
-"speed": 8.0
-}]
 
 [node name="Enemy" type="CharacterBody2D" groups=["enemy"]]
 collision_layer = 2
@@ -75,7 +34,7 @@ position = Vector2(0, 9)
 texture = ExtResource("2_e3mcq")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_je6pu")
+sprite_frames = ExtResource("3_qfxl2")
 animation = &"idle"
 autoplay = "idle"
 

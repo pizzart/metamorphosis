@@ -20,6 +20,7 @@ func _init(_pickup_name: String, _item: Weapon):
 	drawer.position = Vector2(-pickup_name.length() * 4, -24)
 	drawer.text = pickup_name
 	add_child(drawer)
+	drawer.hide()
 
 func _ready():
 	sprite.rotation = (global_position.x + global_position.y) / PI
@@ -27,10 +28,6 @@ func _ready():
 func _on_body_entered(body):
 	super._on_body_entered(body)
 	drawer.show()
-
-func _on_body_exited(body):
-	super._on_body_exited(body)
-	drawer.hide()
 
 func unfocus():
 	super.unfocus()

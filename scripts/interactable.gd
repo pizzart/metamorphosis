@@ -12,6 +12,7 @@ func _init():
 	body_exited.connect(_on_body_exited)
 	
 	add_to_group("interactable")
+	add_to_group("cleanup")
 
 func _on_body_entered(body):
 	for i in get_tree().get_nodes_in_group("interactable"):
@@ -20,7 +21,7 @@ func _on_body_entered(body):
 	can_interact = true
 
 func _on_body_exited(_body):
-	can_interact = false
+	unfocus()
 
 func unfocus():
 	can_interact = false

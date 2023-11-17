@@ -12,7 +12,7 @@ texture_margin_bottom = 4.0
 axis_stretch_vertical = 1
 modulate_color = Color(1, 1, 1, 0.662745)
 
-[node name="UIBox" type="PanelContainer"]
+[node name="CoinBox" type="PanelContainer"]
 self_modulate = Color(1, 1, 1, 0.662745)
 z_index = 4
 anchors_preset = -1

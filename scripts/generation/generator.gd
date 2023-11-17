@@ -190,7 +190,7 @@ func place_enemies(count: int):
 				j = rng.randi() % cells.size()
 			placements.append(cells.pop_at(j))
 	for placement in placements:
-		var enemy = ENEMY.instantiate()
+		var enemy = Global.enemy_pool[current_area].pick_random().new()
 		enemy.global_position = tilemap.map_to_local(placement)
 		world.call_deferred("add_child", enemy)
 
@@ -249,17 +249,26 @@ func place_exit(next_gen_type: GenerationType) -> Vector2i:
 
 func place_pickups():
 	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, AREA_TILES[current_area][0])
-	for i in range(3):
-		var placement = cells.pop_at(rng.randi() % cells.size())
-		placement = tilemap.map_to_local(placement)
-		var gun = Global.weapon_pool.pick_random().new()
-		var pickup = WeaponPickup.new(gun.weapon_name, gun)
-		pickup.global_position = placement
-		world.call_deferred("add_child", pickup)
+	var placement = cells.pop_at(rng.randi() % cells.size())
+	while not placement + Vector2i.LEFT in cells and not placement + Vector2i.RIGHT in cells and not cells.is_empty():
+		placement = cells.pop_at(rng.randi() % cells.size())
+	
+	var gun_placement = tilemap.map_to_local(placement + Vector2i.LEFT)
+	var melee_placement = tilemap.map_to_local(placement + Vector2i.RIGHT)
+	
+	var gun = Global.weapon_pool["gun"].pick_random().new()
+	var melee = Global.weapon_pool["melee"].pick_random().new()
+	var gun_pickup = Box.new(gun)
+	var melee_pickup = Box.new(melee)
+	gun_pickup.global_position = gun_placement
+	melee_pickup.global_position = melee_placement
+	world.call_deferred("add_child", gun_pickup)
+	world.call_deferred("add_child", melee_pickup)
 
 func place_npcs():
+	var dialogues: Array = Global.DIALOGUES.get(current_area, []).duplicate()
+	
 	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, AREA_TILES[current_area][0])
-	var dialogues: Array = Global.DIALOGUES.get(current_area).duplicate()
 	var placements = []
 	for i in range(3):
 		if not cells.is_empty():
@@ -268,6 +277,8 @@ func place_npcs():
 				j = rng.randi() % cells.size()
 			placements.append(cells.pop_at(j))
 	for placement in placements:
+		if dialogues.is_empty():
+			continue
 		var npc = NPC.instantiate()
 		npc.global_position = tilemap.map_to_local(placement)
 		npc.lines = dialogues.pop_at(rng.randi() % dialogues.size())
@@ -282,12 +293,10 @@ func place_vending():
 func cleanup():
 	tilemap.clear()
 	get_tree().call_group("enemy", "queue_free")
-	get_tree().call_group("pickup", "queue_free")
 	get_tree().call_group("teleporter", "queue_free")
 	get_tree().call_group("exit", "queue_free")
 	get_tree().call_group("projectile", "queue_free")
-	get_tree().call_group("npc", "queue_free")
-	get_tree().call_group("prop", "queue_free")
+	get_tree().call_group("cleanup", "queue_free")
 
 func update_surroundings():
 	match current_area:

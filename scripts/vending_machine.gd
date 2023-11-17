@@ -8,8 +8,10 @@ func _input(event):
 		if player.coins >= cost:
 			player.spend_coins(cost)
 			
-			var weapon = Global.weapon_pool.pick_random().new()
-			var new_pickup = WeaponPickup.new(weapon.weapon_name, weapon)
+			var types = Global.weapon_pool.keys()
+			var type = types.pick_random()
+			var weapon = Global.weapon_pool[type].pick_random().new()
+			var new_pickup = Box.new(weapon)
 			new_pickup.global_position = player.global_position + global_position.direction_to(player.global_position) * 20
 			get_parent().add_child(new_pickup)
 			

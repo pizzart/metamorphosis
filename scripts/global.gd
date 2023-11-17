@@ -9,18 +9,29 @@ const DIALOGUES = {
 	1: [
 		preload("res://resources/dialogue_lines/area_2/1.tres"),
 		preload("res://resources/dialogue_lines/area_2/2.tres"),
-	]
+	],
+	2: []
 }
 
-var current_area: Generator.Area = Generator.Area.Sky
-var weapon_pool = [
-	Pistol,
-	Glock,
-	Rifle,
-	Shotgun,
-	Sledgehammer,
-	Sword,
-]
+var coins: int
+var current_area: Generator.Area = Generator.Area.City
+var weapon_pool = {
+	"gun": [
+		Pistol,
+		Glock,
+		Rifle,
+		Shotgun,
+	],
+	"melee": [
+		Sledgehammer,
+		Sword,
+	]
+}
+var enemy_pool = {
+	0: [Birdie, BigBird, FlyingBird],
+	1: [Birdie, BigBird, FlyingBird],
+	2: [Birdie, BigBird, FlyingBird],
+}
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS

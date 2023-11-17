@@ -21,10 +21,6 @@ func _on_body_entered(body):
 	super._on_body_entered(body)
 	queue_redraw()
 
-func _on_body_exited(body):
-	super._on_body_exited(body)
-	queue_redraw()
-
 func unfocus():
 	super.unfocus()
 	queue_redraw()
