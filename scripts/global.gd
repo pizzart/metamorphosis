@@ -37,13 +37,16 @@ const DIALOGUES = {
 	2: []
 }
 
+const VIGNETTE_OPACITY = 0.035
+
 var coins: int = 5
-var current_area: Generator.Area = Generator.Area.Abyss
+var current_area: Generator.Area = Generator.Area.Sky
 var equipped_hat: int = Hat.None
 var unlocked_items: Array[Item] = []
 var unlocked_hats: Array[Hat] = []
 var purchasable_items: Array[Item] = [Item.Wings]
 var purchasable_hats: Array[Hat] = [Hat.Top, Hat.Niko]
+var timer: float
 
 var weapon_pool = {
 	"gun": [

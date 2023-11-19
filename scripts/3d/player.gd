@@ -85,7 +85,8 @@ func accelerate(direction: Vector3, prev_velocity: Vector3, acceleration: float,
 func damage(amount: int):
 	health -= amount
 	if health <= 0:
-		get_tree().reload_current_scene()
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		get_tree().change_scene_to_file("res://scenes/pre_ui.tscn")
 	UI.get_node("Control/M/Bars/Health/Bar").value = health
 
 func _input(event):

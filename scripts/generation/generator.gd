@@ -323,7 +323,6 @@ func _on_exit_entered(_body: Node2D, next_gen_type: GenerationType):
 		GenerationType.Action:
 			if current_map == MAP_COUNT:
 				Global.current_area += 1
-				Global.Global.current_area = Global.current_area
 				current_map = 0
 				update_surroundings()
 			else:

@@ -81,6 +81,10 @@ buttons_texts = 1
 title = "CONFIRMATION"
 dialog_text = "DO YOU WANT TO TRY AGAIN?"
 
+[node name="Stats" type="NativeAcceptDialog" parent="."]
+title = "PROGRAM STATISTICS"
+dialog_icon = 0
+
 [connection signal="dialogue_finished" from="Final" to="." method="_on_final_dialogue_finished"]
 [connection signal="canceled" from="Validation" to="." method="_on_validation_canceled"]
 [connection signal="confirmed" from="Validation" to="." method="_on_validation_confirmed"]

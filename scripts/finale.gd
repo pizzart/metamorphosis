@@ -7,7 +7,8 @@ func _on_validation_canceled():
 	$Again.show()
 
 func _on_confirm_confirmed():
-	pass # FINAL SEQUENCE
+	$Stats.dialog_text = "TIME SPENT: %s\nSTATUS: SUCCESS" % snappedf(Global.timer, 0.01)
+	$Stats.show()
 
 func _on_confirm_canceled():
 	$Validation.show()

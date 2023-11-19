@@ -105,11 +105,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("3_2mwmq")
 auto_height = true
-item_count = 3
 max_columns = 4
-item_0/text = "none"
-item_1/text = "wings"
-item_2/text = "watch"
 metadata/_edit_use_anchors_ = true
 
 [node name="HatTexture" type="TextureRect" parent="."]

@@ -22,6 +22,8 @@ var generator: Generator
 func _ready():
 	UI.show()
 	
+	RenderingServer.global_shader_parameter_set("vignette_opacity", Global.VIGNETTE_OPACITY)
+	
 	if Global.equipped_hat != Global.Hat.None:
 		player.hat.show()
 		player.hat.texture = Global.HATS[Global.equipped_hat][1]
@@ -38,6 +40,7 @@ func _ready():
 #		add_child(preload("res://scenes/finale.tscn").instantiate())
 
 func _process(delta):
+	Global.timer += delta
 	if Global.current_area == Generator.Area.Sky:
 		$SkyBG/ParallaxLayer.motion_offset.x -= delta * 10
 		$SkyBG/ParallaxLayer3.motion_offset.x -= delta * 7
@@ -71,7 +74,9 @@ func init_boss_1():
 func init_boss3():
 	var boss = BOSS3.instantiate()
 	add_child.call_deferred(boss)
+	fade_music_out(1)
 	play_music("boss3")
+	fade_music_in("boss3", 2)
 
 func init_finale():
 	fade_music_out(10)
@@ -81,15 +86,19 @@ func init_finale():
 func play_music(key: String):
 	mus[key].play()
 
-func transition_music(key1: String, key2: String):
+func transition_music(from: String, to: String):
 	var tween = create_tween().set_parallel()
-	tween.tween_property(mus[key1], "volume_db", -80, 3.0).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
-	tween.tween_property(mus[key2], "volume_db", 0, 3.0).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
-	mus[key2].volume_db = -80
-	mus[key2].play()
-	mus[key2].seek(mus[key1].get_playback_position())
+	tween.tween_property(mus[from], "volume_db", -80, 3.0).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
+	tween.tween_property(mus[to], "volume_db", 0, 3.0).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+	mus[to].volume_db = -80
+	mus[to].play()
+	mus[to].seek(mus[from].get_playback_position())
 
 func fade_music_out(time: float):
 	for music in mus.values():
 		var tween = create_tween()
 		tween.tween_property(music, "volume_db", -80, time).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
+
+func fade_music_in(key: String, time: float):
+	var tween = create_tween()
+	tween.tween_property(mus[key], "volume_db", 0, time).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)

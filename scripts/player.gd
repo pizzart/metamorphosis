@@ -38,7 +38,6 @@ func _ready():
 	weight = gun.weight + melee.weight
 	buffer_health = weight
 	health = max_health - weight
-	RenderingServer.global_shader_parameter_set("vignette_opacity", 0.035)
 	
 	add_coin()
 	add_coin()
@@ -125,7 +124,7 @@ func hit(damage: int):
 	
 	if health < max_health / 3 and health_prev >= max_health / 3:
 		var tween = create_tween()
-		tween.tween_method(Global.set_shader_param.bind("vignette_opacity"), 0.035, 0.5, 1.0)
+		tween.tween_method(Global.set_shader_param.bind("vignette_opacity"), Global.VIGNETTE_OPACITY, 0.5, 1.0)
 #	else:
 #		RenderingServer.global_shader_parameter_set("vignette_opacity", 0.035)
 	sprite.modulate = Color.RED
