@@ -13,7 +13,7 @@ dest_files=["res://.godot/imported/clock.ogg-446c65424d6bc04cc959d21be48a330d.og
 [params]
 
 loop=true
-loop_offset=0.0
+loop_offset=12.0
 bpm=0.0
 beat_count=0
 bar_beats=4

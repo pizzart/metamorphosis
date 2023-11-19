@@ -13,7 +13,6 @@ var navigation_agent: NavigationAgent2D
 var nav_timer: Timer
 var attack_timer: Timer
 var collision_shape: CollisionShape2D
-var sprite: AnimatedSprite2D
 var area: Area2D
 
 func _init():
@@ -69,7 +68,7 @@ func _init():
 	add_to_group("enemy")
 
 func _ready():
-	call_deferred("actor_setup")
+	actor_setup.call_deferred()
 	nav_timer.start(rng.randf_range(2, 9))
 
 func _physics_process(delta):
@@ -130,7 +129,7 @@ func die():
 	if rng.randf() <= DROP_CHANCE:
 		var coin = CoinPickup.new()
 		coin.global_position = global_position
-		get_parent().call_deferred("add_child", coin)
+		get_parent().add_child.call_deferred(coin)
 	collision_shape.set_deferred("disabled", true)
 	queue_free()
 

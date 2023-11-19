@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="DialogueLines" load_steps=9 format=3 uid="uid://dljta2qwhm7x1"]
+
+[ext_resource type="Script" path="res://resources/dialogue_line.gd" id="1_gl6ke"]
+[ext_resource type="Script" path="res://resources/dialogue.gd" id="2_gurht"]
+
+[sub_resource type="Resource" id="Resource_ft06s"]
+script = ExtResource("1_gl6ke")
+line = "you have found me"
+speaker = 1
+
+[sub_resource type="Resource" id="Resource_iw6oq"]
+script = ExtResource("1_gl6ke")
+line = "it has been a very
+very long time"
+speaker = 1
+
+[sub_resource type="Resource" id="Resource_slxll"]
+script = ExtResource("1_gl6ke")
+line = "i might look different to your real self"
+speaker = 1
+
+[sub_resource type="Resource" id="Resource_md2l6"]
+script = ExtResource("1_gl6ke")
+line = "but i am still a part of you"
+speaker = 1
+
+[sub_resource type="Resource" id="Resource_1vrha"]
+script = ExtResource("1_gl6ke")
+line = "the fact that you are here proves that you are ready to accept yourself"
+speaker = 1
+
+[sub_resource type="Resource" id="Resource_a8qbh"]
+script = ExtResource("1_gl6ke")
+line = "farewell"
+speaker = 1
+
+[resource]
+script = ExtResource("2_gurht")
+lines = Array[ExtResource("1_gl6ke")]([SubResource("Resource_ft06s"), SubResource("Resource_iw6oq"), SubResource("Resource_slxll"), SubResource("Resource_md2l6"), SubResource("Resource_1vrha"), SubResource("Resource_a8qbh")])

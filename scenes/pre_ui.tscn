@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://bkg0l5mggd3vq"]
+[gd_scene load_steps=8 format=3 uid="uid://bkg0l5mggd3vq"]
 
+[ext_resource type="Theme" uid="uid://t6wu146mxlyh" path="res://misc/theme.tres" id="1_77kc0"]
 [ext_resource type="Script" path="res://scripts/pre_ui.gd" id="1_llkcr"]
 [ext_resource type="Texture2D" uid="uid://ma7nk23pwus7" path="res://sprites/ui/setup_bg.png" id="2_vef6j"]
 [ext_resource type="FontFile" uid="uid://bolgg3n6g0m3n" path="res://misc/fontreadable.png" id="3_2mwmq"]
 [ext_resource type="Texture2D" uid="uid://ny64rqs17do3" path="res://sprites/hats/niko_hat.png" id="4_jrjye"]
-[ext_resource type="Texture2D" uid="uid://otjho05rs8w3" path="res://sprites/disk.png" id="5_ei1d4"]
+[ext_resource type="Texture2D" uid="uid://slxf0mpfgyl6" path="res://sprites/shop/cross.png" id="5_2j1bm"]
+[ext_resource type="PackedScene" uid="uid://iwx7sruoi7vk" path="res://scenes/shop.tscn" id="6_ujy8l"]
 
 [node name="PreUI" type="Control"]
 layout_mode = 3
@@ -13,6 +15,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_77kc0")
 script = ExtResource("1_llkcr")
 
 [node name="TextureRect" type="TextureRect" parent="."]
@@ -24,103 +27,119 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_vef6j")
 
-[node name="Item" type="Button" parent="."]
-layout_mode = 0
-anchor_left = 0.36875
-anchor_top = 0.45
-anchor_right = 0.54375
-anchor_bottom = 0.5125
-theme_override_fonts/font = ExtResource("3_2mwmq")
-toggle_mode = true
-text = "item"
-metadata/_edit_use_anchors_ = true
-
-[node name="Hat" type="Button" parent="."]
+[node name="M" type="MarginContainer" parent="."]
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.353125
-anchor_top = 0.15
-anchor_right = 0.528125
-anchor_bottom = 0.2125
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Go" type="Button" parent="M"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
 theme_override_fonts/font = ExtResource("3_2mwmq")
-toggle_mode = true
-text = "hat"
+text = "go"
 metadata/_edit_use_anchors_ = true
 
-[node name="ItemList" type="ItemList" parent="."]
+[node name="Shop" type="Button" parent="M"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("3_2mwmq")
+text = "shop"
+metadata/_edit_use_anchors_ = true
+
+[node name="Hats" type="HBoxContainer" parent="."]
+layout_mode = 2
+anchor_left = 0.346875
+anchor_top = 0.1375
+anchor_right = 0.740625
+anchor_bottom = 0.254167
+size_flags_vertical = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="Button" type="Button" parent="Hats"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("3_2mwmq")
+toggle_mode = true
+icon = ExtResource("5_2j1bm")
+metadata/_edit_use_anchors_ = true
+
+[node name="List" type="ItemList" parent="Hats"]
 visible = false
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.4875
-anchor_top = 0.545833
-anchor_right = 0.61875
-anchor_bottom = 0.704167
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_2mwmq")
+auto_height = true
+max_columns = 4
+metadata/_edit_use_anchors_ = true
+
+[node name="Items" type="HBoxContainer" parent="."]
+layout_mode = 2
+anchor_left = 0.35625
+anchor_top = 0.429167
+anchor_right = 0.89375
+anchor_bottom = 0.558333
+size_flags_vertical = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="Button" type="Button" parent="Items"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("3_2mwmq")
+toggle_mode = true
+icon = ExtResource("5_2j1bm")
+metadata/_edit_use_anchors_ = true
+
+[node name="List" type="ItemList" parent="Items"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("3_2mwmq")
 auto_height = true
 item_count = 3
-max_columns = 2
+max_columns = 4
 item_0/text = "none"
 item_1/text = "wings"
 item_2/text = "watch"
 metadata/_edit_use_anchors_ = true
 
-[node name="HatList" type="ItemList" parent="."]
-visible = false
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.403125
-anchor_top = 0.229167
-anchor_right = 0.58125
-anchor_bottom = 0.3875
-theme_override_fonts/font = ExtResource("3_2mwmq")
-auto_height = true
-max_columns = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="Go" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.840625
-anchor_top = 0.870833
-anchor_right = 0.903125
-anchor_bottom = 0.929167
-theme_override_fonts/font = ExtResource("3_2mwmq")
-text = "go"
-metadata/_edit_use_anchors_ = true
-
 [node name="HatTexture" type="TextureRect" parent="."]
 visible = false
-layout_mode = 0
-offset_left = 71.0
-offset_top = 44.0
-offset_right = 103.0
-offset_bottom = 76.0
+layout_mode = 2
+anchor_left = 0.21875
+anchor_top = 0.179167
+anchor_right = 0.31875
+anchor_bottom = 0.3125
 texture = ExtResource("4_jrjye")
 stretch_mode = 2
-
-[node name="Disk" type="TextureRect" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.9
-anchor_top = 0.0291667
-anchor_right = 0.9375
-anchor_bottom = 0.0791667
-texture = ExtResource("5_ei1d4")
-stretch_mode = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="Disks" type="Label" parent="."]
-layout_mode = 0
-anchor_left = 0.95
-anchor_top = 0.0375
-anchor_right = 0.96875
-anchor_bottom = 0.075
-theme_override_fonts/font = ExtResource("3_2mwmq")
-text = "0"
-metadata/_edit_use_anchors_ = true
+[node name="ShopWindow" type="Window" parent="."]
+canvas_item_default_texture_filter = 0
+initial_position = 2
+size = Vector2i(480, 480)
+visible = false
+unresizable = true
+always_on_top = true
+content_scale_size = Vector2i(160, 160)
+content_scale_mode = 2
+content_scale_aspect = 1
 
-[connection signal="toggled" from="Item" to="." method="_on_item_toggled"]
-[connection signal="toggled" from="Hat" to="." method="_on_hat_toggled"]
-[connection signal="item_selected" from="ItemList" to="." method="_on_item_list_item_selected"]
-[connection signal="item_selected" from="HatList" to="." method="_on_hat_list_item_selected"]
-[connection signal="pressed" from="Go" to="." method="_on_go_pressed"]
+[node name="Shop" parent="ShopWindow" instance=ExtResource("6_ujy8l")]
+
+[connection signal="pressed" from="M/Go" to="." method="_on_go_pressed"]
+[connection signal="pressed" from="M/Shop" to="." method="_on_shop_pressed"]
+[connection signal="toggled" from="Hats/Button" to="." method="_on_hat_toggled"]
+[connection signal="item_selected" from="Hats/List" to="." method="_on_hat_list_item_selected"]
+[connection signal="toggled" from="Items/Button" to="." method="_on_item_toggled"]
+[connection signal="item_selected" from="Items/List" to="." method="_on_item_list_item_selected"]
+[connection signal="close_requested" from="ShopWindow" to="." method="_on_shop_window_close_requested"]

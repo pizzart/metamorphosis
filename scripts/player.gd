@@ -23,20 +23,22 @@ var coins_visible: bool
 var rng = RandomNumberGenerator.new()
 
 @onready var cam: Camera2D = $Camera
-@onready var gun: Gun = $Gun
-@onready var melee: Melee = $Melee
+@onready var gun: Gun = Pistol.new()
+@onready var melee: Melee = Sword.new()
 @onready var shadow = $Shadow
 @onready var coin_box = $CoinBox
-@onready var hat = $Sprite/Hat
+@onready var hat = $V/Sprite/Hat
+@onready var sprite = $V/Sprite
 
 func _ready():
+	add_child(gun)
+	add_child(melee)
+	add_child(WingsUpgrade.new())
+	
 	weight = gun.weight + melee.weight
 	buffer_health = weight
 	health = max_health - weight
 	RenderingServer.global_shader_parameter_set("vignette_opacity", 0.035)
-	
-	remove_child(shadow)
-	get_parent().get_node("TileMap").add_child(shadow)
 	
 	add_coin()
 	add_coin()
@@ -55,29 +57,21 @@ func _physics_process(delta):
 	
 	$Light.texture_scale = rng.randf_range(0.95, 1.04)
 	
-	$Sprite.speed_scale = velocity.length() / speed
-	$Sprite/Sprite.speed_scale = velocity.length() / speed
+	sprite.speed_scale = velocity.length() / speed
 	if direction.x < 0:
-		$Sprite.flip_h = true
-		$Sprite/Sprite.flip_h = true
+		sprite.flip_h = true
 	if direction.x > 0:
-		$Sprite.flip_h = false
-		$Sprite/Sprite.flip_h = false
+		sprite.flip_h = false
 	if abs(direction.x) > 0 and abs(direction.y) < 0.25:
-		$Sprite.animation = "side"
-		$Sprite/Sprite.animation = "side"
+		sprite.animation = "side"
 	if direction.y > 0 and abs(direction.x) >= 0.25:
-		$Sprite.animation = "diagonal_front"
-		$Sprite/Sprite.animation = "diagonal_front"
+		sprite.animation = "diagonal_front"
 	if direction.y > 0 and abs(direction.x) < 0.25:
-		$Sprite.animation = "front"
-		$Sprite/Sprite.animation = "front"
+		sprite.animation = "front"
 	if direction.y < 0 and abs(direction.x) < 0.25:
-		$Sprite.animation = "back"
-		$Sprite/Sprite.animation = "back"
+		sprite.animation = "back"
 	if direction.y < 0 and abs(direction.x) >= 0.25:
-		$Sprite.animation = "diagonal_back"
-		$Sprite/Sprite.animation = "diagonal_back"
+		sprite.animation = "diagonal_back"
 	
 	shadow.global_position = global_position + Vector2(0, 4)
 	
@@ -86,14 +80,14 @@ func _physics_process(delta):
 #		$PointLight2D.rotation = direction.angle() - PI / 2
 	
 func _process(delta):
-	UI.get_node("Control/M/V/WeightBar").value = lerp(UI.get_node("Control/M/V/WeightBar").value, float(weight), delta * 10)
-	UI.get_node("Control/M/V/WeightBar").max_value = max_health
-	UI.get_node("Control/M/V/HealthBar").value = lerp(UI.get_node("Control/M/V/HealthBar").value, float(health), delta * 10)
-	UI.get_node("Control/M/V/HealthBar").max_value = max_health
-	UI.get_node("Control/M/V/HealthBar/Buffer").value = buffer_health
-	UI.get_node("Control/M/V/HealthBar/Buffer").max_value = max_health
-	UI.get_node("Control/M/V/AmmoBar").value = ammo
-	UI.get_node("Control/M/V/AmmoBar").max_value = max_ammo
+	UI.get_node("Control/M/Bars/Weight/Bar").value = lerp(UI.get_node("Control/M/Bars/Weight/Bar").value, float(weight), delta * 10)
+	UI.get_node("Control/M/Bars/Weight/Bar").max_value = max_health
+	UI.get_node("Control/M/Bars/Health/Bar").value = lerp(UI.get_node("Control/M/Bars/Health/Bar").value, float(health), delta * 10)
+	UI.get_node("Control/M/Bars/Health/Bar").max_value = max_health
+	UI.get_node("Control/M/Bars/Health/Bar/Buffer").value = buffer_health
+	UI.get_node("Control/M/Bars/Health/Bar/Buffer").max_value = max_health
+	UI.get_node("Control/M/Bars/Ammo/Bar").value = ammo
+	UI.get_node("Control/M/Bars/Ammo/Bar").max_value = max_ammo
 	coin_box.global_position = lerp(coin_box.global_position, to_global(Vector2(12, -54)), delta * 10)
 #	UI.get_node("Control/M/V/Coins").text = str(coins)
 #	if weight > health:
@@ -101,7 +95,7 @@ func _process(delta):
 #	else:
 #		speed_multiplier = 1
 #	ammo = clampf(ammo + delta * 15, 0, max_ammo)
-	hat.position.y = HAT_Y + $Sprite.frame % 2
+	hat.position.y = HAT_Y + sprite.frame % 2
 
 func _input(event):
 	if event.is_action_pressed("change_gun"):
@@ -119,12 +113,14 @@ func hit(damage: int):
 	
 	health -= damage
 	if health <= 0:
-		get_tree().reload_current_scene()
+		Global.current_area = 0
+		Global.coins += floori(coins / 3)
+		get_tree().change_scene_to_file("res://scenes/pre_ui.tscn")
 	
 	invincible = true
 	$InvTimer.start()
 	
-	cam.add_trauma(float(damage) / 8)
+	cam.add_trauma(float(damage) / 6)
 	Global.freeze_frame()
 	
 	if health < max_health / 3 and health_prev >= max_health / 3:
@@ -132,6 +128,9 @@ func hit(damage: int):
 		tween.tween_method(Global.set_shader_param.bind("vignette_opacity"), 0.035, 0.5, 1.0)
 #	else:
 #		RenderingServer.global_shader_parameter_set("vignette_opacity", 0.035)
+	sprite.modulate = Color.RED
+	await get_tree().create_timer(0.2).timeout
+	sprite.modulate = Color.WHITE
 
 func replace_weapon(new_weapon: Weapon):
 	var new_weight = new_weapon.weight

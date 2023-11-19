@@ -1,6 +1,7 @@
 extends Node
 
-enum Items {
+enum Item {
+	None,
 	Wings,
 	Watch,
 }
@@ -12,9 +13,15 @@ enum Hat {
 }
 
 const HATS = {
-	Hat.None: ["none", null],
-	Hat.Top: ["top hat", preload("res://sprites/hats/top_hat.png")],
-	Hat.Niko: ["niko", preload("res://sprites/hats/niko_hat.png")],
+	Hat.None: [0, null, preload("res://sprites/shop/cross.png")],
+	Hat.Top: [1, preload("res://sprites/hats/top_hat.png"), preload("res://sprites/shop/top_hat_shop.png")],
+	Hat.Niko: [2, preload("res://sprites/hats/niko_hat.png"), preload("res://sprites/shop/niko_hat_shop.png")],
+}
+
+const ITEMS = {
+	Item.None: [0, preload("res://sprites/shop/cross.png")],
+	Item.Wings: [2, preload("res://sprites/shop/wings_shop.png")],
+	Item.Watch: [3, preload("res://sprites/shop/wings_shop.png")],
 }
 
 const DIALOGUES = {
@@ -30,10 +37,13 @@ const DIALOGUES = {
 	2: []
 }
 
-var coins: int
-var current_area: Generator.Area = Generator.Area.Sky
-var equipped_hat: int
-var unlocked_items: Array = []
+var coins: int = 5
+var current_area: Generator.Area = Generator.Area.Abyss
+var equipped_hat: int = Hat.None
+var unlocked_items: Array[Item] = []
+var unlocked_hats: Array[Hat] = []
+var purchasable_items: Array[Item] = [Item.Wings]
+var purchasable_hats: Array[Hat] = [Hat.Top, Hat.Niko]
 
 var weapon_pool = {
 	"gun": [

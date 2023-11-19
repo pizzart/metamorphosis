@@ -19,10 +19,8 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var camera = $Camera3D
 
 func _ready():
-	UI.get_node("Control/M/V/HealthBar").value = health
-	UI.get_node("Control/M/V/HealthBar").max_value = MAX_HEALTH
-	
-	UI.get_node("Control/M/V/WeightBar").hide()
+	UI.get_node("Control/M/Bars/Health/Bar").value = health
+	UI.get_node("Control/M/Bars/Health/Bar").max_value = MAX_HEALTH
 #	UI.get_node("Control/M/V/AmmoBar").value = ammo
 #	UI.get_node("Control/M/V/AmmoBar").max_value = max_ammo
 
@@ -88,7 +86,7 @@ func damage(amount: int):
 	health -= amount
 	if health <= 0:
 		get_tree().reload_current_scene()
-	UI.get_node("Control/M/V/HealthBar").value = health
+	UI.get_node("Control/M/Bars/Health/Bar").value = health
 
 func _input(event):
 	if event is InputEventMouseMotion:

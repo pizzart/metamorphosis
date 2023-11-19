@@ -1,24 +1,22 @@
 [gd_scene load_steps=4 format=3 uid="uid://dyyfpg3oe0gjc"]
 
-[ext_resource type="Texture2D" uid="uid://dnrvqqrn1kt3u" path="res://sprites/ui/panel.png" id="1_c6n5i"]
+[ext_resource type="Texture2D" uid="uid://30c5pave1ak4" path="res://sprites/ui/rects/frame.png" id="1_7yyvj"]
 [ext_resource type="Texture2D" uid="uid://c723pij4wlsxl" path="res://sprites/currency.png" id="2_nvl3j"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fkivy"]
-texture = ExtResource("1_c6n5i")
-texture_margin_left = 3.0
-texture_margin_top = 4.0
-texture_margin_right = 3.0
-texture_margin_bottom = 4.0
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_g5u4c"]
+texture = ExtResource("1_7yyvj")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
 axis_stretch_vertical = 1
-modulate_color = Color(1, 1, 1, 0.662745)
 
 [node name="CoinBox" type="PanelContainer"]
-self_modulate = Color(1, 1, 1, 0.662745)
 z_index = 4
 anchors_preset = -1
-anchor_right = 0.05625
-anchor_bottom = 0.0833333
-theme_override_styles/panel = SubResource("StyleBoxTexture_fkivy")
+anchor_right = 0.06875
+anchor_bottom = 0.0916667
+theme_override_styles/panel = SubResource("StyleBoxTexture_g5u4c")
 metadata/_edit_use_anchors_ = true
 
 [node name="Grid" type="GridContainer" parent="."]

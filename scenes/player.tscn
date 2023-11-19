@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dph8pd3qblx44"]
+[gd_scene load_steps=15 format=3 uid="uid://dph8pd3qblx44"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_bsqet"]
 [ext_resource type="SpriteFrames" uid="uid://decjog7dp6jgi" path="res://resources/player.tres" id="2_p00mm"]
@@ -6,13 +6,25 @@
 [ext_resource type="Texture2D" uid="uid://qnrmj3whsmx0" path="res://sprites/light.png" id="4_7jsic"]
 [ext_resource type="Texture2D" uid="uid://cju6qf6nijxw3" path="res://sprites/shadow.png" id="4_8nt6r"]
 [ext_resource type="Script" path="res://scripts/camera.gd" id="4_wndim"]
-[ext_resource type="Script" path="res://scripts/guns/shotgun.gd" id="5_gs5rs"]
-[ext_resource type="Script" path="res://scripts/melee/sword.gd" id="6_n5gtl"]
 [ext_resource type="PackedScene" uid="uid://dyyfpg3oe0gjc" path="res://scenes/cost_box.tscn" id="7_48x62"]
-[ext_resource type="Script" path="res://scripts/upgrades/wings.gd" id="10_2lw6s"]
+[ext_resource type="Shader" path="res://misc/mask.gdshader" id="11_wrglk"]
+[ext_resource type="Shader" path="res://misc/mask2.gdshader" id="13_mf1ml"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_onp71"]
 size = Vector2(20, 6)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7mexb"]
+shader = ExtResource("11_wrglk")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_v7oa2"]
+viewport_path = NodePath("V")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wkdf5"]
+shader = ExtResource("13_mf1ml")
+shader_parameter/silhouette_color = Color(0.203922, 0.203922, 0.203922, 1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_b3ial"]
+viewport_path = NodePath("V")
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 visibility_layer = 2
@@ -26,14 +38,20 @@ position = Vector2(0, 2)
 shape = SubResource("RectangleShape2D_onp71")
 debug_color = Color(0.305882, 0.615686, 0.356863, 0.419608)
 
-[node name="Sprite" type="AnimatedSprite2D" parent="."]
+[node name="V" type="SubViewport" parent="."]
+transparent_bg = true
+canvas_item_default_texture_filter = 0
+size = Vector2i(32, 32)
+render_target_update_mode = 4
+
+[node name="Sprite" type="AnimatedSprite2D" parent="V"]
 visibility_layer = 2
-position = Vector2(0, -7)
+position = Vector2(16, 16)
 sprite_frames = ExtResource("2_p00mm")
 animation = &"front"
 autoplay = "front"
 
-[node name="Hat" type="Sprite2D" parent="Sprite"]
+[node name="Hat" type="Sprite2D" parent="V/Sprite"]
 visible = false
 position = Vector2(0, -4)
 texture = ExtResource("3_46xsb")
@@ -63,16 +81,9 @@ one_shot = true
 
 [node name="Light" type="PointLight2D" parent="."]
 range_z_max = 1
-range_item_cull_mask = 3
 shadow_enabled = true
 shadow_color = Color(0, 0, 0, 1)
 texture = ExtResource("4_7jsic")
-
-[node name="Gun" type="Node2D" parent="."]
-script = ExtResource("5_gs5rs")
-
-[node name="Melee" type="Node2D" parent="."]
-script = ExtResource("6_n5gtl")
 
 [node name="CoinBox" parent="." instance=ExtResource("7_48x62")]
 visible = false
@@ -84,7 +95,16 @@ anchor_bottom = -0.116667
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="WingsUpgrade" type="Node" parent="."]
-script = ExtResource("10_2lw6s")
+[node name="Mask" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_7mexb")
+position = Vector2(0, -7)
+texture = SubResource("ViewportTexture_v7oa2")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+z_index = 1
+z_as_relative = false
+material = SubResource("ShaderMaterial_wkdf5")
+position = Vector2(0, -7)
+texture = SubResource("ViewportTexture_b3ial")
 
 [connection signal="timeout" from="InvTimer" to="." method="_on_inv_timer_timeout"]

@@ -17,7 +17,7 @@ func _init():
 	health = 3
 
 func _ready():
-	call_deferred("actor_setup")
+	actor_setup.call_deferred()
 	nav_timer.start(rng.randf_range(2, 9))
 
 func _physics_process(delta):
@@ -70,7 +70,7 @@ func die():
 	if rng.randf() <= DROP_CHANCE:
 		var coin = CoinPickup.new()
 		coin.global_position = global_position
-		get_parent().call_deferred("add_child", coin)
+		get_parent().add_child.call_deferred(coin)
 	$CollisionShape2D.set_deferred("disabled", true)
 	queue_free()
 

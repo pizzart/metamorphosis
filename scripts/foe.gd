@@ -3,6 +3,7 @@ extends CharacterBody2D
 
 var health: int
 
+var sprite: AnimatedSprite2D
 var rng = RandomNumberGenerator.new()
 @onready var player = get_tree().get_first_node_in_group("player")
 

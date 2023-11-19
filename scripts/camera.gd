@@ -22,3 +22,6 @@ func shake():
 	var amount = pow(trauma, trauma_power)
 #	rotation = max_roll * amount * rand_range(-1, 1)
 	return Vector2(max_offset.x * amount * randf_range(-1, 1), max_offset.y * amount * randf_range(-1, 1))
+
+func override_trauma(amount: float):
+	trauma = amount

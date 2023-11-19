@@ -1,0 +1,94 @@
+[gd_scene load_steps=7 format=3 uid="uid://iwx7sruoi7vk"]
+
+[ext_resource type="Theme" uid="uid://t6wu146mxlyh" path="res://misc/theme.tres" id="1_470nb"]
+[ext_resource type="Script" path="res://scripts/shop.gd" id="1_ine4k"]
+[ext_resource type="Texture2D" uid="uid://30c5pave1ak4" path="res://sprites/ui/rects/frame.png" id="3_f8t7f"]
+[ext_resource type="Texture2D" uid="uid://otjho05rs8w3" path="res://sprites/disk.png" id="3_v26hx"]
+[ext_resource type="Texture2D" uid="uid://brgyum6y2aaeb" path="res://sprites/shop/niko_hat_big.png" id="4_ylgyy"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0en1i"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+texture = ExtResource("3_f8t7f")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+axis_stretch_vertical = 1
+
+[node name="Shop" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_470nb")
+script = ExtResource("1_ine4k")
+
+[node name="M" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Panel" type="PanelContainer" parent="M"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxTexture_0en1i")
+
+[node name="Texture" type="TextureRect" parent="M/Panel"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+texture = ExtResource("4_ylgyy")
+stretch_mode = 3
+
+[node name="H" type="HBoxContainer" parent="M"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Disk" type="TextureRect" parent="M/H"]
+layout_mode = 2
+texture = ExtResource("3_v26hx")
+stretch_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="ItemList" type="ItemList" parent="M"]
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 3
+
+[node name="V" type="VBoxContainer" parent="M"]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="Disks" type="HBoxContainer" parent="M/V"]
+layout_mode = 2
+
+[node name="Disk" type="TextureRect" parent="M/V/Disks"]
+visible = false
+layout_mode = 2
+texture = ExtResource("3_v26hx")
+stretch_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Buy" type="Button" parent="M/V"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+disabled = true
+text = "buy"
+
+[connection signal="item_selected" from="M/ItemList" to="." method="_on_item_list_item_selected"]
+[connection signal="pressed" from="M/V/Buy" to="." method="_on_buy_pressed"]

@@ -1,19 +1,18 @@
-[gd_scene load_steps=8 format=3 uid="uid://xijpue6425q1"]
+[gd_scene load_steps=10 format=3 uid="uid://xijpue6425q1"]
 
-[ext_resource type="Texture2D" uid="uid://diuosv8ka8uun" path="res://sprites/ui/bar_over.png" id="1_jgcq4"]
-[ext_resource type="Texture2D" uid="uid://cg2ptfwshkf6l" path="res://sprites/ui/health_progress.png" id="2_ba42w"]
-[ext_resource type="Texture2D" uid="uid://cub1t701b1251" path="res://sprites/ui/weight_progress.png" id="3_e57ry"]
-[ext_resource type="Texture2D" uid="uid://b7qkexmjknn2b" path="res://sprites/ui/buffer_progress.png" id="3_mbx27"]
+[ext_resource type="Texture2D" uid="uid://dogrw6x5yr343" path="res://sprites/ui/icons/health_icon.png" id="1_tplxv"]
+[ext_resource type="Texture2D" uid="uid://dw003jjwp1rud" path="res://sprites/ui/bars/bar_under.png" id="2_rrokg"]
+[ext_resource type="Texture2D" uid="uid://bxmb2sxca8l0c" path="res://sprites/ui/bars/health_bar.png" id="3_38w1o"]
+[ext_resource type="Texture2D" uid="uid://baeqg2vntco4s" path="res://sprites/ui/bars/buffer_bar.png" id="4_ljy2i"]
+[ext_resource type="Texture2D" uid="uid://ck3yuh5vrdp35" path="res://sprites/ui/icons/ammo_icon.png" id="5_u0nfg"]
+[ext_resource type="Texture2D" uid="uid://b0iolug1ygb4g" path="res://sprites/ui/bars/ammo_bar.png" id="6_ntrvi"]
+[ext_resource type="Texture2D" uid="uid://oqpnqpuoxo5p" path="res://sprites/ui/icons/weight_icon.png" id="7_7ib4y"]
+[ext_resource type="Texture2D" uid="uid://jkhmb2dfu05t" path="res://sprites/ui/bars/weight_bar.png" id="8_xntbo"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gc6vu"]
-content_margin_bottom = 3.0
-bg_color = Color(0.141176, 0.141176, 0.141176, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5yxo1"]
-bg_color = Color(0.862745, 0.733333, 0.466667, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dgymx"]
-bg_color = Color(0.87451, 0.458824, 0.466667, 1)
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_jmdyi"]
+color = Color(0.960784, 1, 0.909804, 1)
+grow_begin = 0.0
+grow_end = 0.0
 
 [node name="UI" type="CanvasLayer"]
 layer = 2
@@ -35,49 +34,43 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
 
-[node name="V" type="VBoxContainer" parent="Control/M"]
+[node name="Bars" type="HBoxContainer" parent="Control/M"]
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Health" type="VBoxContainer" parent="Control/M/Bars"]
+layout_mode = 2
 theme_override_constants/separation = 1
 
-[node name="Weight" type="ProgressBar" parent="Control/M/V"]
-visible = false
-custom_minimum_size = Vector2(80, 0)
+[node name="Icon" type="TextureRect" parent="Control/M/Bars/Health"]
 layout_mode = 2
-size_flags_horizontal = 8
-mouse_filter = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_gc6vu")
-theme_override_styles/fill = SubResource("StyleBoxFlat_5yxo1")
-fill_mode = 1
-show_percentage = false
+texture = ExtResource("1_tplxv")
+stretch_mode = 3
 
-[node name="Health" type="ProgressBar" parent="Control/M/V"]
-visible = false
-custom_minimum_size = Vector2(80, 0)
+[node name="Sep" type="HSeparator" parent="Control/M/Bars/Health"]
 layout_mode = 2
-size_flags_horizontal = 8
-mouse_filter = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_gc6vu")
-theme_override_styles/fill = SubResource("StyleBoxFlat_dgymx")
-max_value = 10.0
-value = 10.0
-show_percentage = false
+theme_override_constants/separation = 1
+theme_override_styles/separator = SubResource("StyleBoxLine_jmdyi")
 
-[node name="HealthBar" type="TextureProgressBar" parent="Control/M/V"]
+[node name="Bar" type="TextureProgressBar" parent="Control/M/Bars/Health"]
 layout_mode = 2
 mouse_filter = 2
 step = 0.01
 value = 50.0
-texture_over = ExtResource("1_jgcq4")
-texture_progress = ExtResource("2_ba42w")
+fill_mode = 2
+texture_under = ExtResource("2_rrokg")
+texture_progress = ExtResource("3_38w1o")
+texture_progress_offset = Vector2(1, 1)
 
-[node name="Buffer" type="TextureProgressBar" parent="Control/M/V/HealthBar"]
-show_behind_parent = true
+[node name="Buffer" type="TextureProgressBar" parent="Control/M/Bars/Health/Bar"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -85,25 +78,60 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 max_value = 15.0
-fill_mode = 1
-texture_progress = ExtResource("3_mbx27")
+value = 1.0
+fill_mode = 3
+texture_progress = ExtResource("4_ljy2i")
+texture_progress_offset = Vector2(1, 1)
 
-[node name="WeightBar" type="TextureProgressBar" parent="Control/M/V"]
+[node name="Ammo" type="VBoxContainer" parent="Control/M/Bars"]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="Icon" type="TextureRect" parent="Control/M/Bars/Ammo"]
+layout_mode = 2
+texture = ExtResource("5_u0nfg")
+stretch_mode = 3
+
+[node name="Sep" type="HSeparator" parent="Control/M/Bars/Ammo"]
+layout_mode = 2
+theme_override_constants/separation = 1
+theme_override_styles/separator = SubResource("StyleBoxLine_jmdyi")
+
+[node name="Bar" type="TextureProgressBar" parent="Control/M/Bars/Ammo"]
 layout_mode = 2
 mouse_filter = 2
 step = 0.01
 value = 50.0
-texture_over = ExtResource("1_jgcq4")
-texture_progress = ExtResource("3_e57ry")
+fill_mode = 2
+texture_under = ExtResource("2_rrokg")
+texture_progress = ExtResource("6_ntrvi")
+texture_progress_offset = Vector2(1, 1)
 
-[node name="AmmoBar" type="TextureProgressBar" parent="Control/M/V"]
+[node name="Weight" type="VBoxContainer" parent="Control/M/Bars"]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="Icon" type="TextureRect" parent="Control/M/Bars/Weight"]
+layout_mode = 2
+texture = ExtResource("7_7ib4y")
+stretch_mode = 3
+
+[node name="Sep" type="HSeparator" parent="Control/M/Bars/Weight"]
+layout_mode = 2
+theme_override_constants/separation = 1
+theme_override_styles/separator = SubResource("StyleBoxLine_jmdyi")
+
+[node name="Bar" type="TextureProgressBar" parent="Control/M/Bars/Weight"]
 layout_mode = 2
 mouse_filter = 2
+step = 0.01
 value = 50.0
-texture_over = ExtResource("1_jgcq4")
-texture_progress = ExtResource("3_e57ry")
+fill_mode = 2
+texture_under = ExtResource("2_rrokg")
+texture_progress = ExtResource("8_xntbo")
+texture_progress_offset = Vector2(1, 1)
 
-[node name="Coins" type="Label" parent="Control/M/V"]
+[node name="Coins" type="Label" parent="Control/M/Bars"]
 visible = false
 layout_mode = 2
 text = "0"

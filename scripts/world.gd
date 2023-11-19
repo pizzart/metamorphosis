@@ -20,26 +20,25 @@ var generator: Generator
 }
 
 func _ready():
-	if Global.equipped_hat != 0:
+	UI.show()
+	
+	if Global.equipped_hat != Global.Hat.None:
 		player.hat.show()
 		player.hat.texture = Global.HATS[Global.equipped_hat][1]
 	
-	play_music("%s_intense" % Generator.AREA_NAMES[Global.current_area])
 	generator = Generator.new(player, tilemap)
-	if Global.current_area == Generator.Area.City:
-		generator.current_area = Generator.Area.City
 	add_child(generator)
 	if Global.current_area == Generator.Area.City:
 #		generator.generate_map_full(Generator.ISLAND_SIZE)
+		play_music("%s_calm" % Generator.AREA_NAMES[Global.current_area])
 		generator.generate_town()
 	else:
-		generator.generate_town()
-#		generator.generate_map_full(Generator.ISLAND_SIZE)
-#	generator.generate_boss()
-#	$Window.world_2d = get_window().world_2d
+		play_music("%s_intense" % Generator.AREA_NAMES[Global.current_area])
+		generator.generate_map_full(Generator.ISLAND_SIZE)
+#		add_child(preload("res://scenes/finale.tscn").instantiate())
 
 func _process(delta):
-	if generator.current_area == Generator.Area.Sky:
+	if Global.current_area == Generator.Area.Sky:
 		$SkyBG/ParallaxLayer.motion_offset.x -= delta * 10
 		$SkyBG/ParallaxLayer3.motion_offset.x -= delta * 7
 		$SkyBG/ParallaxLayer4.motion_offset.x -= delta * 13
@@ -71,16 +70,26 @@ func init_boss_1():
 
 func init_boss3():
 	var boss = BOSS3.instantiate()
-	call_deferred("add_child", boss)
+	add_child.call_deferred(boss)
 	play_music("boss3")
+
+func init_finale():
+	fade_music_out(10)
+	player.global_position = Vector2.ZERO
+	add_child.call_deferred(preload("res://scenes/finale.tscn").instantiate())
 
 func play_music(key: String):
 	mus[key].play()
 
 func transition_music(key1: String, key2: String):
 	var tween = create_tween().set_parallel()
-	tween.tween_property(mus[key1], "volume_db", -80, 5.0).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
-	tween.tween_property(mus[key2], "volume_db", 0, 5.0).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+	tween.tween_property(mus[key1], "volume_db", -80, 3.0).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
+	tween.tween_property(mus[key2], "volume_db", 0, 3.0).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
 	mus[key2].volume_db = -80
 	mus[key2].play()
 	mus[key2].seek(mus[key1].get_playback_position())
+
+func fade_music_out(time: float):
+	for music in mus.values():
+		var tween = create_tween()
+		tween.tween_property(music, "volume_db", -80, time).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)

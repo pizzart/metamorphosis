@@ -44,6 +44,7 @@ func _physics_process(delta):
 
 func set_by_player():
 	type = BulletType.PLAYER
+	set_collision_mask_value(1, false)
 	set_collision_mask_value(2, true)
 	sprite.material = preload("res://misc/outline_mat_player.tres")
 
@@ -54,7 +55,7 @@ func set_by_enemy():
 
 func _on_body_entered(body):
 	# reads mask layer 2: enemy
-	if type == BulletType.PLAYER and (body.is_in_group("enemy") or body.is_in_group("enemy")):
+	if type == BulletType.PLAYER and body.is_in_group("enemy"):
 		body.hit(damage, velocity.normalized() * 70)
 	if type == BulletType.ENEMY and body.is_in_group("player"):
 		body.hit(damage)

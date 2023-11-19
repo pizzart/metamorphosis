@@ -1,14 +1,16 @@
 extends Interactable
 
+signal dialogue_finished
+
 const DIALOGUE_BOX = preload("res://scenes/dialogue_box.tscn")
 #const LINES = preload("res://resources/dialogue_lines/area_1/3.tres")
 const CHARACTER_SIZE = 8
 const BOX_OFFSET = Vector2(8, -30)
 
-var lines: DialogueLines
 var current_line: int = -1
 var visible_ratio: float
 
+@export var lines: DialogueLines
 @onready var dialogue_box = DIALOGUE_BOX.instantiate()
 @onready var label = dialogue_box.get_node("Text")
 
@@ -34,6 +36,7 @@ func _input(event):
 			player.can_move = true
 			label.text = ""
 			visible_ratio = 0
+			dialogue_finished.emit()
 			return
 		
 		player.can_move = false

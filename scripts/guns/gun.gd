@@ -1,7 +1,6 @@
 class_name Gun
 extends Weapon
 
-const BULLET = preload("res://scenes/bullet.tscn")
 const HAND_SPRITE = preload("res://sprites/hand.png")
 
 var ammo_cost: int
@@ -25,7 +24,10 @@ func _input(event):
 
 func attack():
 	super.attack()
-	player.cam.add_trauma(0.3)
+	scale = Vector2(0.75, 1.25)
+	var tween = create_tween()
+	tween.tween_property(self, "scale", Vector2.ONE, 0.2)
+	player.cam.add_trauma(0.2)
 	player.ammo -= ammo_cost
 
 func send_bullet():

@@ -1,23 +1,22 @@
 [gd_scene load_steps=4 format=3 uid="uid://t8rkttity1vt"]
 
-[ext_resource type="Texture2D" uid="uid://dnrvqqrn1kt3u" path="res://sprites/ui/panel.png" id="1_l6f7w"]
+[ext_resource type="Texture2D" uid="uid://30c5pave1ak4" path="res://sprites/ui/rects/frame.png" id="1_gw41f"]
 [ext_resource type="FontFile" uid="uid://b8fccd6b7ns3m" path="res://misc/font.png" id="2_xf0i6"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1835m"]
-texture = ExtResource("1_l6f7w")
-texture_margin_left = 3.0
-texture_margin_top = 4.0
-texture_margin_right = 3.0
-texture_margin_bottom = 4.0
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_o8ai0"]
+texture = ExtResource("1_gw41f")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
 axis_stretch_vertical = 1
 
 [node name="DialogueBox" type="PanelContainer"]
-self_modulate = Color(1, 1, 1, 0.662745)
 z_index = 4
 anchors_preset = -1
 anchor_right = 0.484375
 anchor_bottom = 0.208333
-theme_override_styles/panel = SubResource("StyleBoxTexture_1835m")
+theme_override_styles/panel = SubResource("StyleBoxTexture_o8ai0")
 metadata/_edit_use_anchors_ = true
 
 [node name="Text" type="RichTextLabel" parent="."]
