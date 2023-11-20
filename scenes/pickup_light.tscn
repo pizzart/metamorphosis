@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://ckqsnalecc32"]
+
+[ext_resource type="Texture2D" uid="uid://qnrmj3whsmx0" path="res://sprites/light.png" id="1_mcbm2"]
+
+[node name="PickupLight" type="PointLight2D"]
+range_z_max = 1
+shadow_enabled = true
+shadow_color = Color(0, 0, 0, 1)
+texture = ExtResource("1_mcbm2")
+texture_scale = 0.4

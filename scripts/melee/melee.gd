@@ -1,12 +1,17 @@
 class_name Melee
 extends Weapon
 
+const SWIPE_PARTICLES = preload("res://scenes/particles/swipe_particles.tscn")
 const OFFSET_ATTACK = 40
 
 var buffered: bool
+var swipe_particles: CPUParticles2D
 
 func _init(_recharge_speed: float, _weight: int, _knockback: float, _texture: Texture2D, _weapon_name: String):
 	super._init(_recharge_speed, _weight, _knockback, _texture, _weapon_name)
+	
+	swipe_particles = SWIPE_PARTICLES.instantiate()
+	sprite.add_child(swipe_particles)
 
 func _process(delta):
 	super._process(delta)
@@ -21,10 +26,13 @@ func _input(event):
 		buffered = false
 
 func swing_sprite():
+	swipe_particles.emitting = true
 	var tween = create_tween()
 	offset_rotation = PI / 3
 	tween.tween_property(self, "offset_rotation", -PI / 3, 0.2).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "offset_rotation", 0, 0.3).set_trans(Tween.TRANS_CUBIC)
+	await tween.finished
+	swipe_particles.emitting = false
 
 func _on_timer_timeout():
 	super._on_timer_timeout()

@@ -44,9 +44,12 @@ var current_area: Generator.Area = Generator.Area.Sky
 var equipped_hat: int = Hat.None
 var unlocked_items: Array[Item] = []
 var unlocked_hats: Array[Hat] = []
-var purchasable_items: Array[Item] = [Item.Wings]
-var purchasable_hats: Array[Hat] = [Hat.Top, Hat.Niko]
+var purchasable_items: Array[Item] = []
+var purchasable_hats: Array[Hat] = []
 var timer: float
+
+var init_gun: Gun = Pistol.new()
+var init_melee: Melee = Sword.new()
 
 var weapon_pool = {
 	"gun": [
@@ -61,18 +64,32 @@ var weapon_pool = {
 	]
 }
 var enemy_pool = {
-	0: [Birdie, BigBird, FlyingBird],
-	1: [Birdie, BigBird, FlyingBird],
-	2: [Birdie, BigBird, FlyingBird],
+	0: {
+		Birdie: 5,
+		BigBird: 2,
+		FlyingBird: 3,
+	},
+	1: {
+		Birdie: 2,
+		BigBird: 2,
+		FlyingBird: 3,
+		Policeman: 5,
+	},
+	2: {
+		Birdie: 3,
+		BigBird: 3,
+		FlyingBird: 3,
+		Policeman: 3,
+	},
 }
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
 func freeze_frame():
-	get_tree().paused = true
-	await get_tree().create_timer(0.09).timeout
-	get_tree().paused = false
+	Engine.time_scale = 0.01
+	await get_tree().create_timer(0.1, true, false, true).timeout
+	Engine.time_scale = 1
 
 func set_shader_param(value, _name: String):
 	RenderingServer.global_shader_parameter_set(_name, value)

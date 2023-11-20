@@ -15,8 +15,8 @@ var generator: Generator
 	"abyss_intense": $MusicAbyssIntense,
 	"city_calm": $MusicCityCalm,
 	"city_intense": $MusicCityIntense,
-	"sky_calm": $MusicCityCalm,
-	"sky_intense": $MusicCityIntense,
+	"sky_calm": $MusicSkyCalm,
+	"sky_intense": $MusicSkyIntense,
 }
 
 func _ready():
@@ -33,6 +33,7 @@ func _ready():
 	if Global.current_area == Generator.Area.City:
 #		generator.generate_map_full(Generator.ISLAND_SIZE)
 		play_music("%s_calm" % Generator.AREA_NAMES[Global.current_area])
+		generator.current_map = 2
 		generator.generate_town()
 	else:
 		play_music("%s_intense" % Generator.AREA_NAMES[Global.current_area])

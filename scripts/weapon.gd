@@ -34,8 +34,7 @@ func _init(_recharge_speed: float, _weight: int, _knockback: float, _texture: Te
 	add_child(timer)
 	add_child(sprite)
 	
-	z_index = -1
-#	Global.weapon_pool.append(weapon_name)
+	y_sort_enabled = true
 
 func _process(delta):
 	if is_equipped:

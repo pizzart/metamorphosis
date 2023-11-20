@@ -4,6 +4,8 @@ var equipped_item: int = 0
 var equipped_hat: int = Global.equipped_hat
 
 func _ready():
+	Global.init_gun = Pistol.new()
+	Global.init_melee = Sword.new()
 	RenderingServer.global_shader_parameter_set("vignette_opacity", Global.VIGNETTE_OPACITY)
 	UI.hide()
 

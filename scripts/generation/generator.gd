@@ -6,24 +6,31 @@ enum GenerationType {
 	Intermission,
 	Boss,
 	Town,
+	Finale,
 }
 
 enum Area {
 	Sky,
 	City,
 	Abyss,
-} 
+}
 
-const AREA_TILES = {
-	0: [1, 2],
-	1: [3, 4],
-	2: [5, 6],
+const AREA_TEXTURES = {
+	Area.Sky: [preload("res://sprites/tilesets/tiles_1.png"), preload("res://sprites/tilesets/bottom_tile_1.png")],
+	Area.City: [preload("res://sprites/tilesets/tiles_2.png"), preload("res://sprites/tilesets/bottom_tile_2.png")],
+	Area.Abyss: [preload("res://sprites/tilesets/tiles_3.png"), preload("res://sprites/tilesets/bottom_tile_3.png")],
 }
 
 const AREA_NAMES = {
 	Area.Sky: "sky",
 	Area.City: "city",
 	Area.Abyss: "abyss",
+}
+
+const AREA_SIZES = {
+	Area.Sky: 9,
+	Area.City: 20,
+	Area.Abyss: 25,
 }
 
 const ISLAND_SIZE = 9
@@ -33,6 +40,8 @@ const INTERMISSION_SIZE = 5
 const TOWN_SIZE = 15
 const MAP_COUNT = 2
 const MIN_TELEPORTER_DISTANCE = 50
+const TERRAIN_ID = 1
+const BOTTOM_ID = 2
 
 const GLITCH_MAT = preload("res://misc/glitch_mat.tres")
 
@@ -42,9 +51,10 @@ const EXIT = preload("res://scenes/exit.tscn")
 const WINDOW = preload("res://scenes/window.tscn")
 const BOSS = preload("res://scenes/bosses/boss_1.tscn")
 const VENDING = preload("res://scenes/vending_machine.tscn")
+const TREE = preload("res://scenes/tree.tscn")
 
 var rng = RandomNumberGenerator.new()
-var current_map: int = 2
+var current_map: int = 0
 var last_player_spawn: Vector2
 
 var player: Player
@@ -109,6 +119,7 @@ func generate_town():
 	place_player(exit_placement)
 	place_npcs()
 	place_vending()
+	place_props()
 
 func generate_boss_1():
 	cleanup()
@@ -120,13 +131,13 @@ func generate_boss_1():
 func generate_boss3():
 	cleanup()
 	tilemap.set_pattern(0, Vector2i.ZERO, tilemap.tile_set.get_pattern(1))
-	var exit_placement = place_exit(GenerationType.Town)
+	var exit_placement = place_exit(GenerationType.Finale)
 	place_player(exit_placement)
 	world.init_boss3()
 
 func place_player(exit_placement: Vector2):
 	var placement = Vector2i.ZERO
-	for cell in tilemap.get_used_cells_by_id(0, AREA_TILES[Global.current_area][0]):
+	for cell in tilemap.get_used_cells_by_id(0, TERRAIN_ID):
 		if Vector2(cell).distance_to(exit_placement) > Vector2(placement).distance_to(exit_placement):
 			placement = cell
 	player.global_position = tilemap.map_to_local(placement)
@@ -141,11 +152,11 @@ func place_islands(count: int, size: int):
 			island_start = Vector2i(rng.randi_range(-ISLAND_SPREAD, ISLAND_SPREAD), rng.randi_range(-ISLAND_SPREAD, ISLAND_SPREAD))
 		cells.append_array(place_tile(cells, size, island_start, 0.8))
 		init_positions.append(tilemap.map_to_local(island_start))
-	tilemap.set_cells_terrain_connect(0, cells, Global.current_area, 0)
+	tilemap.set_cells_terrain_connect(0, cells, 0, 0)
 	var borders = place_borders(cells)
 	for cell in borders.keys():
 		if borders[cell]:
-			tilemap.set_cell(0, cell, AREA_TILES[Global.current_area][1], Vector2i.ZERO)
+			tilemap.set_cell(0, cell, BOTTOM_ID, Vector2i.ZERO)
 		else:
 			tilemap.set_cell(0, cell, 0, Vector2i.ZERO)
 	return init_positions
@@ -181,7 +192,7 @@ func place_borders(used_cells: Array[Vector2i]):
 	return border_cells
 
 func place_enemies(count: int):
-	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, AREA_TILES[Global.current_area][0])
+	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
 	var placements = []
 	for i in range(count):
 		if not cells.is_empty():
@@ -190,14 +201,14 @@ func place_enemies(count: int):
 				j = rng.randi() % cells.size()
 			placements.append(cells.pop_at(j))
 	for placement in placements:
-		var enemy = Global.enemy_pool[Global.current_area].pick_random().new()
+		var enemy = choose(Global.enemy_pool[Global.current_area]).new()
 		enemy.global_position = tilemap.map_to_local(placement)
 		if Global.current_area == Area.Abyss:
 			enemy.sprite.modulate = Color.BLACK
 		world.add_child.call_deferred(enemy)
 
 func place_walls(chance: float):
-	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, AREA_TILES[Global.current_area][0])
+	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
 	var new_cells: Array[Vector2i] = []
 	for cell in cells:
 		if rng.randf() > chance:
@@ -227,17 +238,17 @@ func place_walls(chance: float):
 						if not cell + dir in cells:
 							cells.append(cell + dir)
 							new_cells.append(cell + dir)
-	tilemap.set_cells_terrain_connect(0, cells, Global.current_area, 0)
+	tilemap.set_cells_terrain_connect(0, cells, 0, 0)
 	for cell in new_cells:
 		for dir in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]:
 			if not cell + dir in tilemap.get_surrounding_cells(cell):
 				var tile = 0
 				if dir == Vector2i.DOWN:
-					tile = AREA_TILES[Global.current_area][1]
+					tile = BOTTOM_ID
 				tilemap.set_cell(0, cell + dir, tile, Vector2i.ZERO)
 
 func place_exit(next_gen_type: GenerationType) -> Vector2i:
-	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, AREA_TILES[Global.current_area][0])
+	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
 	var placement = cells[0]
 	var center = tilemap.get_used_rect().get_center()
 	for cell in cells:
@@ -250,7 +261,7 @@ func place_exit(next_gen_type: GenerationType) -> Vector2i:
 	return placement
 
 func place_pickups():
-	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, AREA_TILES[Global.current_area][0])
+	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
 	var placement = cells.pop_at(rng.randi() % cells.size())
 	while not placement + Vector2i.LEFT in cells and not placement + Vector2i.RIGHT in cells and not cells.is_empty():
 		placement = cells.pop_at(rng.randi() % cells.size())
@@ -270,7 +281,7 @@ func place_pickups():
 func place_npcs():
 	var dialogues: Array = Global.DIALOGUES.get(Global.current_area, []).duplicate()
 	
-	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, AREA_TILES[Global.current_area][0])
+	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
 	var placements = []
 	for i in range(3):
 		if not cells.is_empty():
@@ -287,10 +298,16 @@ func place_npcs():
 		world.add_child.call_deferred(npc)
 
 func place_vending():
-	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, AREA_TILES[Global.current_area][0])
+	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
 	var vending = VENDING.instantiate()
 	vending.global_position = tilemap.map_to_local(cells.pick_random())
 	world.add_child.call_deferred(vending)
+
+func place_props():
+	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
+	var tree = TREE.instantiate()
+	tree.global_position = tilemap.map_to_local(cells.pick_random())
+	world.add_child.call_deferred(tree)
 
 func cleanup():
 	tilemap.clear()
@@ -301,6 +318,8 @@ func cleanup():
 	get_tree().call_group("cleanup", "queue_free")
 
 func update_surroundings():
+	tilemap.tile_set.get_source(TERRAIN_ID).texture = AREA_TEXTURES[Global.current_area][0]
+	tilemap.tile_set.get_source(BOTTOM_ID).texture = AREA_TEXTURES[Global.current_area][1]
 	match Global.current_area:
 		Area.City:
 			world.get_node("SkyBG").hide()
@@ -318,6 +337,27 @@ func update_surroundings():
 			world.get_node("AbyssBG/ParallaxLayer/Sprite2D").material = GLITCH_MAT
 			tilemap.material = GLITCH_MAT
 
+func choose(dict: Dictionary):
+	var sum: float = 0
+	for val in dict.values():
+		sum += val
+
+	var normalized_weights = []
+
+	for val in dict.values():
+		normalized_weights.append(val / sum)
+
+	var rnd = rng.randf()
+
+	var i = 0
+	var summer: float = 0
+
+	for val in normalized_weights:
+		summer += val
+		if summer >= rnd:
+			return dict.keys()[i]
+		i += 1
+
 func _on_exit_entered(_body: Node2D, next_gen_type: GenerationType):
 	match next_gen_type:
 		GenerationType.Action:
@@ -328,10 +368,7 @@ func _on_exit_entered(_body: Node2D, next_gen_type: GenerationType):
 			else:
 				current_map += 1
 				world.transition_music("%s_calm" % AREA_NAMES[Global.current_area], "%s_intense" % AREA_NAMES[Global.current_area])
-			var island_size = ISLAND_SIZE
-			if Global.current_area == Area.City:
-				island_size = ISLAND_CITY_SIZE
-			generate_map_full(island_size)
+			generate_map_full(AREA_SIZES[Global.current_area])
 		GenerationType.Intermission:
 			generate_intermission()
 			world.transition_music("%s_intense" % AREA_NAMES[Global.current_area], "%s_calm" % AREA_NAMES[Global.current_area])
@@ -340,12 +377,15 @@ func _on_exit_entered(_body: Node2D, next_gen_type: GenerationType):
 				Area.Sky:
 					generate_boss_1()
 				Area.City:
+					Global.init_gun = player.gun.duplicate(4)
+					Global.init_melee = player.melee.duplicate(4)
 					get_tree().change_scene_to_file("res://scenes/3d/world_3d.tscn")
 				Area.Abyss:
 					generate_boss3()
 		GenerationType.Town:
-			if Global.current_area == Area.Abyss:
-				cleanup()
-				world.init_finale()
-			else:
-				generate_town()
+			Global.purchasable_hats.append(Global.current_area + 1)
+			Global.purchasable_items.append(Global.current_area + 1)
+			generate_town()
+		GenerationType.Finale:
+			cleanup()
+			world.init_finale()

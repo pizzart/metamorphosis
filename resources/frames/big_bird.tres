@@ -1,0 +1,56 @@
+[gd_resource type="SpriteFrames" load_steps=7 format=3 uid="uid://c7p2sxog0rfxu"]
+
+[ext_resource type="Texture2D" uid="uid://w46i6fu6rj77" path="res://sprites/enemies/big_bird.png" id="1_q7elj"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y44wy"]
+atlas = ExtResource("1_q7elj")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qjjti"]
+atlas = ExtResource("1_q7elj")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5m8cb"]
+atlas = ExtResource("1_q7elj")
+region = Rect2(0, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j0bvc"]
+atlas = ExtResource("1_q7elj")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tsw64"]
+atlas = ExtResource("1_q7elj")
+region = Rect2(32, 0, 32, 32)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y44wy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qjjti")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5m8cb")
+}],
+"loop": true,
+"name": &"dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j0bvc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tsw64")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]

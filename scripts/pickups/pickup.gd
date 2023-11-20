@@ -1,6 +1,7 @@
 class_name Pickup
 extends Interactable
 
+const LIGHT = preload("res://scenes/pickup_light.tscn")
 var sprite = Sprite2D.new()
 
 func _init(shape: Shape2D, texture: Texture2D):
@@ -10,6 +11,8 @@ func _init(shape: Shape2D, texture: Texture2D):
 	sprite.texture = texture
 	add_child(collision_shape)
 	add_child(sprite)
+	
+	sprite.add_child(LIGHT.instantiate())
 
 	add_to_group("pickup")
 	

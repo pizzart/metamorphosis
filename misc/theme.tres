@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=14 format=3 uid="uid://t6wu146mxlyh"]
+[gd_resource type="Theme" load_steps=15 format=3 uid="uid://t6wu146mxlyh"]
 
 [ext_resource type="Texture2D" uid="uid://ca0dl75ixmul" path="res://sprites/ui/rects/button_disabled.png" id="1_uayas"]
 [ext_resource type="Texture2D" uid="uid://dcjragarjiw2e" path="res://sprites/ui/rects/button_hover.png" id="2_toqw2"]
@@ -64,6 +64,14 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_elu4j"]
+texture = ExtResource("4_i4ktg")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+axis_stretch_vertical = 1
+
 [resource]
 default_font = ExtResource("5_7e85i")
 Button/styles/disabled = SubResource("StyleBoxTexture_7gdyh")
@@ -77,3 +85,4 @@ ItemList/styles/hovered = SubResource("StyleBoxTexture_mx3jo")
 ItemList/styles/panel = SubResource("StyleBoxTexture_hgf17")
 ItemList/styles/selected = SubResource("StyleBoxTexture_vyy0s")
 ItemList/styles/selected_focus = SubResource("StyleBoxTexture_mx3jo")
+PanelContainer/styles/panel = SubResource("StyleBoxTexture_elu4j")

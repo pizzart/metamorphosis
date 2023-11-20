@@ -21,17 +21,17 @@ axis_stretch_vertical = 1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1bnhc"]
 shader = ExtResource("6_wrmtl")
-shader_parameter/scanlines_shown = false
+shader_parameter/scanlines_shown = true
 shader_parameter/curvature_shown = false
 shader_parameter/warp_shown = false
 shader_parameter/aberration_amount = 1.0
 shader_parameter/static_intensity = 0.0
 shader_parameter/time_scale = 1.0
 shader_parameter/warp_amount = 0.05
-shader_parameter/scanlines_opacity = 0.1
-shader_parameter/scanlines_amount = 100.0
-shader_parameter/scanlines_speed = 0.02
-shader_parameter/scanlines_width = 0.2
+shader_parameter/scanlines_opacity = 0.03
+shader_parameter/scanlines_amount = 70.0
+shader_parameter/scanlines_speed = -0.004
+shader_parameter/scanlines_width = 0.1
 shader_parameter/bloom_threshold = 0.2
 shader_parameter/bloom_strength = 1.0
 shader_parameter/bloom_size = 4.0

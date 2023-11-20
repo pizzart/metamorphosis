@@ -27,7 +27,7 @@ shader_parameter/AMT = 0.1
 shader_parameter/SPEED = 0.6
 
 [node name="FX" type="CanvasLayer"]
-layer = 3
+layer = 4
 
 [node name="Overlay" type="TextureRect" parent="."]
 anchors_preset = 15

@@ -49,6 +49,8 @@ func make_inactive():
 func _on_body_entered(body):
 	player = body
 	inside = true
+	UI.show_help()
 
 func _on_body_exited(body):
 	inside = false
+	UI.hide_help()

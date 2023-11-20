@@ -3,15 +3,15 @@
 [ext_resource type="Texture2D" uid="uid://b5lvjuiplx0kp" path="res://icon.svg" id="1_yl3ep"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2kcqq"]
-size = Vector2(24, 24)
+size = Vector2(32, 32)
 
 [node name="Exit" type="Area2D" groups=["exit"]]
 z_index = -1
 collision_layer = 0
 
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_yl3ep")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_2kcqq")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("1_yl3ep")

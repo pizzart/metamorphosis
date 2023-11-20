@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://cfmk7lrsjvms4"]
+
+[sub_resource type="Curve" id="Curve_on3v6"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="SwipeParticles" type="CPUParticles2D"]
+amount = 30
+emission_shape = 3
+emission_rect_extents = Vector2(5, 5)
+gravity = Vector2(0, 0)
+scale_amount_min = 2.15
+scale_amount_max = 2.85
+scale_amount_curve = SubResource("Curve_on3v6")

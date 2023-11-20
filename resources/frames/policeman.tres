@@ -1,0 +1,42 @@
+[gd_resource type="SpriteFrames" load_steps=5 format=3 uid="uid://b5i48lrn5tpcs"]
+
+[ext_resource type="Texture2D" uid="uid://bhfcjkasqwux3" path="res://sprites/enemies/policeman.png" id="1_6y5pl"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rntnt"]
+atlas = ExtResource("1_6y5pl")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5fc72"]
+atlas = ExtResource("1_6y5pl")
+region = Rect2(0, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yjsr2"]
+atlas = ExtResource("1_6y5pl")
+region = Rect2(0, 0, 32, 32)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rntnt")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5fc72")
+}],
+"loop": false,
+"name": &"dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yjsr2")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}]

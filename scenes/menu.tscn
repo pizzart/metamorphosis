@@ -1,10 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://c3au5c0hj6olp"]
 
-[ext_resource type="FontFile" uid="uid://bolgg3n6g0m3n" path="res://misc/fontreadable.png" id="1_s6p6v"]
-
-[sub_resource type="Theme" id="Theme_xs6pa"]
-default_font = ExtResource("1_s6p6v")
-Fonts/fonts/normal = ExtResource("1_s6p6v")
+[ext_resource type="Theme" uid="uid://t6wu146mxlyh" path="res://misc/theme.tres" id="1_l8qyt"]
+[ext_resource type="Script" path="res://scripts/menu.gd" id="2_516qa"]
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -13,10 +10,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = SubResource("Theme_xs6pa")
+theme = ExtResource("1_l8qyt")
+script = ExtResource("2_516qa")
 metadata/_edit_horizontal_guides_ = [-44.0]
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="M" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -28,57 +26,75 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-custom_minimum_size = Vector2(150, 0)
-layout_mode = 2
-size_flags_horizontal = 4
-alignment = 1
-
-[node name="Button" type="Button" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "start game"
-
-[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "settings"
-
-[node name="Button3" type="Button" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "quit"
-
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
+[node name="Main" type="PanelContainer" parent="M"]
 visible = false
+custom_minimum_size = Vector2(200, 100)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer"]
+[node name="List" type="VBoxContainer" parent="M/Main"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Start" type="Button" parent="M/Main/List"]
+layout_mode = 2
+text = "START GAME"
+
+[node name="Settings" type="Button" parent="M/Main/List"]
+layout_mode = 2
+text = "SETTINGS"
+
+[node name="Quit" type="Button" parent="M/Main/List"]
+layout_mode = 2
+text = "QUIT"
+
+[node name="Settings" type="PanelContainer" parent="M"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="List" type="VBoxContainer" parent="M/Settings"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
+[node name="Music" type="HBoxContainer" parent="M/Settings/List"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="M/Settings/List/Music"]
 layout_mode = 2
 text = "music"
 
-[node name="HSlider" type="HSlider" parent="MarginContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="HSlider" type="HSlider" parent="M/Settings/List/Music"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 max_value = 10.0
 value = 10.0
 tick_count = 10
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
+[node name="Sound" type="HBoxContainer" parent="M/Settings/List"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="M/Settings/List/Sound"]
 layout_mode = 2
 text = "sound"
 
-[node name="HSlider" type="HSlider" parent="MarginContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+[node name="HSlider" type="HSlider" parent="M/Settings/List/Sound"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 max_value = 10.0
 value = 10.0
 tick_count = 10
+
+[node name="Back" type="Button" parent="M/Settings/List"]
+layout_mode = 2
+text = "BACK"
+
+[connection signal="mouse_entered" from="M/Main/List/Start" to="." method="_on_start_mouse_entered"]
+[connection signal="mouse_exited" from="M/Main/List/Start" to="." method="_on_start_mouse_exited"]
+[connection signal="pressed" from="M/Main/List/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="M/Main/List/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="M/Main/List/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="M/Settings/List/Back" to="." method="_on_back_pressed"]

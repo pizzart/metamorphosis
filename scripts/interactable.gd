@@ -19,9 +19,11 @@ func _on_body_entered(body):
 		if i != self:
 			i.unfocus()
 	can_interact = true
+	UI.show_help()
 
 func _on_body_exited(_body):
 	unfocus()
 
 func unfocus():
 	can_interact = false
+	UI.hide_help()

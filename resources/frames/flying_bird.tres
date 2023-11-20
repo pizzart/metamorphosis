@@ -1,14 +1,37 @@
-[gd_resource type="SpriteFrames" load_steps=2 format=3 uid="uid://oh8eelaa850f"]
+[gd_resource type="SpriteFrames" load_steps=5 format=3 uid="uid://oh8eelaa850f"]
 
 [ext_resource type="Texture2D" uid="uid://c07ev4ugd7otv" path="res://sprites/enemies/flying_bird.png" id="1_shjt5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w74gc"]
+atlas = ExtResource("1_shjt5")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xmhys"]
+atlas = ExtResource("1_shjt5")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ejwhc"]
+atlas = ExtResource("1_shjt5")
+region = Rect2(32, 0, 32, 32)
 
 [resource]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_shjt5")
+"texture": SubResource("AtlasTexture_w74gc")
+}],
+"loop": true,
+"name": &"dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xmhys")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ejwhc")
 }],
 "loop": true,
 "name": &"idle",
-"speed": 8.0
+"speed": 4.0
 }]

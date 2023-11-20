@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://64kdpv3e4j6m"]
+[gd_scene load_steps=26 format=3 uid="uid://64kdpv3e4j6m"]
 
 [ext_resource type="Script" path="res://scripts/world.gd" id="1_eoi30"]
 [ext_resource type="PackedScene" uid="uid://dph8pd3qblx44" path="res://scenes/player.tscn" id="1_wk3e0"]
@@ -20,6 +20,8 @@
 [ext_resource type="AudioStream" uid="uid://dxjxmgo3vvmu0" path="res://audio/mus/mystique_intense.ogg" id="18_jg8vn"]
 [ext_resource type="AudioStream" uid="uid://ciduq3e1emkqf" path="res://audio/mus/city_calm.ogg" id="19_vdfrj"]
 [ext_resource type="AudioStream" uid="uid://dry5bp5aqvye" path="res://audio/mus/city_intense.ogg" id="20_0pcfj"]
+[ext_resource type="AudioStream" uid="uid://by7ulyq7o5uba" path="res://audio/mus/sky_calm.ogg" id="21_0pm0g"]
+[ext_resource type="AudioStream" uid="uid://trubuidkt3k7" path="res://audio/mus/sky_intense.ogg" id="22_o54vx"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_k3f30"]
 noise_type = 5
@@ -208,7 +210,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="SkyModulate" type="CanvasModulate" parent="."]
-color = Color(0.752941, 0.658824, 0.52549, 1)
+color = Color(0.713726, 0.619608, 0.482353, 1)
 
 [node name="CityModulate" type="CanvasModulate" parent="."]
 visible = false
@@ -236,4 +238,12 @@ bus = &"mus"
 
 [node name="MusicCityIntense" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("20_0pcfj")
+bus = &"mus"
+
+[node name="MusicSkyCalm" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("21_0pm0g")
+bus = &"mus"
+
+[node name="MusicSkyIntense" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("22_o54vx")
 bus = &"mus"

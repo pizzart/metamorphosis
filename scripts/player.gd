@@ -1,6 +1,8 @@
 class_name Player
 extends CharacterBody2D
 
+const PARTICLES = preload("res://scenes/particles/hit_particles.tscn")
+
 const INIT_AMMO = 100
 const INIT_SPEED = 120
 const INIT_HEALTH = 15
@@ -18,19 +20,22 @@ var weight: int = 0
 var max_ammo: float = INIT_AMMO
 var ammo: float = max_ammo
 var coins: int = 0
-var coins_visible: bool
+var coins_visible: bool = false
+var health_packs: int = 0
 
 var rng = RandomNumberGenerator.new()
 
 @onready var cam: Camera2D = $Camera
-@onready var gun: Gun = Pistol.new()
-@onready var melee: Melee = Sword.new()
+@onready var gun: Gun
+@onready var melee: Melee
 @onready var shadow = $Shadow
 @onready var coin_box = $CoinBox
 @onready var hat = $V/Sprite/Hat
 @onready var sprite = $V/Sprite
 
 func _ready():
+	gun = Global.init_gun
+	melee = Global.init_melee
 	add_child(gun)
 	add_child(melee)
 	add_child(WingsUpgrade.new())
@@ -104,7 +109,7 @@ func _input(event):
 func knockback(value: Vector2):
 	offset_velocity += value
 
-func hit(damage: int):
+func hit(damage: int, force: Vector2):
 	if invincible:
 		return
 	
@@ -118,6 +123,11 @@ func hit(damage: int):
 	
 	invincible = true
 	$InvTimer.start()
+	
+	var particles = PARTICLES.instantiate()
+	particles.global_position = global_position
+	particles.rotation = force.angle()
+	get_parent().add_child(particles)
 	
 	cam.add_trauma(float(damage) / 6)
 	Global.freeze_frame()
@@ -191,6 +201,13 @@ func spend_coins(amount: int):
 
 func add_ammo(amount: float):
 	ammo = clampf(ammo + amount, 0, max_ammo)
+
+func heal(amount: int):
+	health = mini(health + amount, max_health - buffer_health)
+
+func add_health_pack():
+	health_packs = mini(health_packs + 1, 3)
+	UI.set_health_packs(health_packs)
 
 func is_less_gun_weight(gun_weight: int):
 	return max_health - melee.weight - gun_weight > 0

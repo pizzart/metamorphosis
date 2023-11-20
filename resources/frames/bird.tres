@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=6 format=3 uid="uid://ccwbtbvt6gquf"]
+[gd_resource type="SpriteFrames" load_steps=7 format=3 uid="uid://ccwbtbvt6gquf"]
 
 [ext_resource type="Texture2D" uid="uid://brcor71i8mlyn" path="res://sprites/enemies/bird.png" id="1_qrg3u"]
 
@@ -9,6 +9,10 @@ region = Rect2(0, 32, 32, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_2om7f"]
 atlas = ExtResource("1_qrg3u")
 region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uejf6"]
+atlas = ExtResource("1_qrg3u")
+region = Rect2(0, 64, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fhvwj"]
 atlas = ExtResource("1_qrg3u")
@@ -30,6 +34,14 @@ animations = [{
 "loop": true,
 "name": &"attack",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uejf6")
+}],
+"loop": true,
+"name": &"dead",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,

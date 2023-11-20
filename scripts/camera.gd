@@ -1,6 +1,6 @@
 extends Camera2D
 
-var decay = 0.9
+var decay = 0.8
 var max_offset = Vector2(50, 50)
 
 var trauma: float = 0
@@ -16,7 +16,7 @@ func _process(delta):
 		offset += shake()
 
 func add_trauma(amount: float):
-	trauma = min(trauma + amount, 0.5)
+	trauma = min(trauma + amount, 0.4)
 
 func shake():
 	var amount = pow(trauma, trauma_power)

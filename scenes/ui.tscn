@@ -1,5 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://xijpue6425q1"]
+[gd_scene load_steps=16 format=3 uid="uid://xijpue6425q1"]
 
+[ext_resource type="Script" path="res://scripts/ui.gd" id="1_15qrl"]
 [ext_resource type="Texture2D" uid="uid://dogrw6x5yr343" path="res://sprites/ui/icons/health_icon.png" id="1_tplxv"]
 [ext_resource type="Texture2D" uid="uid://dw003jjwp1rud" path="res://sprites/ui/bars/bar_under.png" id="2_rrokg"]
 [ext_resource type="Texture2D" uid="uid://bxmb2sxca8l0c" path="res://sprites/ui/bars/health_bar.png" id="3_38w1o"]
@@ -8,14 +9,36 @@
 [ext_resource type="Texture2D" uid="uid://b0iolug1ygb4g" path="res://sprites/ui/bars/ammo_bar.png" id="6_ntrvi"]
 [ext_resource type="Texture2D" uid="uid://oqpnqpuoxo5p" path="res://sprites/ui/icons/weight_icon.png" id="7_7ib4y"]
 [ext_resource type="Texture2D" uid="uid://jkhmb2dfu05t" path="res://sprites/ui/bars/weight_bar.png" id="8_xntbo"]
+[ext_resource type="FontFile" uid="uid://bolgg3n6g0m3n" path="res://misc/fontreadable.png" id="9_78whp"]
+[ext_resource type="Texture2D" uid="uid://30c5pave1ak4" path="res://sprites/ui/rects/frame.png" id="9_vim5q"]
+[ext_resource type="Texture2D" uid="uid://c13ldonf2p5f8" path="res://sprites/ui/energy_pack_empty.png" id="10_kbdf8"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_jmdyi"]
 color = Color(0.960784, 1, 0.909804, 1)
 grow_begin = 0.0
 grow_end = 0.0
 
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_0vvfj"]
+color = Color(0.960784, 1, 0.909804, 1)
+grow_begin = 0.0
+grow_end = 0.0
+vertical = true
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j8qpv"]
+content_margin_left = 5.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+texture = ExtResource("9_vim5q")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+axis_stretch_vertical = 1
+
 [node name="UI" type="CanvasLayer"]
 layer = 2
+script = ExtResource("1_15qrl")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -131,7 +154,42 @@ texture_under = ExtResource("2_rrokg")
 texture_progress = ExtResource("8_xntbo")
 texture_progress_offset = Vector2(1, 1)
 
-[node name="Coins" type="Label" parent="Control/M/Bars"]
-visible = false
+[node name="Sep" type="VSeparator" parent="Control/M/Bars"]
 layout_mode = 2
-text = "0"
+theme_override_constants/separation = 3
+theme_override_styles/separator = SubResource("StyleBoxLine_0vvfj")
+
+[node name="Packs" type="VBoxContainer" parent="Control/M/Bars"]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="1" type="TextureRect" parent="Control/M/Bars/Packs"]
+layout_mode = 2
+size_flags_vertical = 0
+texture = ExtResource("10_kbdf8")
+stretch_mode = 2
+
+[node name="2" type="TextureRect" parent="Control/M/Bars/Packs"]
+layout_mode = 2
+size_flags_vertical = 0
+texture = ExtResource("10_kbdf8")
+stretch_mode = 2
+
+[node name="3" type="TextureRect" parent="Control/M/Bars/Packs"]
+layout_mode = 2
+size_flags_vertical = 0
+texture = ExtResource("10_kbdf8")
+stretch_mode = 2
+
+[node name="Help" type="PanelContainer" parent="Control/M"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxTexture_j8qpv")
+
+[node name="Text" type="Label" parent="Control/M/Help"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_fonts/font = ExtResource("9_78whp")
+text = "E"
