@@ -21,6 +21,7 @@ func attack():
 	can_attack = false
 	combo_counter += 1
 	player.speed_multiplier = 0.05
+	audio.play()
 #	player.cam.add_trauma(0.05)
 	
 	if combo_counter <= 2:

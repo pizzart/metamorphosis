@@ -30,18 +30,23 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_7tgrp")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/PanelContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="Control/PanelContainer"]
+custom_minimum_size = Vector2(80, 70)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="Continue" type="Button" parent="Control/PanelContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/PanelContainer/PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Continue" type="Button" parent="Control/PanelContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 text = "continue"
 
-[node name="Quit" type="Button" parent="Control/PanelContainer/VBoxContainer"]
+[node name="Quit" type="Button" parent="Control/PanelContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 text = "quit"
 
-[connection signal="pressed" from="Control/PanelContainer/VBoxContainer/Continue" to="." method="_on_continue_pressed"]
-[connection signal="pressed" from="Control/PanelContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="Control/PanelContainer/PanelContainer/VBoxContainer/Continue" to="." method="_on_continue_pressed"]
+[connection signal="pressed" from="Control/PanelContainer/PanelContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]

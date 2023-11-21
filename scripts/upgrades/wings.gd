@@ -12,6 +12,7 @@ var timer = Timer.new()
 var sprite = AnimatedSprite2D.new()
 
 func _init():
+	super._init()
 	weight = 3
 	timer.timeout.connect(_on_timeout)
 	timer.one_shot = true

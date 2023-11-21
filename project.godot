@@ -179,3 +179,7 @@ vignette_opacity={
 "type": "float",
 "value": 0.035
 }
+blue_strength={
+"type": "float",
+"value": 0.0
+}

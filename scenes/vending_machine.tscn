@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://crqtpeg1savcq"]
+[gd_scene load_steps=6 format=3 uid="uid://crqtpeg1savcq"]
 
 [ext_resource type="Script" path="res://scripts/vending_machine.gd" id="1_acxbu"]
 [ext_resource type="Texture2D" uid="uid://bdhev42bi6rjy" path="res://sprites/props/vending.png" id="1_j03e0"]
+[ext_resource type="AudioStream" uid="uid://cj8yqs0elei2n" path="res://audio/sfx/lowdink.wav" id="3_shivl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6ioch"]
 size = Vector2(46, 74)
@@ -28,3 +29,7 @@ collision_mask = 7
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(0, 10.5)
 shape = SubResource("RectangleShape2D_chaq8")
+
+[node name="Beep" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_shivl")
+bus = &"sfx"

@@ -6,6 +6,7 @@ const TEXTURE = preload("res://sprites/weapons/sledgehammer.png")
 
 func _init():
 	super._init(1.0, 2, 1000, TEXTURE, NAME)
+	audio.pitch_scale = 0.8
 
 func attack():
 	super.attack()

@@ -54,7 +54,7 @@ const VENDING = preload("res://scenes/vending_machine.tscn")
 const TREE = preload("res://scenes/tree.tscn")
 
 var rng = RandomNumberGenerator.new()
-var current_map: int = 0
+var current_map: int = 2
 var last_player_spawn: Vector2
 
 var player: Player
@@ -204,7 +204,7 @@ func place_enemies(count: int):
 		var enemy = choose(Global.enemy_pool[Global.current_area]).new()
 		enemy.global_position = tilemap.map_to_local(placement)
 		if Global.current_area == Area.Abyss:
-			enemy.sprite.modulate = Color.BLACK
+			enemy.modulate = Color.BLACK
 		world.add_child.call_deferred(enemy)
 
 func place_walls(chance: float):
@@ -365,10 +365,12 @@ func _on_exit_entered(_body: Node2D, next_gen_type: GenerationType):
 				Global.current_area += 1
 				current_map = 0
 				update_surroundings()
+				cleanup()
+				world.show_selection()
 			else:
 				current_map += 1
 				world.transition_music("%s_calm" % AREA_NAMES[Global.current_area], "%s_intense" % AREA_NAMES[Global.current_area])
-			generate_map_full(AREA_SIZES[Global.current_area])
+				generate_map_full(AREA_SIZES[Global.current_area])
 		GenerationType.Intermission:
 			generate_intermission()
 			world.transition_music("%s_intense" % AREA_NAMES[Global.current_area], "%s_calm" % AREA_NAMES[Global.current_area])
@@ -377,9 +379,7 @@ func _on_exit_entered(_body: Node2D, next_gen_type: GenerationType):
 				Area.Sky:
 					generate_boss_1()
 				Area.City:
-					Global.init_gun = player.gun.duplicate(4)
-					Global.init_melee = player.melee.duplicate(4)
-					get_tree().change_scene_to_file("res://scenes/3d/world_3d.tscn")
+					world.init_boss2()
 				Area.Abyss:
 					generate_boss3()
 		GenerationType.Town:

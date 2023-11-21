@@ -41,12 +41,12 @@ debug_color = Color(0.305882, 0.615686, 0.356863, 0.419608)
 [node name="V" type="SubViewport" parent="."]
 transparent_bg = true
 canvas_item_default_texture_filter = 0
-size = Vector2i(32, 32)
+size = Vector2i(48, 48)
 render_target_update_mode = 4
 
 [node name="Sprite" type="AnimatedSprite2D" parent="V"]
 visibility_layer = 2
-position = Vector2(16, 16)
+position = Vector2(24, 24)
 sprite_frames = ExtResource("2_p00mm")
 animation = &"front"
 autoplay = "front"

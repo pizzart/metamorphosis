@@ -7,4 +7,8 @@ func _init():
 	super._init(rect, preload("res://sprites/battery.png"))
 
 func interact():
-	player.add_health_pack()
+	if player.health_packs < player.MAX_PACKS:
+		player.add_health_pack()
+		super.interact()
+	else:
+		UI.blink_packs()

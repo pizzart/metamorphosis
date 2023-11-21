@@ -1,10 +1,12 @@
 class_name Enemy
 extends Foe
 
+const CORPSE = preload("res://scenes/corpse.tscn")
+const PARTICLES = preload("res://scenes/particles/hit_enemy_particles.tscn")
+
 const DROP_CHANCE = 0.1
 const HEALTH_DROP_CHANCE = 0.05
 const STUN_TIME = 0.2
-const CORPSE = preload("res://scenes/corpse.tscn")
 
 var walk_speed: float
 var attack_speed: float
@@ -13,10 +15,11 @@ var shuffle_min: float = 1
 var shuffle_max: float = 3
 var max_distance: float = 300
 
-var navigation_agent: NavigationAgent2D
-var nav_timer: Timer
-var attack_timer: Timer
-var collision_shape: CollisionShape2D
+var navigation_agent: NavigationAgent2D = NavigationAgent2D.new()
+var nav_timer: Timer = Timer.new()
+var attack_timer: Timer = Timer.new()
+var collision_shape: CollisionShape2D = CollisionShape2D.new()
+var audio: AudioStreamPlayer2D = AudioStreamPlayer2D.new()
 
 func _init(_health: int, _shuffle_min: float, _shuffle_max: float, _walk_speed: float, _attack_speed: float, _max_distance: float):
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
@@ -25,18 +28,14 @@ func _init(_health: int, _shuffle_min: float, _shuffle_max: float, _walk_speed: 
 	set_collision_mask_value(2, true)
 #	set_collision_mask_value(4, true)
 	
-	collision_shape = CollisionShape2D.new()
 	collision_shape.shape = RectangleShape2D.new()
 	
-	navigation_agent = NavigationAgent2D.new()
 	navigation_agent.path_desired_distance = 5
 	navigation_agent.target_desired_distance = 3
 	navigation_agent.path_max_distance = 50
 	
-	nav_timer = Timer.new()
 	nav_timer.wait_time = 5
 	
-	attack_timer = Timer.new()
 	attack_timer.wait_time = 3
 	attack_timer.autostart = true
 	attack_timer.timeout.connect(_on_attack_timer_timeout)
@@ -47,12 +46,19 @@ func _init(_health: int, _shuffle_min: float, _shuffle_max: float, _walk_speed: 
 	
 	sprite = AnimatedSprite2D.new()
 	
+	var stream = AudioStreamRandomizer.new()
+	stream.add_stream(0, preload("res://audio/sfx/hurt1.wav"))
+	stream.add_stream(1, preload("res://audio/sfx/hurt2.wav"))
+	stream.add_stream(2, preload("res://audio/sfx/hurt3.wav"))
+	audio.stream = stream
+	
 	add_child(collision_shape)
 	add_child(navigation_agent)
 	add_child(nav_timer)
 	add_child(attack_timer)
 	add_child(shadow)
 	add_child(sprite)
+	add_child(audio)
 	
 	add_to_group("enemy")
 	
@@ -104,6 +110,14 @@ func hit(damage: int, force: Vector2):
 		die()
 	
 	velocity += force * 2
+	
+	var particles = PARTICLES.instantiate()
+	particles.global_position = global_position
+	particles.rotation = force.angle()
+	particles.emitting = true
+	get_parent().add_child(particles)
+	
+	audio.play()
 	
 	attack_timer.paused = true
 	sprite.modulate = Color.RED

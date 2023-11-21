@@ -8,6 +8,7 @@ func _init():
 
 func interact():
 	player.add_coin()
+	super.interact()
 
 func _process(delta):
 	super._process(delta)

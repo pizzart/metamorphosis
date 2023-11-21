@@ -1,7 +1,6 @@
-[gd_scene load_steps=26 format=3 uid="uid://64kdpv3e4j6m"]
+[gd_scene load_steps=28 format=3 uid="uid://64kdpv3e4j6m"]
 
 [ext_resource type="Script" path="res://scripts/world.gd" id="1_eoi30"]
-[ext_resource type="PackedScene" uid="uid://dph8pd3qblx44" path="res://scenes/player.tscn" id="1_wk3e0"]
 [ext_resource type="Shader" path="res://misc/matrix.gdshader" id="2_1rf8u"]
 [ext_resource type="TileSet" uid="uid://uvyca8uwcqd5" path="res://misc/map.tres" id="3_mb8tr"]
 [ext_resource type="Texture2D" uid="uid://bl8yj5xlmibox" path="res://sprites/bgs/1/cloud_fill.png" id="6_3tv2d"]
@@ -21,7 +20,10 @@
 [ext_resource type="AudioStream" uid="uid://ciduq3e1emkqf" path="res://audio/mus/city_calm.ogg" id="19_vdfrj"]
 [ext_resource type="AudioStream" uid="uid://dry5bp5aqvye" path="res://audio/mus/city_intense.ogg" id="20_0pcfj"]
 [ext_resource type="AudioStream" uid="uid://by7ulyq7o5uba" path="res://audio/mus/sky_calm.ogg" id="21_0pm0g"]
+[ext_resource type="Texture2D" uid="uid://b4tr1ysqmrioe" path="res://sprites/ui/selection_screen.png" id="22_2h2ec"]
 [ext_resource type="AudioStream" uid="uid://trubuidkt3k7" path="res://audio/mus/sky_intense.ogg" id="22_o54vx"]
+[ext_resource type="Texture2D" uid="uid://cqqnnt6pfrob" path="res://sprites/ui/modifiers/modifier_00.png" id="23_dk6t6"]
+[ext_resource type="Texture2D" uid="uid://d1d8sgydsqmw" path="res://sprites/ui/modifiers/modifier_01.png" id="24_rcsa2"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_k3f30"]
 noise_type = 5
@@ -42,8 +44,6 @@ shader_parameter/noise_tex = SubResource("NoiseTexture2D_joxvr")
 [node name="World" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_eoi30")
-
-[node name="Player" parent="." instance=ExtResource("1_wk3e0")]
 
 [node name="TileMap" type="TileMap" parent="."]
 clip_children = 2
@@ -247,3 +247,49 @@ bus = &"mus"
 [node name="MusicSkyIntense" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("22_o54vx")
 bus = &"mus"
+
+[node name="SelectionScreen" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Control" type="Control" parent="SelectionScreen"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="SelectionScreen/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("22_2h2ec")
+
+[node name="Modifier1" type="Button" parent="SelectionScreen/Control"]
+layout_mode = 0
+anchor_left = 0.2375
+anchor_top = 0.391667
+anchor_right = 0.4625
+anchor_bottom = 0.691667
+action_mode = 0
+icon = ExtResource("23_dk6t6")
+flat = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Modifier2" type="Button" parent="SelectionScreen/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.559375
+anchor_top = 0.4
+anchor_right = 0.784375
+anchor_bottom = 0.7
+action_mode = 0
+icon = ExtResource("24_rcsa2")
+flat = true
+metadata/_edit_use_anchors_ = true
+
+[connection signal="pressed" from="SelectionScreen/Control/Modifier1" to="." method="_on_modifier_1_pressed"]
+[connection signal="pressed" from="SelectionScreen/Control/Modifier2" to="." method="_on_modifier_2_pressed"]

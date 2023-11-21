@@ -1,5 +1,17 @@
-[gd_scene format=3 uid="uid://vi62ohnbkofg"]
+[gd_scene load_steps=3 format=3 uid="uid://vi62ohnbkofg"]
+
+[ext_resource type="AudioStream" uid="uid://wy8d7b8sp3jv" path="res://audio/sfx/death.wav" id="1_5ovia"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_oy6pc"]
+streams_count = 1
+stream_0/stream = ExtResource("1_5ovia")
+stream_0/weight = 1.0
 
 [node name="Corpse" type="AnimatedSprite2D" groups=["cleanup"]]
 modulate = Color(0.301961, 0.301961, 0.301961, 1)
 z_index = -2
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_oy6pc")
+autoplay = true
+bus = &"sfx"

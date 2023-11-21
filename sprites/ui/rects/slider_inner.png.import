@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c2vek45cxi4eo"
-path="res://.godot/imported/slash.png-310a6f6ecd3a97c85098b181a20aad43.ctex"
+uid="uid://b5nvjtneriq1u"
+path="res://.godot/imported/slider_inner.png-9e47c6005961e2f4392a25ace877012e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/slash.png"
-dest_files=["res://.godot/imported/slash.png-310a6f6ecd3a97c85098b181a20aad43.ctex"]
+source_file="res://sprites/ui/rects/slider_inner.png"
+dest_files=["res://.godot/imported/slider_inner.png-9e47c6005961e2f4392a25ace877012e.ctex"]
 
 [params]
 
@@ -31,4 +31,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://c3au5c0hj6olp"]
+[gd_scene load_steps=4 format=3 uid="uid://c3au5c0hj6olp"]
 
 [ext_resource type="Theme" uid="uid://t6wu146mxlyh" path="res://misc/theme.tres" id="1_l8qyt"]
 [ext_resource type="Script" path="res://scripts/menu.gd" id="2_516qa"]
+[ext_resource type="AudioStream" uid="uid://crv0ic1kxw0nt" path="res://audio/sfx/click.wav" id="3_co23l"]
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -28,15 +29,13 @@ theme_override_constants/margin_bottom = 10
 
 [node name="Main" type="PanelContainer" parent="M"]
 visible = false
-custom_minimum_size = Vector2(200, 100)
+custom_minimum_size = Vector2(170, 150)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
 [node name="List" type="VBoxContainer" parent="M/Main"]
-custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
-size_flags_horizontal = 4
 theme_override_constants/separation = 0
 alignment = 1
 
@@ -57,44 +56,53 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="List" type="VBoxContainer" parent="M/Settings"]
+[node name="M" type="MarginContainer" parent="M/Settings"]
+layout_mode = 2
+theme_override_constants/margin_right = 6
+
+[node name="List" type="VBoxContainer" parent="M/Settings/M"]
 layout_mode = 2
 
-[node name="Music" type="HBoxContainer" parent="M/Settings/List"]
+[node name="Music" type="HBoxContainer" parent="M/Settings/M/List"]
 layout_mode = 2
+theme_override_constants/separation = 6
 
-[node name="Label" type="Label" parent="M/Settings/List/Music"]
+[node name="Label" type="Label" parent="M/Settings/M/List/Music"]
 layout_mode = 2
 text = "music"
 
-[node name="HSlider" type="HSlider" parent="M/Settings/List/Music"]
-custom_minimum_size = Vector2(100, 0)
+[node name="HSlider" type="HSlider" parent="M/Settings/M/List/Music"]
+custom_minimum_size = Vector2(97, 0)
 layout_mode = 2
-max_value = 10.0
-value = 10.0
-tick_count = 10
+max_value = 20.0
+value = 20.0
 
-[node name="Sound" type="HBoxContainer" parent="M/Settings/List"]
+[node name="Sound" type="HBoxContainer" parent="M/Settings/M/List"]
 layout_mode = 2
+theme_override_constants/separation = 6
 
-[node name="Label" type="Label" parent="M/Settings/List/Sound"]
+[node name="Label" type="Label" parent="M/Settings/M/List/Sound"]
 layout_mode = 2
 text = "sound"
 
-[node name="HSlider" type="HSlider" parent="M/Settings/List/Sound"]
-custom_minimum_size = Vector2(100, 0)
+[node name="HSlider" type="HSlider" parent="M/Settings/M/List/Sound"]
+custom_minimum_size = Vector2(97, 0)
 layout_mode = 2
-max_value = 10.0
-value = 10.0
+max_value = 20.0
+value = 20.0
 tick_count = 10
 
-[node name="Back" type="Button" parent="M/Settings/List"]
+[node name="Back" type="Button" parent="M/Settings/M/List"]
 layout_mode = 2
 text = "BACK"
+
+[node name="ClickSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_co23l")
+bus = &"sfx"
 
 [connection signal="mouse_entered" from="M/Main/List/Start" to="." method="_on_start_mouse_entered"]
 [connection signal="mouse_exited" from="M/Main/List/Start" to="." method="_on_start_mouse_exited"]
 [connection signal="pressed" from="M/Main/List/Start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="M/Main/List/Settings" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="M/Main/List/Quit" to="." method="_on_quit_pressed"]
-[connection signal="pressed" from="M/Settings/List/Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="M/Settings/M/List/Back" to="." method="_on_back_pressed"]

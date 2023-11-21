@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://j44t5hdt8nmc"]
+[gd_scene load_steps=8 format=3 uid="uid://j44t5hdt8nmc"]
 
 [ext_resource type="Shader" path="res://misc/bloom.gdshader" id="1_1t6hs"]
-[ext_resource type="Texture2D" uid="uid://d0tbcdmnyeuiu" path="res://sprites/overlay.png" id="1_cp6ob"]
+[ext_resource type="Texture2D" uid="uid://d0tbcdmnyeuiu" path="res://sprites/ui/overlay.png" id="1_cp6ob"]
 [ext_resource type="Shader" path="res://misc/glitchscreen.gdshader" id="2_ab2t0"]
+[ext_resource type="Shader" path="res://misc/blue.gdshader" id="3_6gms8"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8wfhm"]
 shader = ExtResource("1_1t6hs")
@@ -20,6 +21,9 @@ shader_parameter/scanlines_width = 0.1
 shader_parameter/bloom_threshold = 0.2
 shader_parameter/bloom_strength = 1.0
 shader_parameter/bloom_size = 4.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c4wuc"]
+shader = ExtResource("3_6gms8")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ubojb"]
 shader = ExtResource("2_ab2t0")
@@ -48,6 +52,17 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="BackBufferCopy" type="BackBufferCopy" parent="."]
+copy_mode = 2
+
+[node name="Blue" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_c4wuc")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BackBufferCopy2" type="BackBufferCopy" parent="."]
 copy_mode = 2
 
 [node name="Glitch" type="ColorRect" parent="."]

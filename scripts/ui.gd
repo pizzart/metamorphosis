@@ -25,3 +25,8 @@ func set_health_packs(amount: int):
 		c.texture = preload("res://sprites/ui/energy_pack_empty.png")
 	for i in range(amount):
 		$Control/M/Bars/Packs.get_child(i).texture = preload("res://sprites/ui/energy_pack.png")
+
+func blink_packs():
+	var tween = create_tween()
+	$Control/M/Bars/Packs.modulate = Color.RED
+	tween.tween_property($Control/M/Bars/Packs, "modulate", Color.WHITE, 1.0)

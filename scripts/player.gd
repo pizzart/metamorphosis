@@ -6,6 +6,7 @@ const PARTICLES = preload("res://scenes/particles/hit_particles.tscn")
 const INIT_AMMO = 100
 const INIT_SPEED = 120
 const INIT_HEALTH = 15
+const MAX_PACKS = 3
 const HAT_Y = -4
 
 var speed = INIT_SPEED
@@ -21,33 +22,34 @@ var max_ammo: float = INIT_AMMO
 var ammo: float = max_ammo
 var coins: int = 0
 var coins_visible: bool = false
-var health_packs: int = 0
+var health_packs: int = 1
 
 var rng = RandomNumberGenerator.new()
 
 @onready var cam: Camera2D = $Camera
-@onready var gun: Gun
-@onready var melee: Melee
+@onready var gun: Gun = Minigun.new()
+@onready var melee: Melee = Sword.new()
 @onready var shadow = $Shadow
 @onready var coin_box = $CoinBox
 @onready var hat = $V/Sprite/Hat
 @onready var sprite = $V/Sprite
 
 func _ready():
-	gun = Global.init_gun
-	melee = Global.init_melee
 	add_child(gun)
 	add_child(melee)
-	add_child(WingsUpgrade.new())
 	
-	weight = gun.weight + melee.weight
+	if Global.equipped_item != Global.Item.None:
+		add_child(Global.ITEMS[Global.equipped_item][2].new())
+	
+	weight = get_weight()
 	buffer_health = weight
 	health = max_health - weight
 	
-	add_coin()
-	add_coin()
-	add_coin()
-	add_coin()
+	if Global.equipped_hat != Global.Hat.None:
+		hat.show()
+		hat.texture = Global.HATS[Global.equipped_hat][1]
+	
+	UI.set_health_packs(health_packs)
 
 func _physics_process(delta):
 	if not can_move:
@@ -77,7 +79,7 @@ func _physics_process(delta):
 	if direction.y < 0 and abs(direction.x) >= 0.25:
 		sprite.animation = "diagonal_back"
 	
-	shadow.global_position = global_position + Vector2(0, 4)
+#	shadow.global_position = global_position + Vector2(0, 4)
 	
 #	if direction:
 #		$PointLight2D.position = direction * 16
@@ -105,6 +107,11 @@ func _input(event):
 	if event.is_action_pressed("change_gun"):
 		gun.is_equipped = not gun.is_equipped
 		melee.is_equipped = not melee.is_equipped
+	if event.is_action_pressed("heal"):
+		if health_packs > 0:
+			heal(5)
+			health_packs -= 1
+			UI.set_health_packs(health_packs)
 
 func knockback(value: Vector2):
 	offset_velocity += value
@@ -127,6 +134,7 @@ func hit(damage: int, force: Vector2):
 	var particles = PARTICLES.instantiate()
 	particles.global_position = global_position
 	particles.rotation = force.angle()
+	particles.emitting = true
 	get_parent().add_child(particles)
 	
 	cam.add_trauma(float(damage) / 6)
@@ -156,9 +164,9 @@ func replace_weapon(new_weapon: Weapon):
 		if free < added + buffer_health:
 			if health - added > 0:
 				health -= added
-				buffer_health += added
 			else:
 				return new_weapon
+		buffer_health += added
 	elif new_weight < old_weight:
 		var released = old_weight - new_weight
 		var new_buffer = max(buffer_health - released, 0)
@@ -206,7 +214,7 @@ func heal(amount: int):
 	health = mini(health + amount, max_health - buffer_health)
 
 func add_health_pack():
-	health_packs = mini(health_packs + 1, 3)
+	health_packs = mini(health_packs + 1, MAX_PACKS)
 	UI.set_health_packs(health_packs)
 
 func is_less_gun_weight(gun_weight: int):
@@ -270,6 +278,16 @@ func hide_coins():
 #func add_weight(added: int):
 #	weight += added
 #	health = min(health, max_health - weight - added)
+
+func add_upgrade(upgrade: Upgrade):
+	add_child(upgrade)
+	weight = get_weight()
+
+func get_weight():
+	var upgrade_weight = 0
+	for u in get_tree().get_nodes_in_group("upgrade"):
+		upgrade_weight += u.weight
+	return gun.weight + melee.weight + upgrade_weight
 
 func _on_inv_timer_timeout():
 	invincible = false

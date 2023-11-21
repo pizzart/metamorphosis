@@ -5,6 +5,7 @@ _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [node name="SwipeParticles" type="CPUParticles2D"]
+emitting = false
 amount = 30
 emission_shape = 3
 emission_rect_extents = Vector2(5, 5)

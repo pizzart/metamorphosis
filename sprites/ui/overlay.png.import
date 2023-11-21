@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cy1qawecahbvf"
-path="res://.godot/imported/wings.png-5fdbfc4f3d329cfe4f322abf3e708efd.ctex"
+uid="uid://d0tbcdmnyeuiu"
+path="res://.godot/imported/overlay.png-7d8a42373b4ba32e11c1e7bfc41b50ef.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/wings.png"
-dest_files=["res://.godot/imported/wings.png-5fdbfc4f3d329cfe4f322abf3e708efd.ctex"]
+source_file="res://sprites/ui/overlay.png"
+dest_files=["res://.godot/imported/overlay.png-7d8a42373b4ba32e11c1e7bfc41b50ef.ctex"]
 
 [params]
 

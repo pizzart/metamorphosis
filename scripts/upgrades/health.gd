@@ -2,6 +2,7 @@ class_name HealthUpgrade
 extends Upgrade
 
 func _init():
+	super._init()
 	weight = 1
 
 func _ready():

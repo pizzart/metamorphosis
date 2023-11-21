@@ -12,6 +12,9 @@ func _init(_recharge_speed: float, _weight: int, _knockback: float, _texture: Te
 	
 	swipe_particles = SWIPE_PARTICLES.instantiate()
 	sprite.add_child(swipe_particles)
+	var stream = AudioStreamRandomizer.new()
+	stream.add_stream(0, preload("res://audio/sfx/swoop.wav"))
+	audio.stream = stream
 
 func _process(delta):
 	super._process(delta)

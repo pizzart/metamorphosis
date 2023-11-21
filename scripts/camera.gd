@@ -1,7 +1,7 @@
 extends Camera2D
 
 var decay = 0.8
-var max_offset = Vector2(50, 50)
+var max_offset = Vector2(40, 40)
 
 var trauma: float = 0
 var trauma_power = 1.5

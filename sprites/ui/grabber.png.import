@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b48tjc1xo0f3c"
-path="res://.godot/imported/crosshair.png-1281ee32d6777347e0f43a202c603c1b.ctex"
+uid="uid://bnceywnoynxpt"
+path="res://.godot/imported/grabber.png-2fdac35285d877419289959d03d896c4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/crosshair.png"
-dest_files=["res://.godot/imported/crosshair.png-1281ee32d6777347e0f43a202c603c1b.ctex"]
+source_file="res://sprites/ui/grabber.png"
+dest_files=["res://.godot/imported/grabber.png-2fdac35285d877419289959d03d896c4.ctex"]
 
 [params]
 
@@ -31,4 +31,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

@@ -1,13 +1,16 @@
 extends Control
 
-var equipped_item: int = 0
+var equipped_item: int = Global.equipped_item
 var equipped_hat: int = Global.equipped_hat
 
 func _ready():
-	Global.init_gun = Pistol.new()
-	Global.init_melee = Sword.new()
 	RenderingServer.global_shader_parameter_set("vignette_opacity", Global.VIGNETTE_OPACITY)
 	UI.hide()
+	
+	$HatTexture.visible = equipped_hat != 0
+	$HatTexture.texture = Global.HATS[equipped_hat][1]
+	$Hats/Button.icon = Global.HATS[equipped_hat][2]
+	$Items/Button.icon = Global.ITEMS[equipped_item][1]
 
 func _on_hat_toggled(button_pressed):
 	$Hats/List.clear()

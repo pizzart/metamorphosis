@@ -5,7 +5,6 @@ var time: float
 
 func _input(event):
 	if event.is_action_pressed("use") and can_interact:
-		print("v")
 		if player.coins >= cost:
 			player.spend_coins(cost)
 			
@@ -18,6 +17,8 @@ func _input(event):
 			
 			player.hide_coins()
 			can_interact = false
+		else:
+			$Beep.play()
 
 func _on_body_entered(body):
 	super._on_body_entered(body)

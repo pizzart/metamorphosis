@@ -18,10 +18,10 @@ const HATS = {
 	Hat.Niko: [2, preload("res://sprites/hats/niko_hat.png"), preload("res://sprites/shop/niko_hat_shop.png")],
 }
 
-const ITEMS = {
-	Item.None: [0, preload("res://sprites/shop/cross.png")],
-	Item.Wings: [2, preload("res://sprites/shop/wings_shop.png")],
-	Item.Watch: [3, preload("res://sprites/shop/wings_shop.png")],
+var ITEMS = {
+	Item.None: [0, preload("res://sprites/shop/cross.png"), null],
+	Item.Wings: [2, preload("res://sprites/shop/wings_shop.png"), WingsUpgrade],
+	Item.Watch: [3, preload("res://sprites/shop/wings_shop.png"), WatchUpgrade],
 }
 
 const DIALOGUES = {
@@ -40,16 +40,17 @@ const DIALOGUES = {
 const VIGNETTE_OPACITY = 0.035
 
 var coins: int = 5
-var current_area: Generator.Area = Generator.Area.Sky
+var current_area: Generator.Area = Generator.Area.City
+var after_boss: bool
 var equipped_hat: int = Hat.None
+var equipped_item: int = Item.Watch
 var unlocked_items: Array[Item] = []
 var unlocked_hats: Array[Hat] = []
 var purchasable_items: Array[Item] = []
 var purchasable_hats: Array[Hat] = []
 var timer: float
 
-var init_gun: Gun = Pistol.new()
-var init_melee: Melee = Sword.new()
+var player_state: Player
 
 var weapon_pool = {
 	"gun": [
@@ -57,6 +58,7 @@ var weapon_pool = {
 		Glock,
 		Rifle,
 		Shotgun,
+		Minigun,
 	],
 	"melee": [
 		Sledgehammer,

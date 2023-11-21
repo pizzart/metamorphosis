@@ -4,10 +4,11 @@ extends Node2D
 const BOSS1 = preload("res://scenes/bosses/boss_1.tscn")
 const BOSS3 = preload("res://scenes/bosses/boss_3.tscn")
 const WINDOW = preload("res://scenes/window.tscn")
+const PLAYER = preload("res://scenes/player.tscn")
 
+var player: Player
 var generator: Generator
 
-@onready var player: Player = $Player
 @onready var tilemap: TileMap = $TileMap
 @onready var mus = {
 	"boss3": $MusicBoss3,
@@ -21,16 +22,17 @@ var generator: Generator
 
 func _ready():
 	UI.show()
-	
 	RenderingServer.global_shader_parameter_set("vignette_opacity", Global.VIGNETTE_OPACITY)
 	
-	if Global.equipped_hat != Global.Hat.None:
-		player.hat.show()
-		player.hat.texture = Global.HATS[Global.equipped_hat][1]
+	if Global.player_state != null:
+		player = Global.player_state
+	else:
+		player = PLAYER.instantiate()
+	add_child(player)
 	
 	generator = Generator.new(player, tilemap)
 	add_child(generator)
-	if Global.current_area == Generator.Area.City:
+	if Global.after_boss:
 #		generator.generate_map_full(Generator.ISLAND_SIZE)
 		play_music("%s_calm" % Generator.AREA_NAMES[Global.current_area])
 		generator.current_map = 2
@@ -38,7 +40,7 @@ func _ready():
 	else:
 		play_music("%s_intense" % Generator.AREA_NAMES[Global.current_area])
 		generator.generate_map_full(Generator.ISLAND_SIZE)
-#		add_child(preload("res://scenes/finale.tscn").instantiate())
+#		init_finale()
 
 func _process(delta):
 	Global.timer += delta
@@ -49,7 +51,7 @@ func _process(delta):
 		$SkyBG/ParallaxLayer5.motion_offset.x -= delta * 3
 		$SkyBG/ParallaxLayer7.motion_offset.x -= delta * 5
 
-func init_boss_1():
+func init_boss1():
 	pass
 #	get_window().set_canvas_cull_mask_bit(2, false)
 	
@@ -71,6 +73,11 @@ func init_boss_1():
 #	enemy_window.add_child(boss)
 	
 #	get_window().mode = Window.MODE_FULLSCREEN
+
+func init_boss2():
+	Global.player_state = player
+	remove_child(player)
+	get_tree().change_scene_to_file("res://scenes/3d/world_3d.tscn")
 
 func init_boss3():
 	var boss = BOSS3.instantiate()
@@ -101,5 +108,27 @@ func fade_music_out(time: float):
 		tween.tween_property(music, "volume_db", -80, time).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
 
 func fade_music_in(key: String, time: float):
+	mus[key].volume_db = -80
+	mus[key].play()
 	var tween = create_tween()
 	tween.tween_property(mus[key], "volume_db", 0, time).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
+
+func show_selection():
+	fade_music_out(2)
+	player.can_move = false
+	$SelectionScreen.show()
+	UI.hide()
+
+func _on_modifier_1_pressed():
+	player.add_upgrade(HealthUpgrade.new())
+	init_new_area()
+
+func _on_modifier_2_pressed():
+	player.add_upgrade(AmmoUpgrade.new())
+	init_new_area()
+
+func init_new_area():
+	UI.show()
+	$SelectionScreen.hide()
+	fade_music_in("%s_intense" % Generator.AREA_NAMES[Global.current_area], 2)
+	generator.generate_map_full(Generator.AREA_SIZES[Global.current_area])

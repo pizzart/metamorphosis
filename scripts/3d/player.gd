@@ -100,3 +100,4 @@ func _input(event):
 		
 		$Camera3D/Revolver/AnimationPlayer.stop()
 		$Camera3D/Revolver/AnimationPlayer.play("shoot")
+		$ShootSFX.play()

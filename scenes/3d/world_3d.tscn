@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://b237fa8wat8sd" path="res://scenes/3d/boss.tscn" id="2_x7rkd"]
 [ext_resource type="TileSet" uid="uid://uvyca8uwcqd5" path="res://misc/map.tres" id="3_l5rhc"]
 [ext_resource type="SpriteFrames" uid="uid://decjog7dp6jgi" path="res://resources/player.tres" id="4_b8vrn"]
-[ext_resource type="Texture2D" uid="uid://b48tjc1xo0f3c" path="res://sprites/crosshair.png" id="5_mr8ux"]
+[ext_resource type="Texture2D" uid="uid://b48tjc1xo0f3c" path="res://sprites/ui/crosshair.png" id="5_fa0kb"]
 [ext_resource type="Texture2D" uid="uid://diuosv8ka8uun" path="res://sprites/ui/bar_over.png" id="7_6hrpk"]
 [ext_resource type="Texture2D" uid="uid://cg2ptfwshkf6l" path="res://sprites/ui/health_progress.png" id="8_xw0mn"]
 [ext_resource type="Script" path="res://addons/cyclops_level_builder/nodes/cyclops_blocks.gd" id="10_m4d7m"]
@@ -283,7 +283,7 @@ grow_vertical = 2
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer2/CenterContainer"]
 layout_mode = 2
-texture = ExtResource("5_mr8ux")
+texture = ExtResource("5_fa0kb")
 
 [node name="M" type="MarginContainer" parent="CanvasLayer2"]
 anchors_preset = 15

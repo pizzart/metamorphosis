@@ -16,6 +16,7 @@ var direction: Vector2
 
 var timer = Timer.new()
 var sprite = Sprite2D.new()
+var audio = AudioStreamPlayer2D.new()
 var rng = RandomNumberGenerator.new()
 
 @onready var player: Player = get_parent()
@@ -31,8 +32,10 @@ func _init(_recharge_speed: float, _weight: int, _knockback: float, _texture: Te
 	timer.wait_time = recharge_speed
 	timer.timeout.connect(_on_timer_timeout)
 	sprite.texture = texture
+	audio.bus = "sfx"
 	add_child(timer)
 	add_child(sprite)
+	add_child(audio)
 	
 	y_sort_enabled = true
 
@@ -55,6 +58,7 @@ func _process(delta):
 func attack():
 	can_attack = false
 	timer.start(recharge_speed)
+	audio.play()
 
 func can_attack_fr():
 	return can_attack and is_equipped and player.can_move
