@@ -50,6 +50,7 @@ func _process(delta):
 		$SkyBG/ParallaxLayer4.motion_offset.x -= delta * 13
 		$SkyBG/ParallaxLayer5.motion_offset.x -= delta * 3
 		$SkyBG/ParallaxLayer7.motion_offset.x -= delta * 5
+	$SelectionScreen.offset = -(get_viewport().get_mouse_position() - get_viewport_rect().size / 2) / 8
 
 func init_boss1():
 	pass
@@ -116,19 +117,28 @@ func fade_music_in(key: String, time: float):
 func show_selection():
 	fade_music_out(2)
 	player.can_move = false
+	var mod1 = Global.modifier_pool.pop_at(Global.rng.randi() % Global.modifier_pool.size())
+	var mod2 = Global.modifier_pool.pop_at(Global.rng.randi() % Global.modifier_pool.size())
+	$SelectionScreen/Control/Modifier1.icon = load("res://sprites/ui/modifiers/modifier_%s.png" % str(mod1).pad_zeros(2))
+	$SelectionScreen/Control/Modifier2.icon = load("res://sprites/ui/modifiers/modifier_%s.png" % str(mod2).pad_zeros(2))
+	$SelectionScreen/Control/Modifier1.pressed.connect(_on_mod1_pressed.bind(mod1))
+	$SelectionScreen/Control/Modifier2.pressed.connect(_on_mod2_pressed.bind(mod2))
 	$SelectionScreen.show()
 	UI.hide()
 
-func _on_modifier_1_pressed():
-	player.add_upgrade(HealthUpgrade.new())
+func _on_mod1_pressed(modifier):
+	player.add_upgrade(Global.MODIFIERS[modifier].new())
 	init_new_area()
 
-func _on_modifier_2_pressed():
-	player.add_upgrade(AmmoUpgrade.new())
+func _on_mod2_pressed(modifier):
+	player.add_upgrade(Global.MODIFIERS[modifier].new())
 	init_new_area()
 
 func init_new_area():
 	UI.show()
+	player.can_move = true
+	$SelectionScreen/Control/Modifier1.pressed.disconnect(_on_mod1_pressed)
+	$SelectionScreen/Control/Modifier2.pressed.disconnect(_on_mod2_pressed)
 	$SelectionScreen.hide()
 	fade_music_in("%s_intense" % Generator.AREA_NAMES[Global.current_area], 2)
 	generator.generate_map_full(Generator.AREA_SIZES[Global.current_area])

@@ -19,6 +19,7 @@ func _input(event):
 			can_interact = false
 		else:
 			$Beep.play()
+			player.shake_coins()
 
 func _on_body_entered(body):
 	super._on_body_entered(body)

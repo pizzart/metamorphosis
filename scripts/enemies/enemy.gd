@@ -22,6 +22,8 @@ var collision_shape: CollisionShape2D = CollisionShape2D.new()
 var audio: AudioStreamPlayer2D = AudioStreamPlayer2D.new()
 
 func _init(_health: int, _shuffle_min: float, _shuffle_max: float, _walk_speed: float, _attack_speed: float, _max_distance: float):
+	super._init()
+	
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
 	set_collision_layer_value(1, false)
 	set_collision_layer_value(2, true)
@@ -59,8 +61,6 @@ func _init(_health: int, _shuffle_min: float, _shuffle_max: float, _walk_speed: 
 	add_child(shadow)
 	add_child(sprite)
 	add_child(audio)
-	
-	add_to_group("enemy")
 	
 	health = _health
 	shuffle_min = _shuffle_min
@@ -126,6 +126,8 @@ func hit(damage: int, force: Vector2):
 	sprite.modulate = Color.WHITE
 
 func die():
+	super.die()
+	
 	if rng.randf() <= HEALTH_DROP_CHANCE:
 		var pack = HealthPickup.new()
 		pack.global_position = global_position

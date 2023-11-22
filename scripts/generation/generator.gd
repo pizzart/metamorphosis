@@ -1,6 +1,8 @@
 class_name Generator
 extends Node
 
+signal generated
+
 enum GenerationType {
 	Action,
 	Intermission,
@@ -93,7 +95,7 @@ func generate_map(size):
 		place_walls(0.98)
 	var enemy_count = 0
 	for i in range(island_count):
-		enemy_count += rng.randi_range(3, 5 + rng.randi_range(0, current_map))
+		enemy_count += rng.randi_range(3 + pow(Global.current_area, 2), 5 + pow(Global.current_area, 2) + rng.randi_range(0, current_map + Global.current_area))
 	place_enemies(enemy_count)
 
 func generate_map_full(size):
@@ -101,6 +103,7 @@ func generate_map_full(size):
 	generate_map(size)
 	var exit_placement = place_exit(GenerationType.Intermission)
 	place_player(exit_placement)
+	generated.emit()
 
 func generate_intermission():
 	cleanup()
@@ -111,28 +114,35 @@ func generate_intermission():
 		gen_type = GenerationType.Boss
 	var exit_placement = place_exit(gen_type)
 	place_player(exit_placement)
+	generated.emit()
 
 func generate_town():
 	cleanup()
 	place_islands(1, TOWN_SIZE)
-	var exit_placement = place_exit(GenerationType.Action)
-	place_player(exit_placement)
-	place_npcs()
-	place_vending()
-	place_props()
+	var exit_pos = place_exit(GenerationType.Action)
+	var player_pos = place_player(exit_pos)
+	var all_positions: Array[Vector2i] = [exit_pos, player_pos]
+	var prop_positions = place_props()
+	all_positions.append_array(prop_positions)
+	var vending_pos = place_vending(all_positions)
+	all_positions.append(vending_pos)
+	place_npcs(all_positions)
+	generated.emit()
 
-func generate_boss_1():
+func generate_boss1():
 	cleanup()
 	tilemap.set_pattern(0, Vector2i.ZERO, tilemap.tile_set.get_pattern(0))
 	var exit_placement = place_exit(GenerationType.Town)
 	place_player(exit_placement)
-	world.init_boss_1()
+	generated.emit()
+	world.init_boss1()
 
 func generate_boss3():
 	cleanup()
 	tilemap.set_pattern(0, Vector2i.ZERO, tilemap.tile_set.get_pattern(1))
 	var exit_placement = place_exit(GenerationType.Finale)
 	place_player(exit_placement)
+	generated.emit()
 	world.init_boss3()
 
 func place_player(exit_placement: Vector2):
@@ -142,6 +152,7 @@ func place_player(exit_placement: Vector2):
 			placement = cell
 	player.global_position = tilemap.map_to_local(placement)
 	last_player_spawn = player.global_position
+	return placement
 
 func place_islands(count: int, size: int):
 	var init_positions = []
@@ -231,7 +242,7 @@ func place_walls(chance: float):
 					elif x != 0:
 						tile_pos.x = 1
 					
-					tilemap.set_cell(layer, cell + Vector2i(x, -y), 7, tile_pos)
+					tilemap.set_cell(layer, cell + Vector2i(x, -y), 3, tile_pos)
 				for xx in range(-1, 2):
 					for yy in range(-1, 2):
 						var dir = Vector2i(xx, yy)
@@ -278,36 +289,50 @@ func place_pickups():
 	world.add_child.call_deferred(gun_pickup)
 	world.add_child.call_deferred(melee_pickup)
 
-func place_npcs():
+func place_npcs(taken_positions: Array[Vector2i]):
 	var dialogues: Array = Global.DIALOGUES.get(Global.current_area, []).duplicate()
 	
 	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
-	var placements = []
+	var positions = []
 	for i in range(3):
 		if not cells.is_empty():
 			var j = rng.randi() % cells.size()
-			while tilemap.get_cell_source_id(1, cells[j]) != -1:
-				j = rng.randi() % cells.size()
-			placements.append(cells.pop_at(j))
-	for placement in placements:
+			for pos in taken_positions:
+				while tilemap.get_cell_source_id(1, cells[j]) != -1 or (cells[j] - pos).length() < 3:
+					cells.remove_at(j)
+					j = rng.randi() % cells.size()
+			positions.append(cells.pop_at(j))
+	for pos in positions:
 		if dialogues.is_empty():
 			continue
 		var npc = NPC.instantiate()
-		npc.global_position = tilemap.map_to_local(placement)
+		npc.global_position = tilemap.map_to_local(pos)
 		npc.lines = dialogues.pop_at(rng.randi() % dialogues.size())
 		world.add_child.call_deferred(npc)
 
-func place_vending():
+func place_vending(taken_positions: Array[Vector2i]):
 	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
+	var j = rng.randi() % cells.size()
+	for pos in taken_positions:
+		while (cells[j] - pos).length() < 3:
+			cells.remove_at(j)
+			j = rng.randi() % cells.size()
 	var vending = VENDING.instantiate()
-	vending.global_position = tilemap.map_to_local(cells.pick_random())
+	vending.global_position = tilemap.map_to_local(cells[j])
 	world.add_child.call_deferred(vending)
+	return cells[j]
 
 func place_props():
 	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
+	var sum = Vector2i.ZERO
+	for cell in cells:
+		sum += cell
+	var position = sum / cells.size()
+	
 	var tree = TREE.instantiate()
-	tree.global_position = tilemap.map_to_local(cells.pick_random())
+	tree.global_position = tilemap.map_to_local(position)
 	world.add_child.call_deferred(tree)
+	return [position]
 
 func cleanup():
 	tilemap.clear()
@@ -377,7 +402,7 @@ func _on_exit_entered(_body: Node2D, next_gen_type: GenerationType):
 		GenerationType.Boss:
 			match Global.current_area:
 				Area.Sky:
-					generate_boss_1()
+					generate_boss1()
 				Area.City:
 					world.init_boss2()
 				Area.Abyss:

@@ -1,4 +1,4 @@
-class_name HealthUpgrade
+class_name HealthModifier
 extends Upgrade
 
 func _init():

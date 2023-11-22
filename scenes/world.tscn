@@ -251,6 +251,17 @@ bus = &"mus"
 [node name="SelectionScreen" type="CanvasLayer" parent="."]
 visible = false
 
+[node name="ColorRect" type="ColorRect" parent="SelectionScreen"]
+anchors_preset = -1
+anchor_left = -1.0
+anchor_top = -1.0
+anchor_right = 2.0
+anchor_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.160784, 0.113725, 0.168627, 1)
+metadata/_edit_use_anchors_ = true
+
 [node name="Control" type="Control" parent="SelectionScreen"]
 layout_mode = 3
 anchors_preset = 15
@@ -290,6 +301,3 @@ action_mode = 0
 icon = ExtResource("24_rcsa2")
 flat = true
 metadata/_edit_use_anchors_ = true
-
-[connection signal="pressed" from="SelectionScreen/Control/Modifier1" to="." method="_on_modifier_1_pressed"]
-[connection signal="pressed" from="SelectionScreen/Control/Modifier2" to="." method="_on_modifier_2_pressed"]

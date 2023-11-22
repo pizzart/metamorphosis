@@ -275,6 +275,11 @@ func hide_coins():
 		coin_box.hide()
 		coin_box.scale = Vector2.ONE
 
+func shake_coins():
+	for i in range(10):
+		coin_box.global_position = to_global(Vector2(12, -54) + Vector2(rng.randf_range(-3, 3), rng.randf_range(-3, 3)))
+		await get_tree().physics_frame
+
 #func add_weight(added: int):
 #	weight += added
 #	health = min(health, max_health - weight - added)

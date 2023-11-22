@@ -32,7 +32,7 @@ func _init(_damage: int):
 
 func _on_body_entered(body):
 	# reads mask layer 2: enemy
-	if body.is_in_group("enemy"):
+	if body.is_in_group("foe"):
 		body.hit(damage, get_parent().direction * 30)
 		set_deferred("monitoring", false)
 

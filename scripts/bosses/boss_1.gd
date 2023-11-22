@@ -4,6 +4,7 @@ extends Foe
 const SPEED = 50.0
 
 func _init():
+	super._init()
 	health = 50
 
 func _physics_process(delta):

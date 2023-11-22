@@ -1,11 +1,10 @@
 class_name Boss3
 extends Foe
 
-signal killed
-
 const SPEED = 40.0
 
 func _init():
+	super._init()
 	health = 20
 
 func _physics_process(delta):
@@ -20,5 +19,5 @@ func hit(damage: int, force: Vector2):
 		die()
 
 func die():
-	killed.emit()
+	super.die()
 	queue_free()

@@ -12,6 +12,12 @@ enum Hat {
 	Niko,
 }
 
+enum Modifier {
+	Ammo,
+	Health,
+	Regen,
+}
+
 const HATS = {
 	Hat.None: [0, null, preload("res://sprites/shop/cross.png")],
 	Hat.Top: [1, preload("res://sprites/hats/top_hat.png"), preload("res://sprites/shop/top_hat_shop.png")],
@@ -22,6 +28,12 @@ var ITEMS = {
 	Item.None: [0, preload("res://sprites/shop/cross.png"), null],
 	Item.Wings: [2, preload("res://sprites/shop/wings_shop.png"), WingsUpgrade],
 	Item.Watch: [3, preload("res://sprites/shop/wings_shop.png"), WatchUpgrade],
+}
+
+var MODIFIERS = {
+	Modifier.Ammo: AmmoModifier,
+	Modifier.Health: HealthModifier,
+	Modifier.Regen: RegenerationModifier,
 }
 
 const DIALOGUES = {
@@ -39,9 +51,10 @@ const DIALOGUES = {
 
 const VIGNETTE_OPACITY = 0.035
 
-var coins: int = 5
 var current_area: Generator.Area = Generator.Area.City
-var after_boss: bool
+var after_boss: bool = true
+
+var coins: int = 5
 var equipped_hat: int = Hat.None
 var equipped_item: int = Item.Watch
 var unlocked_items: Array[Item] = []
@@ -51,7 +64,9 @@ var purchasable_hats: Array[Hat] = []
 var timer: float
 
 var player_state: Player
+var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
+@onready var modifier_pool = MODIFIERS.keys()
 var weapon_pool = {
 	"gun": [
 		Pistol,
@@ -86,6 +101,7 @@ var enemy_pool = {
 }
 
 func _ready():
+	rng.randomize()
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
 func freeze_frame():

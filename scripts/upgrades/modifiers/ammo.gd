@@ -1,4 +1,4 @@
-class_name AmmoUpgrade
+class_name AmmoModifier
 extends Upgrade
 
 func _init():
