@@ -57,6 +57,7 @@ const TREE = preload("res://scenes/tree.tscn")
 
 var rng = RandomNumberGenerator.new()
 var current_map: int = 2
+var enemies_left: int
 var last_player_spawn: Vector2
 
 var player: Player
@@ -96,13 +97,14 @@ func generate_map(size):
 	var enemy_count = 0
 	for i in range(island_count):
 		enemy_count += rng.randi_range(3 + pow(Global.current_area, 2), 5 + pow(Global.current_area, 2) + rng.randi_range(0, current_map + Global.current_area))
+	enemies_left = enemy_count
 	place_enemies(enemy_count)
 
 func generate_map_full(size):
 	cleanup()
 	generate_map(size)
-	var exit_placement = place_exit(GenerationType.Intermission)
-	place_player(exit_placement)
+	place_exit(GenerationType.Intermission, true)
+#	place_player(exit_placement)
 	generated.emit()
 
 func generate_intermission():
@@ -112,16 +114,16 @@ func generate_intermission():
 	var gen_type = GenerationType.Action
 	if current_map == MAP_COUNT:
 		gen_type = GenerationType.Boss
-	var exit_placement = place_exit(gen_type)
-	place_player(exit_placement)
+	place_exit(gen_type, false)
+#	place_player(exit_placement)
 	generated.emit()
 
 func generate_town():
 	cleanup()
 	place_islands(1, TOWN_SIZE)
-	var exit_pos = place_exit(GenerationType.Action)
-	var player_pos = place_player(exit_pos)
-	var all_positions: Array[Vector2i] = [exit_pos, player_pos]
+	var exit_pos = place_exit(GenerationType.Action, false)
+#	var player_pos = place_player(exit_pos)
+	var all_positions: Array[Vector2i] = [exit_pos]
 	var prop_positions = place_props()
 	all_positions.append_array(prop_positions)
 	var vending_pos = place_vending(all_positions)
@@ -132,16 +134,16 @@ func generate_town():
 func generate_boss1():
 	cleanup()
 	tilemap.set_pattern(0, Vector2i.ZERO, tilemap.tile_set.get_pattern(0))
-	var exit_placement = place_exit(GenerationType.Town)
-	place_player(exit_placement)
+	var exit_placement = place_exit(GenerationType.Town, true)
+#	place_player(exit_placement)
 	generated.emit()
 	world.init_boss1()
 
 func generate_boss3():
 	cleanup()
 	tilemap.set_pattern(0, Vector2i.ZERO, tilemap.tile_set.get_pattern(1))
-	var exit_placement = place_exit(GenerationType.Finale)
-	place_player(exit_placement)
+	var exit_placement = place_exit(GenerationType.Finale, true)
+#	place_player(exit_placement)
 	generated.emit()
 	world.init_boss3()
 
@@ -216,6 +218,7 @@ func place_enemies(count: int):
 		enemy.global_position = tilemap.map_to_local(placement)
 		if Global.current_area == Area.Abyss:
 			enemy.modulate = Color.BLACK
+		enemy.dead.connect(_on_enemy_dead)
 		world.add_child.call_deferred(enemy)
 
 func place_walls(chance: float):
@@ -258,7 +261,7 @@ func place_walls(chance: float):
 					tile = BOTTOM_ID
 				tilemap.set_cell(0, cell + dir, tile, Vector2i.ZERO)
 
-func place_exit(next_gen_type: GenerationType) -> Vector2i:
+func place_exit(next_gen_type: GenerationType, with_enemies: bool) -> Vector2i:
 	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
 	var placement = cells[0]
 	var center = tilemap.get_used_rect().get_center()
@@ -266,8 +269,9 @@ func place_exit(next_gen_type: GenerationType) -> Vector2i:
 		if Vector2(cell).distance_to(center) > Vector2(placement).distance_to(center):
 			placement = cell
 	var exit = EXIT.instantiate()
+	exit.enemies_gone = not with_enemies
 	exit.global_position = tilemap.map_to_local(placement)
-	exit.body_entered.connect(_on_exit_entered.bind(next_gen_type))
+	exit.moved.connect(_on_exit_moved.bind(next_gen_type))
 	world.add_child.call_deferred(exit)
 	return placement
 
@@ -383,7 +387,7 @@ func choose(dict: Dictionary):
 			return dict.keys()[i]
 		i += 1
 
-func _on_exit_entered(_body: Node2D, next_gen_type: GenerationType):
+func _on_exit_moved(next_gen_type: GenerationType):
 	match next_gen_type:
 		GenerationType.Action:
 			if current_map == MAP_COUNT:
@@ -414,3 +418,9 @@ func _on_exit_entered(_body: Node2D, next_gen_type: GenerationType):
 		GenerationType.Finale:
 			cleanup()
 			world.init_finale()
+
+func _on_enemy_dead():
+	enemies_left -= 1
+	if enemies_left <= 0:
+		get_tree().get_first_node_in_group("exit").enemies_gone = true
+		player.change_emotion(Player.Emotion.Correct)

@@ -43,10 +43,20 @@ func _input(event):
 			dialogue_finished.emit()
 			return
 		
+		player.sprite.animation = "front"
 		player.can_move = false
+		player.change_emotion(Player.Emotion.None)
 		
 		dialogue_box.show()
 		label.text = lines.lines[current_line].line.to_upper()
 		label.visible_ratio = 0
 		last_visible_char = -1
 		dialogue_box.size = Vector2(CHARACTER_SIZE * 12 + 8, 0)
+
+func _on_body_entered(body):
+	super._on_body_entered(body)
+	player.change_emotion(Player.Emotion.Question)
+
+func _on_body_exited(body):
+	super._on_body_exited(body)
+	player.change_emotion(Player.Emotion.None)

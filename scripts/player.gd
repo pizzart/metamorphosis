@@ -9,6 +9,16 @@ const INIT_HEALTH = 15
 const MAX_PACKS = 3
 const HAT_Y = -4
 
+enum Emotion {
+	None,
+	Question,
+	Warning,
+	Waiting,
+	Correct,
+	Energy,
+	Blood,
+}
+
 var speed = INIT_SPEED
 var speed_multiplier: float = 1
 var offset_velocity: Vector2
@@ -20,7 +30,7 @@ var buffer_health: int = 0
 var weight: int = 0
 var max_ammo: float = INIT_AMMO
 var ammo: float = max_ammo
-var coins: int = 0
+var coins: int = 3
 var coins_visible: bool = false
 var health_packs: int = 1
 
@@ -32,6 +42,7 @@ var rng = RandomNumberGenerator.new()
 @onready var shadow = $Shadow
 @onready var coin_box = $CoinBox
 @onready var hat = $V/Sprite/Hat
+@onready var emotion_spr = $V/Sprite/Emotion
 @onready var sprite = $V/Sprite
 
 func _ready():
@@ -102,6 +113,8 @@ func _process(delta):
 #		speed_multiplier = 1
 #	ammo = clampf(ammo + delta * 15, 0, max_ammo)
 	hat.position.y = HAT_Y + sprite.frame % 2
+	emotion_spr.visible = sprite.animation == "front"
+	emotion_spr.position.y = sprite.frame % 2
 
 func _input(event):
 	if event.is_action_pressed("change_gun"):
@@ -141,6 +154,7 @@ func hit(damage: int, force: Vector2):
 	Global.freeze_frame()
 	
 	if health < max_health / 3 and health_prev >= max_health / 3:
+		change_emotion(Player.Emotion.Energy)
 		var tween = create_tween()
 		tween.tween_method(Global.set_shader_param.bind("vignette_opacity"), Global.VIGNETTE_OPACITY, 0.5, 1.0)
 #	else:
@@ -209,9 +223,12 @@ func spend_coins(amount: int):
 
 func add_ammo(amount: float):
 	ammo = clampf(ammo + amount, 0, max_ammo)
+	change_emotion(Emotion.None)
 
 func heal(amount: int):
 	health = mini(health + amount, max_health - buffer_health)
+	if health >= max_health / 3:
+		change_emotion(Emotion.None)
 
 func add_health_pack():
 	health_packs = mini(health_packs + 1, MAX_PACKS)
@@ -293,6 +310,9 @@ func get_weight():
 	for u in get_tree().get_nodes_in_group("upgrade"):
 		upgrade_weight += u.weight
 	return gun.weight + melee.weight + upgrade_weight
+
+func change_emotion(emotion: Emotion):
+	emotion_spr.texture = load("res://sprites/character/emotions/emotion_%s.png" % emotion)
 
 func _on_inv_timer_timeout():
 	invincible = false

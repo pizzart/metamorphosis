@@ -50,7 +50,8 @@ func _process(delta):
 		$SkyBG/ParallaxLayer4.motion_offset.x -= delta * 13
 		$SkyBG/ParallaxLayer5.motion_offset.x -= delta * 3
 		$SkyBG/ParallaxLayer7.motion_offset.x -= delta * 5
-	$SelectionScreen.offset = -(get_viewport().get_mouse_position() - get_viewport_rect().size / 2) / 8
+	if $SelectionScreen:
+		$SelectionScreen.offset = -(get_viewport().get_mouse_position() - get_viewport_rect().size / 2) / 8
 
 func init_boss1():
 	pass

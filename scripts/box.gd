@@ -20,6 +20,14 @@ func _init(_item):
 	
 	add_child(sprite)
 	add_child(collision_shape)
+	
+	set_collision_layer_value(6, true)
+	set_collision_mask_value(6, true)
+
+func _process(delta):
+	if not get_overlapping_areas().is_empty():
+		for area in get_overlapping_areas():
+			position += (global_position - area.global_position).limit_length() * delta * 100
 
 func _input(event):
 	if event.is_action_pressed("use") and can_interact:

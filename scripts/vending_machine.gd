@@ -20,6 +20,7 @@ func _input(event):
 		else:
 			$Beep.play()
 			player.shake_coins()
+			player.change_emotion(Player.Emotion.Warning)
 
 func _on_body_entered(body):
 	super._on_body_entered(body)
@@ -28,6 +29,7 @@ func _on_body_entered(body):
 func _on_body_exited(_body):
 	super._on_body_exited(_body)
 	player.hide_coins()
+	player.change_emotion(Player.Emotion.None)
 
 func unfocus():
 	super.unfocus()

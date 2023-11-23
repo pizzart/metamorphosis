@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dph8pd3qblx44"]
+[gd_scene load_steps=16 format=3 uid="uid://dph8pd3qblx44"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_bsqet"]
 [ext_resource type="SpriteFrames" uid="uid://decjog7dp6jgi" path="res://resources/player.tres" id="2_p00mm"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://qnrmj3whsmx0" path="res://sprites/light.png" id="4_7jsic"]
 [ext_resource type="Texture2D" uid="uid://cju6qf6nijxw3" path="res://sprites/shadow.png" id="4_8nt6r"]
 [ext_resource type="Script" path="res://scripts/camera.gd" id="4_wndim"]
+[ext_resource type="Texture2D" uid="uid://c21jv58ntw46j" path="res://sprites/character/emotions/emotion_0.png" id="4_wtmoa"]
 [ext_resource type="PackedScene" uid="uid://dyyfpg3oe0gjc" path="res://scenes/cost_box.tscn" id="7_48x62"]
 [ext_resource type="Shader" path="res://misc/mask.gdshader" id="11_wrglk"]
 [ext_resource type="Shader" path="res://misc/mask2.gdshader" id="13_mf1ml"]
@@ -55,6 +56,9 @@ autoplay = "front"
 visible = false
 position = Vector2(0, -4)
 texture = ExtResource("3_46xsb")
+
+[node name="Emotion" type="Sprite2D" parent="V/Sprite"]
+texture = ExtResource("4_wtmoa")
 
 [node name="Shadow" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.513726)

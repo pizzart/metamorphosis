@@ -3,6 +3,7 @@ extends Foe
 
 const CORPSE = preload("res://scenes/corpse.tscn")
 const PARTICLES = preload("res://scenes/particles/hit_enemy_particles.tscn")
+const LIGHT = preload("res://scenes/pickup_light.tscn")
 
 const DROP_CHANCE = 0.1
 const HEALTH_DROP_CHANCE = 0.05
@@ -54,6 +55,8 @@ func _init(_health: int, _shuffle_min: float, _shuffle_max: float, _walk_speed: 
 	stream.add_stream(2, preload("res://audio/sfx/hurt3.wav"))
 	audio.stream = stream
 	
+	var light = LIGHT.instantiate()
+	
 	add_child(collision_shape)
 	add_child(navigation_agent)
 	add_child(nav_timer)
@@ -61,6 +64,7 @@ func _init(_health: int, _shuffle_min: float, _shuffle_max: float, _walk_speed: 
 	add_child(shadow)
 	add_child(sprite)
 	add_child(audio)
+	add_child(light)
 	
 	health = _health
 	shuffle_min = _shuffle_min

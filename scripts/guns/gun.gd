@@ -30,6 +30,7 @@ func _input(event):
 		if player.ammo >= ammo_cost:
 			attack()
 		else:
+			player.change_emotion(Player.Emotion.Blood)
 			error_audio.play()
 
 func attack():

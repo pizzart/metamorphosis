@@ -30,3 +30,10 @@ func _on_back_pressed():
 	$ClickSFX.play()
 	$M/Settings.hide()
 	$M/Main.show()
+
+func _on_music_value_changed(value):
+	AudioServer.set_bus_volume_db(1, linear_to_db(value / 20))
+
+func _on_sound_value_changed(value):
+	AudioServer.set_bus_volume_db(2, linear_to_db(value / 20))
+	
