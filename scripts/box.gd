@@ -1,11 +1,20 @@
 class_name Box
-extends Interactable
+extends Area2D
 
+const PARTICLES = preload("res://scenes/particles/box_particles.tscn")
 var sprite = Sprite2D.new()
+var audio = AudioStreamPlayer2D.new()
 var item: Weapon
+var can_interact: bool
 
 func _init(_item):
-	super._init()
+	set_collision_layer_value(1, false)
+	set_collision_mask_value(3, true)
+	
+	area_entered.connect(_on_area_entered)
+	
+	add_to_group("cleanup")
+	
 	item = _item
 	
 	var rect = RectangleShape2D.new()
@@ -18,28 +27,37 @@ func _init(_item):
 	else:
 		sprite.texture = preload("res://sprites/props/box_melee.png")
 	
+	var stream = AudioStreamRandomizer.new()
+	stream.add_stream(0, preload("res://audio/sfx/box_hit.wav"))
+	audio.stream = stream
+	
 	add_child(sprite)
+	add_child(audio)
 	add_child(collision_shape)
 	
 	set_collision_layer_value(6, true)
 	set_collision_mask_value(6, true)
 
 func _process(delta):
-	if not get_overlapping_areas().is_empty():
-		for area in get_overlapping_areas():
-			position += (global_position - area.global_position).limit_length() * delta * 100
+	if monitoring:
+		if not get_overlapping_areas().is_empty():
+			for area in get_overlapping_areas():
+				position += (global_position - area.global_position).limit_length(10) * delta * 5
 
-func _input(event):
-	if event.is_action_pressed("use") and can_interact:
-		var pickup = WeaponPickup.new(item.weapon_name, item)
-		pickup.global_position = global_position
-		get_parent().add_child(pickup)
-		queue_free()
+func break_box():
+	var pickup = WeaponPickup.new(item.weapon_name, item)
+	pickup.global_position = global_position
+	get_parent().add_child.call_deferred(pickup)
+	var particles = PARTICLES.instantiate()
+	particles.global_position = global_position
+	particles.restart()
+	get_parent().add_child.call_deferred(particles)
+	set_deferred("monitoring", false)
+	audio.play()
+	hide()
+	await audio.finished
+	queue_free()
 
-#func _on_body_entered(body):
-#	super._on_body_entered(body)
-#	modulate = Color(2, 2, 2)
-
-#func unfocus():
-#	can_interact = false
-#	modulate = Color.WHITE
+func _on_area_entered(area):
+	if area is Projectile:
+		break_box()

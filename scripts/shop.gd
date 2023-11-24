@@ -14,16 +14,24 @@ func _ready():
 	for i in range(Global.coins - 1):
 		$M/H.add_child($M/H/Disk.duplicate())
 	
+	var i = 0
 	for item in Global.ITEMS.keys():
 		if item == 0:
 			continue
 		$M/ItemList.add_icon_item(Global.ITEMS[item][1])
+		if not item in Global.purchasable_items:
+			$M/ItemList.set_item_icon_modulate(i, Color(1, 0.5, 0.5))
+		i += 1
 	for hat in Global.HATS.keys():
 		if hat == 0:
 			continue
 		$M/ItemList.add_icon_item(Global.HATS[hat][2])
+		if not hat in Global.purchasable_hats:
+			$M/ItemList.set_item_icon_modulate(i, Color(1, 0.5, 0.5))
+		i += 1
 
 func _on_buy_pressed():
+	$ClickSFX.play()
 	if selected_type == ItemType.Hat:
 		Global.purchasable_hats.erase(selected)
 		Global.unlocked_hats.append(selected)
@@ -42,6 +50,7 @@ func _on_buy_pressed():
 	selected = 0
 
 func _on_item_list_item_selected(index):
+	$ClickSFX.play()
 	selected_dict = Global.ITEMS
 	var idx = index + 1
 	var can_buy = false
@@ -65,3 +74,8 @@ func _on_item_list_item_selected(index):
 	$M/V/Disks/Disk.show()
 	for i in range(selected_dict[selected][0] - 1):
 		$M/V/Disks.add_child($M/V/Disks/Disk.duplicate())
+
+func _on_buy_focus_entered():
+	if $M/V/Buy.disabled:
+		$M/V/Buy.release_focus()
+		$ErrorSFX.play()

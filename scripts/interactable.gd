@@ -1,6 +1,7 @@
 class_name Interactable
 extends Area2D
 
+var inside: bool
 var can_interact: bool
 @onready var player: Player = get_tree().get_first_node_in_group("player")
 
@@ -15,15 +16,17 @@ func _init():
 	add_to_group("cleanup")
 
 func _on_body_entered(body):
-	for i in get_tree().get_nodes_in_group("interactable"):
-		if i != self:
-			i.unfocus()
-	can_interact = true
+#	for i in get_tree().get_nodes_in_group("interactable"):
+#		if i != self:
+#			i.unfocus()
+#	can_interact = true
+	inside = true
 	UI.show_help()
 
 func _on_body_exited(_body):
+	inside = false
 	unfocus()
 
 func unfocus():
-	can_interact = false
+#	can_interact = false
 	UI.hide_help()

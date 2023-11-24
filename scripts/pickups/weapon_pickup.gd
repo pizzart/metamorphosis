@@ -25,13 +25,8 @@ func _init(_pickup_name: String, _item: Weapon):
 func _ready():
 	sprite.rotation = (global_position.x + global_position.y) / PI
 
-func _on_body_entered(body):
-	super._on_body_entered(body)
-	drawer.show()
-
-func unfocus():
-	super.unfocus()
-	drawer.hide()
+func _process(delta):
+	drawer.visible = can_interact
 
 func _input(event):
 	if event.is_action_pressed("use") and can_interact:

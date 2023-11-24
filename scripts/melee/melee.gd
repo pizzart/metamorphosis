@@ -5,6 +5,7 @@ const SWIPE_PARTICLES = preload("res://scenes/particles/swipe_particles.tscn")
 const OFFSET_ATTACK = 40
 
 var buffered: bool
+var can_deflect: bool = false
 var swipe_particles: CPUParticles2D
 
 func _init(_recharge_speed: float, _weight: int, _knockback: float, _texture: Texture2D, _weapon_name: String):
@@ -42,6 +43,9 @@ func _on_timer_timeout():
 	player.speed_multiplier = 1
 
 func _on_projectile_hit(body):
-	player.knockback(-direction * knockback / 4)
-	player.add_ammo(10)
-	player.cam.add_trauma(0.2)
+	if body.is_in_group("foe"):
+		player.knockback(-direction * knockback / 4)
+		player.add_ammo(10)
+		player.cam.add_trauma(0.2)
+	if body.is_in_group("tree") or body is Box:
+		player.add_ammo(5)

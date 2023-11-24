@@ -9,7 +9,6 @@ const MAX_AIR_VELOCITY = 6.0
 const FRICTION = 0.1
 
 const JUMP_VELOCITY = 4.5
-const MOUSE_ACCEL = 0.003
 const TILT_AMOUNT = 0.07
 
 var health: int = MAX_HEALTH
@@ -91,8 +90,8 @@ func damage(amount: int):
 
 func _input(event):
 	if event is InputEventMouseMotion:
-		rotation.y -= event.relative.x * MOUSE_ACCEL
-		camera.rotation.x = clampf(camera.rotation.x - event.relative.y * MOUSE_ACCEL, -PI / 2, PI / 2)
+		rotation.y -= event.relative.x * Global.mouse_sens
+		camera.rotation.x = clampf(camera.rotation.x - event.relative.y * Global.mouse_sens, -PI / 2, PI / 2)
 	if event.is_action_pressed("attack"):
 		if $Camera3D/Ray.is_colliding():
 			var col = $Camera3D/Ray.get_collider()

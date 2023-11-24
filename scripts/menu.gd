@@ -3,6 +3,7 @@ extends Control
 const UNREADABLE_FONT = preload("res://misc/font.png")
 
 func _ready():
+	PauseMenu.can_show = false
 	UI.hide()
 
 func _on_start_mouse_entered():
@@ -14,7 +15,8 @@ func _on_start_mouse_exited():
 func _on_start_pressed():
 	$ClickSFX.play()
 	await $ClickSFX.finished
-	get_tree().change_scene_to_file("res://scenes/pre_ui.tscn")
+	get_tree().change_scene_to_file("res://scenes/temp_tutorial.tscn")
+#	get_tree().change_scene_to_file("res://scenes/pre_ui.tscn")
 
 func _on_settings_pressed():
 	$ClickSFX.play()
@@ -26,14 +28,6 @@ func _on_quit_pressed():
 	await $ClickSFX.finished
 	get_tree().quit()
 
-func _on_back_pressed():
-	$ClickSFX.play()
+func _on_settings_back():
 	$M/Settings.hide()
 	$M/Main.show()
-
-func _on_music_value_changed(value):
-	AudioServer.set_bus_volume_db(1, linear_to_db(value / 20))
-
-func _on_sound_value_changed(value):
-	AudioServer.set_bus_volume_db(2, linear_to_db(value / 20))
-	

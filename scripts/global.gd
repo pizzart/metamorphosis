@@ -16,6 +16,7 @@ enum Modifier {
 	Ammo,
 	Health,
 	Regen,
+	Deflect,
 }
 
 const HATS = {
@@ -34,6 +35,7 @@ var MODIFIERS = {
 	Modifier.Ammo: AmmoModifier,
 	Modifier.Health: HealthModifier,
 	Modifier.Regen: RegenerationModifier,
+	Modifier.Deflect: DeflectModifier,
 }
 
 const DIALOGUES = {
@@ -45,23 +47,27 @@ const DIALOGUES = {
 	1: [
 		preload("res://resources/dialogue_lines/area_2/1.tres"),
 		preload("res://resources/dialogue_lines/area_2/2.tres"),
+		preload("res://resources/dialogue_lines/area_2/3.tres"),
 	],
 	2: []
 }
 
 const VIGNETTE_OPACITY = 0.035
 
-var current_area: Generator.Area = Generator.Area.City
+var current_area: Generator.Area = Generator.Area.Sky
 var after_boss: bool = true
 
-var coins: int = 5
+var coins: int = 0
 var equipped_hat: int = Hat.None
-var equipped_item: int = Item.Watch
+var equipped_item: int = Item.None
 var unlocked_items: Array[Item] = []
 var unlocked_hats: Array[Hat] = []
 var purchasable_items: Array[Item] = []
 var purchasable_hats: Array[Hat] = []
 var timer: float
+
+var mouse_sens: float = 0.003
+var shake_strength: float = 1
 
 var player_state: Player
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -101,6 +107,9 @@ var enemy_pool = {
 }
 
 func _ready():
+	if not OS.has_feature("editor"):
+		current_area = Generator.Area.Sky
+		after_boss = false
 	rng.randomize()
 	process_mode = Node.PROCESS_MODE_ALWAYS
 

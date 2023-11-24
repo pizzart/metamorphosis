@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://c3au5c0hj6olp"]
+[gd_scene load_steps=5 format=3 uid="uid://c3au5c0hj6olp"]
 
 [ext_resource type="Theme" uid="uid://t6wu146mxlyh" path="res://misc/theme.tres" id="1_l8qyt"]
 [ext_resource type="Script" path="res://scripts/menu.gd" id="2_516qa"]
+[ext_resource type="PackedScene" uid="uid://b77lvbvumc7uj" path="res://scenes/settings_menu.tscn" id="3_5880d"]
 [ext_resource type="AudioStream" uid="uid://crv0ic1kxw0nt" path="res://audio/sfx/click.wav" id="3_co23l"]
 
 [node name="Menu" type="Control"]
@@ -35,7 +36,7 @@ size_flags_vertical = 4
 
 [node name="List" type="VBoxContainer" parent="M/Main"]
 layout_mode = 2
-theme_override_constants/separation = 0
+theme_override_constants/separation = -1
 alignment = 1
 
 [node name="Start" type="Button" parent="M/Main/List"]
@@ -50,54 +51,13 @@ text = "SETTINGS"
 layout_mode = 2
 text = "QUIT"
 
-[node name="Settings" type="PanelContainer" parent="M"]
+[node name="Settings" parent="M" instance=ExtResource("3_5880d")]
 visible = false
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="M" type="MarginContainer" parent="M/Settings"]
-layout_mode = 2
-theme_override_constants/margin_right = 6
-
-[node name="List" type="VBoxContainer" parent="M/Settings/M"]
-layout_mode = 2
-
-[node name="Music" type="HBoxContainer" parent="M/Settings/M/List"]
-layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="Label" type="Label" parent="M/Settings/M/List/Music"]
-layout_mode = 2
-text = "music"
-
-[node name="HSlider" type="HSlider" parent="M/Settings/M/List/Music"]
-custom_minimum_size = Vector2(97, 0)
-layout_mode = 2
-max_value = 20.0
-value = 20.0
-
-[node name="Sound" type="HBoxContainer" parent="M/Settings/M/List"]
-layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="Label" type="Label" parent="M/Settings/M/List/Sound"]
-layout_mode = 2
-text = "sound"
-
-[node name="HSlider" type="HSlider" parent="M/Settings/M/List/Sound"]
-custom_minimum_size = Vector2(97, 0)
-layout_mode = 2
-max_value = 20.0
-value = 20.0
-tick_count = 10
-
-[node name="Back" type="Button" parent="M/Settings/M/List"]
-layout_mode = 2
-text = "BACK"
 
 [node name="ClickSFX" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_co23l")
+volume_db = -5.0
 bus = &"sfx"
 
 [connection signal="mouse_entered" from="M/Main/List/Start" to="." method="_on_start_mouse_entered"]
@@ -105,6 +65,4 @@ bus = &"sfx"
 [connection signal="pressed" from="M/Main/List/Start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="M/Main/List/Settings" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="M/Main/List/Quit" to="." method="_on_quit_pressed"]
-[connection signal="value_changed" from="M/Settings/M/List/Music/HSlider" to="." method="_on_music_value_changed"]
-[connection signal="value_changed" from="M/Settings/M/List/Sound/HSlider" to="." method="_on_sound_value_changed"]
-[connection signal="pressed" from="M/Settings/M/List/Back" to="." method="_on_back_pressed"]
+[connection signal="back" from="M/Settings" to="." method="_on_settings_back"]

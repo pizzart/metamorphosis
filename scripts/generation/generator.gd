@@ -35,8 +35,6 @@ const AREA_SIZES = {
 	Area.Abyss: 25,
 }
 
-const ISLAND_SIZE = 9
-const ISLAND_CITY_SIZE = 20
 const ISLAND_SPREAD = 15
 const INTERMISSION_SIZE = 5
 const TOWN_SIZE = 15
@@ -69,11 +67,14 @@ func _init(_player, _tilemap):
 	tilemap = _tilemap
 
 func _ready():
+	if not OS.has_feature("editor"):
+		current_map = 0
 	update_surroundings()
 #	world.play_music("abyss_intense")
 
 func generate_map(size):
-	var island_count = rng.randi_range(1, 4)
+	var added_count = rng.randi_range(0, current_map + 1)
+	var island_count = rng.randi_range(1 + Global.current_area + added_count, 4 + Global.current_area + added_count)
 	var positions = place_islands(island_count, size)
 	if island_count > 1:
 		var new_positions = positions # what the hell
@@ -94,16 +95,17 @@ func generate_map(size):
 				world.add_child.call_deferred(teleporter)
 	if Global.current_area == Area.City:
 		place_walls(0.98)
+	return island_count
+
+func generate_map_full(size):
+	cleanup()
+	var island_count = generate_map(size)
+	var exit_pos = place_exit(GenerationType.Intermission, true)
 	var enemy_count = 0
 	for i in range(island_count):
 		enemy_count += rng.randi_range(3 + pow(Global.current_area, 2), 5 + pow(Global.current_area, 2) + rng.randi_range(0, current_map + Global.current_area))
 	enemies_left = enemy_count
-	place_enemies(enemy_count)
-
-func generate_map_full(size):
-	cleanup()
-	generate_map(size)
-	place_exit(GenerationType.Intermission, true)
+	place_enemies(enemy_count, exit_pos)
 #	place_player(exit_placement)
 	generated.emit()
 
@@ -134,8 +136,9 @@ func generate_town():
 func generate_boss1():
 	cleanup()
 	tilemap.set_pattern(0, Vector2i.ZERO, tilemap.tile_set.get_pattern(0))
-	var exit_placement = place_exit(GenerationType.Town, true)
+	var exit_pos = place_exit(GenerationType.Town, true)
 #	place_player(exit_placement)
+	place_enemies(10, exit_pos)
 	generated.emit()
 	world.init_boss1()
 
@@ -204,13 +207,13 @@ func place_borders(used_cells: Array[Vector2i]):
 				border_cells[cell + i] = i == Vector2i.DOWN
 	return border_cells
 
-func place_enemies(count: int):
+func place_enemies(count: int, exit_pos: Vector2i):
 	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
 	var placements = []
 	for i in range(count):
 		if not cells.is_empty():
 			var j = rng.randi() % cells.size()
-			while tilemap.get_cell_source_id(1, cells[j]) != -1:
+			while tilemap.get_cell_source_id(1, cells[j]) != -1 or (cells[j] - exit_pos).length_squared() < 17:
 				j = rng.randi() % cells.size()
 			placements.append(cells.pop_at(j))
 	for placement in placements:
@@ -263,11 +266,14 @@ func place_walls(chance: float):
 
 func place_exit(next_gen_type: GenerationType, with_enemies: bool) -> Vector2i:
 	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
-	var placement = cells[0]
 	var center = tilemap.get_used_rect().get_center()
+	var placement = cells[0]
 	for cell in cells:
-		if Vector2(cell).distance_to(center) > Vector2(placement).distance_to(center):
+		if (cell - center).length_squared() > (placement - center).length_squared():
 			placement = cell
+	tilemap.erase_cell(0, placement)
+	if tilemap.get_cell_source_id(0, placement + Vector2i.DOWN) == BOTTOM_ID:
+		tilemap.set_cell(0, placement + Vector2i.DOWN, 0, Vector2i.ZERO)
 	var exit = EXIT.instantiate()
 	exit.enemies_gone = not with_enemies
 	exit.global_position = tilemap.map_to_local(placement)
@@ -318,7 +324,7 @@ func place_vending(taken_positions: Array[Vector2i]):
 	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
 	var j = rng.randi() % cells.size()
 	for pos in taken_positions:
-		while (cells[j] - pos).length() < 3:
+		while (cells[j] - pos).length() < 5:
 			cells.remove_at(j)
 			j = rng.randi() % cells.size()
 	var vending = VENDING.instantiate()
@@ -402,7 +408,7 @@ func _on_exit_moved(next_gen_type: GenerationType):
 				generate_map_full(AREA_SIZES[Global.current_area])
 		GenerationType.Intermission:
 			generate_intermission()
-			world.transition_music("%s_intense" % AREA_NAMES[Global.current_area], "%s_calm" % AREA_NAMES[Global.current_area])
+#			world.transition_music("%s_intense" % AREA_NAMES[Global.current_area], "%s_calm" % AREA_NAMES[Global.current_area])
 		GenerationType.Boss:
 			match Global.current_area:
 				Area.Sky:
@@ -414,6 +420,7 @@ func _on_exit_moved(next_gen_type: GenerationType):
 		GenerationType.Town:
 			Global.purchasable_hats.append(Global.current_area + 1)
 			Global.purchasable_items.append(Global.current_area + 1)
+			world.fade_music_out(10)
 			generate_town()
 		GenerationType.Finale:
 			cleanup()
@@ -424,3 +431,4 @@ func _on_enemy_dead():
 	if enemies_left <= 0:
 		get_tree().get_first_node_in_group("exit").enemies_gone = true
 		player.change_emotion(Player.Emotion.Correct)
+		world.transition_music("%s_intense" % AREA_NAMES[Global.current_area], "%s_calm" % AREA_NAMES[Global.current_area])

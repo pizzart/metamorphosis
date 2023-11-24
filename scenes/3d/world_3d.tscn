@@ -244,6 +244,7 @@ active_face = -1
 face_ids = PackedInt32Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17)
 
 [node name="World3D" type="Node3D"]
+process_priority = 1
 script = ExtResource("1_c4r3l")
 
 [node name="Player" parent="." instance=ExtResource("1_deg81")]

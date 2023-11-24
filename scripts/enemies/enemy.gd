@@ -54,6 +54,7 @@ func _init(_health: int, _shuffle_min: float, _shuffle_max: float, _walk_speed: 
 	stream.add_stream(1, preload("res://audio/sfx/hurt2.wav"))
 	stream.add_stream(2, preload("res://audio/sfx/hurt3.wav"))
 	audio.stream = stream
+	audio.max_polyphony = 3
 	
 	var light = LIGHT.instantiate()
 	

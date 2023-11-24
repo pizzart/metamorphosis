@@ -1,6 +1,8 @@
 class_name Player
 extends CharacterBody2D
 
+signal weapon_changed(weapon: Weapon)
+
 const PARTICLES = preload("res://scenes/particles/hit_particles.tscn")
 
 const INIT_AMMO = 100
@@ -8,6 +10,8 @@ const INIT_SPEED = 120
 const INIT_HEALTH = 15
 const MAX_PACKS = 3
 const HAT_Y = -4
+const COST_BOX_POS = Vector2(12, -54)
+const STEP_TIME = 0.4
 
 enum Emotion {
 	None,
@@ -30,20 +34,25 @@ var buffer_health: int = 0
 var weight: int = 0
 var max_ammo: float = INIT_AMMO
 var ammo: float = max_ammo
-var coins: int = 3
+var coins: int = 0
 var coins_visible: bool = false
-var health_packs: int = 1
+var health_packs: int = 0
+var step_timer: float
 
 var rng = RandomNumberGenerator.new()
 
-@onready var cam: Camera2D = $Camera
-@onready var gun: Gun = Minigun.new()
+@onready var gun: Gun = Pistol.new()
 @onready var melee: Melee = Sword.new()
+@onready var cam: Camera2D = $Camera
 @onready var shadow = $Shadow
 @onready var coin_box = $CoinBox
+@onready var disk_box = $DiskBox
 @onready var hat = $V/Sprite/Hat
 @onready var emotion_spr = $V/Sprite/Emotion
 @onready var sprite = $V/Sprite
+@onready var death_sfx = $DeathSFX
+@onready var change_sfx = $ChangeSFX
+@onready var step_sfx = $StepSFX
 
 func _ready():
 	add_child(gun)
@@ -59,6 +68,9 @@ func _ready():
 	if Global.equipped_hat != Global.Hat.None:
 		hat.show()
 		hat.texture = Global.HATS[Global.equipped_hat][1]
+	
+	for i in range(5):
+		add_coin()
 	
 	UI.set_health_packs(health_packs)
 
@@ -105,21 +117,20 @@ func _process(delta):
 	UI.get_node("Control/M/Bars/Health/Bar/Buffer").max_value = max_health
 	UI.get_node("Control/M/Bars/Ammo/Bar").value = ammo
 	UI.get_node("Control/M/Bars/Ammo/Bar").max_value = max_ammo
-	coin_box.global_position = lerp(coin_box.global_position, to_global(Vector2(12, -54)), delta * 10)
+	coin_box.global_position = lerp(coin_box.global_position, to_global(COST_BOX_POS), delta * 10)
 #	UI.get_node("Control/M/V/Coins").text = str(coins)
 #	if weight > health:
 #		speed_multiplier = 0.5
 #	else:
 #		speed_multiplier = 1
 #	ammo = clampf(ammo + delta * 15, 0, max_ammo)
-	hat.position.y = HAT_Y + sprite.frame % 2
 	emotion_spr.visible = sprite.animation == "front"
-	emotion_spr.position.y = sprite.frame % 2
 
 func _input(event):
 	if event.is_action_pressed("change_gun"):
 		gun.is_equipped = not gun.is_equipped
 		melee.is_equipped = not melee.is_equipped
+		change_sfx.play()
 	if event.is_action_pressed("heal"):
 		if health_packs > 0:
 			heal(5)
@@ -137,8 +148,23 @@ func hit(damage: int, force: Vector2):
 	
 	health -= damage
 	if health <= 0:
-		Global.current_area = 0
-		Global.coins += floori(coins / 3)
+		var disks = floori(coins / 3)
+		if disks == 0:
+			disk_box.get_node("Grid/T").hide()
+		for i in range(disks - 1):
+			disk_box.add_child(disk_box.get_node("Grid/T").duplicate(8))
+		disk_box.global_position = to_global(COST_BOX_POS) + Vector2(0, coin_box.size.y + 8)
+		disk_box.show()
+		show_coins(coins)
+		
+		Global.coins += disks
+		
+		death_sfx.play()
+		can_move = false
+		invincible = true
+		set_collision_layer_value(1, false)
+		
+		await get_tree().create_timer(3).timeout
 		get_tree().change_scene_to_file("res://scenes/pre_ui.tscn")
 	
 	invincible = true
@@ -203,6 +229,9 @@ func replace_weapon(new_weapon: Weapon):
 		melee = new_weapon
 	add_child(new_weapon)
 	
+	weapon_changed.emit(new_weapon)
+	change_sfx.play()
+	
 	return old_weapon
 
 func add_coin():
@@ -229,6 +258,8 @@ func heal(amount: int):
 	health = mini(health + amount, max_health - buffer_health)
 	if health >= max_health / 3:
 		change_emotion(Emotion.None)
+		var tween = create_tween()
+		tween.tween_method(Global.set_shader_param.bind("vignette_opacity"), 0.5, Global.VIGNETTE_OPACITY, 1.0)
 
 func add_health_pack():
 	health_packs = mini(health_packs + 1, MAX_PACKS)
@@ -294,7 +325,7 @@ func hide_coins():
 
 func shake_coins():
 	for i in range(10):
-		coin_box.global_position = to_global(Vector2(12, -54) + Vector2(rng.randf_range(-3, 3), rng.randf_range(-3, 3)))
+		coin_box.global_position = to_global(COST_BOX_POS + Vector2(rng.randf_range(-3, 3), rng.randf_range(-3, 3)))
 		await get_tree().physics_frame
 
 #func add_weight(added: int):
@@ -316,3 +347,9 @@ func change_emotion(emotion: Emotion):
 
 func _on_inv_timer_timeout():
 	invincible = false
+
+func _on_sprite_frame_changed():
+	hat.position.y = HAT_Y + sprite.frame % 2
+	emotion_spr.position.y = sprite.frame % 2
+	if sprite.frame % 2:
+		step_sfx.play()

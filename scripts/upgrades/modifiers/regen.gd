@@ -1,11 +1,12 @@
 class_name RegenerationModifier
 extends Upgrade
 
+const WEIGHT = 1
 const CHANCE = 0.02
 
 func _init():
 	super._init()
-	weight = 1
+	weight = WEIGHT
 
 func _ready():
 	connect_enemies()

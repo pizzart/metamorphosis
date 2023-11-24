@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://64kdpv3e4j6m"]
+[gd_scene load_steps=26 format=3 uid="uid://64kdpv3e4j6m"]
 
 [ext_resource type="Script" path="res://scripts/world.gd" id="1_eoi30"]
 [ext_resource type="Shader" path="res://misc/matrix.gdshader" id="2_1rf8u"]
@@ -20,10 +20,8 @@
 [ext_resource type="AudioStream" uid="uid://ciduq3e1emkqf" path="res://audio/mus/city_calm.ogg" id="19_vdfrj"]
 [ext_resource type="AudioStream" uid="uid://dry5bp5aqvye" path="res://audio/mus/city_intense.ogg" id="20_0pcfj"]
 [ext_resource type="AudioStream" uid="uid://by7ulyq7o5uba" path="res://audio/mus/sky_calm.ogg" id="21_0pm0g"]
-[ext_resource type="Texture2D" uid="uid://b4tr1ysqmrioe" path="res://sprites/ui/selection_screen.png" id="22_2h2ec"]
 [ext_resource type="AudioStream" uid="uid://trubuidkt3k7" path="res://audio/mus/sky_intense.ogg" id="22_o54vx"]
-[ext_resource type="Texture2D" uid="uid://cqqnnt6pfrob" path="res://sprites/ui/modifiers/modifier_00.png" id="23_dk6t6"]
-[ext_resource type="Texture2D" uid="uid://d1d8sgydsqmw" path="res://sprites/ui/modifiers/modifier_01.png" id="24_rcsa2"]
+[ext_resource type="PackedScene" uid="uid://bvavc4mygdyug" path="res://scenes/selection_ui.tscn" id="22_rt06i"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_k3f30"]
 noise_type = 5
@@ -221,83 +219,49 @@ visible = false
 color = Color(0.227451, 0.258824, 0.298039, 1)
 
 [node name="MusicBoss3" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 stream = ExtResource("16_u4s3l")
 bus = &"mus"
 
 [node name="MusicAbyssCalm" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 stream = ExtResource("17_4b642")
 bus = &"mus"
 
 [node name="MusicAbyssIntense" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 stream = ExtResource("18_jg8vn")
 bus = &"mus"
 
 [node name="MusicCityCalm" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 stream = ExtResource("19_vdfrj")
 bus = &"mus"
 
 [node name="MusicCityIntense" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 stream = ExtResource("20_0pcfj")
 bus = &"mus"
 
 [node name="MusicSkyCalm" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 stream = ExtResource("21_0pm0g")
 bus = &"mus"
 
 [node name="MusicSkyIntense" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 stream = ExtResource("22_o54vx")
 bus = &"mus"
 
-[node name="SelectionScreen" type="CanvasLayer" parent="."]
+[node name="SelectionWindow" type="Window" parent="."]
+canvas_item_default_texture_filter = 0
+initial_position = 2
+size = Vector2i(640, 480)
 visible = false
+unresizable = true
+always_on_top = true
+content_scale_size = Vector2i(320, 240)
+content_scale_mode = 2
+content_scale_aspect = 1
 
-[node name="ColorRect" type="ColorRect" parent="SelectionScreen"]
-anchors_preset = -1
-anchor_left = -1.0
-anchor_top = -1.0
-anchor_right = 2.0
-anchor_bottom = 2.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.160784, 0.113725, 0.168627, 1)
-metadata/_edit_use_anchors_ = true
-
-[node name="Control" type="Control" parent="SelectionScreen"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="TextureRect" type="TextureRect" parent="SelectionScreen/Control"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("22_2h2ec")
-
-[node name="Modifier1" type="Button" parent="SelectionScreen/Control"]
-layout_mode = 0
-anchor_left = 0.2375
-anchor_top = 0.391667
-anchor_right = 0.4625
-anchor_bottom = 0.691667
-action_mode = 0
-icon = ExtResource("23_dk6t6")
-flat = true
-metadata/_edit_use_anchors_ = true
-
-[node name="Modifier2" type="Button" parent="SelectionScreen/Control"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.559375
-anchor_top = 0.4
-anchor_right = 0.784375
-anchor_bottom = 0.7
-action_mode = 0
-icon = ExtResource("24_rcsa2")
-flat = true
-metadata/_edit_use_anchors_ = true
+[node name="SelectionUI" parent="SelectionWindow" instance=ExtResource("22_rt06i")]

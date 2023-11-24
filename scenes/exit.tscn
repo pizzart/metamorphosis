@@ -1,11 +1,11 @@
 [gd_scene load_steps=5 format=3 uid="uid://csr2d2jr8sm67"]
 
 [ext_resource type="Script" path="res://scripts/exit.gd" id="1_siwnp"]
-[ext_resource type="Texture2D" uid="uid://b5lvjuiplx0kp" path="res://icon.svg" id="1_yl3ep"]
+[ext_resource type="Texture2D" uid="uid://k5om4belpo0h" path="res://sprites/exit.png" id="2_fte6u"]
 [ext_resource type="AudioStream" uid="uid://cog1kii5obkkn" path="res://audio/sfx/error.wav" id="3_jtliu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2kcqq"]
-size = Vector2(32, 32)
+size = Vector2(34, 34)
 
 [node name="Exit" type="Area2D" groups=["exit"]]
 z_index = -1
@@ -14,8 +14,8 @@ monitoring = false
 script = ExtResource("1_siwnp")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("1_yl3ep")
+position = Vector2(0, 2)
+texture = ExtResource("2_fte6u")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_2kcqq")

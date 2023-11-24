@@ -21,6 +21,7 @@ var generator: Generator
 }
 
 func _ready():
+	PauseMenu.can_show = true
 	UI.show()
 	RenderingServer.global_shader_parameter_set("vignette_opacity", Global.VIGNETTE_OPACITY)
 	
@@ -39,7 +40,7 @@ func _ready():
 		generator.generate_town()
 	else:
 		play_music("%s_intense" % Generator.AREA_NAMES[Global.current_area])
-		generator.generate_map_full(Generator.ISLAND_SIZE)
+		generator.generate_map_full(Generator.AREA_SIZES[Global.current_area])
 #		init_finale()
 
 func _process(delta):
@@ -50,8 +51,18 @@ func _process(delta):
 		$SkyBG/ParallaxLayer4.motion_offset.x -= delta * 13
 		$SkyBG/ParallaxLayer5.motion_offset.x -= delta * 3
 		$SkyBG/ParallaxLayer7.motion_offset.x -= delta * 5
-	if $SelectionScreen:
-		$SelectionScreen.offset = -(get_viewport().get_mouse_position() - get_viewport_rect().size / 2) / 8
+#	if $SelectionScreen:
+#		$SelectionScreen.offset = -(get_viewport().get_mouse_position() - get_viewport_rect().size / 2) / 8
+
+func _physics_process(delta):
+	var closest = [INF, null]
+	for i in get_tree().get_nodes_in_group("interactable"):
+		var dist = player.global_position.distance_squared_to(i.global_position)
+		i.can_interact = false
+		if i.inside and dist < closest[0]:
+			closest = [dist, i]
+	if closest[1] != null:
+		closest[1].can_interact = true
 
 func init_boss1():
 	pass
@@ -83,6 +94,7 @@ func init_boss2():
 
 func init_boss3():
 	var boss = BOSS3.instantiate()
+	boss.dead.connect(_on_boss3_dead)
 	add_child.call_deferred(boss)
 	fade_music_out(1)
 	play_music("boss3")
@@ -90,7 +102,7 @@ func init_boss3():
 
 func init_finale():
 	fade_music_out(10)
-	player.global_position = Vector2.ZERO
+#	player.global_position = Vector2.ZERO
 	add_child.call_deferred(preload("res://scenes/finale.tscn").instantiate())
 
 func play_music(key: String):
@@ -120,26 +132,37 @@ func show_selection():
 	player.can_move = false
 	var mod1 = Global.modifier_pool.pop_at(Global.rng.randi() % Global.modifier_pool.size())
 	var mod2 = Global.modifier_pool.pop_at(Global.rng.randi() % Global.modifier_pool.size())
-	$SelectionScreen/Control/Modifier1.icon = load("res://sprites/ui/modifiers/modifier_%s.png" % str(mod1).pad_zeros(2))
-	$SelectionScreen/Control/Modifier2.icon = load("res://sprites/ui/modifiers/modifier_%s.png" % str(mod2).pad_zeros(2))
-	$SelectionScreen/Control/Modifier1.pressed.connect(_on_mod1_pressed.bind(mod1))
-	$SelectionScreen/Control/Modifier2.pressed.connect(_on_mod2_pressed.bind(mod2))
-	$SelectionScreen.show()
-	UI.hide()
+	$SelectionWindow/SelectionUI/Modifier1.icon = load("res://sprites/ui/modifiers/modifier_%s.png" % str(mod1).pad_zeros(2))
+	$SelectionWindow/SelectionUI/Modifier2.icon = load("res://sprites/ui/modifiers/modifier_%s.png" % str(mod2).pad_zeros(2))
+	$SelectionWindow/SelectionUI/Modifier1.pressed.connect(_on_mod_pressed.bind(mod1))
+	$SelectionWindow/SelectionUI/Modifier2.pressed.connect(_on_mod_pressed.bind(mod2))
+	$SelectionWindow/SelectionUI/Modifier1.mouse_entered.connect(_on_mod_hovered.bind(mod1))
+	$SelectionWindow/SelectionUI/Modifier2.mouse_entered.connect(_on_mod_hovered.bind(mod2))
+	$SelectionWindow/SelectionUI/Modifier1.mouse_exited.connect(_on_mod_unhovered)
+	$SelectionWindow/SelectionUI/Modifier2.mouse_exited.connect(_on_mod_unhovered)
+	$SelectionWindow.show()
+#	UI.hide()
 
-func _on_mod1_pressed(modifier):
-	player.add_upgrade(Global.MODIFIERS[modifier].new())
-	init_new_area()
-
-func _on_mod2_pressed(modifier):
+func _on_mod_pressed(modifier):
 	player.add_upgrade(Global.MODIFIERS[modifier].new())
 	init_new_area()
 
 func init_new_area():
-	UI.show()
+#	UI.show()
 	player.can_move = true
-	$SelectionScreen/Control/Modifier1.pressed.disconnect(_on_mod1_pressed)
-	$SelectionScreen/Control/Modifier2.pressed.disconnect(_on_mod2_pressed)
-	$SelectionScreen.hide()
+	$SelectionWindow/SelectionUI/Modifier1.pressed.disconnect(_on_mod_pressed)
+	$SelectionWindow/SelectionUI/Modifier2.pressed.disconnect(_on_mod_pressed)
+	$SelectionWindow/SelectionUI/Weight.hide()
+	$SelectionWindow.hide()
 	fade_music_in("%s_intense" % Generator.AREA_NAMES[Global.current_area], 2)
 	generator.generate_map_full(Generator.AREA_SIZES[Global.current_area])
+
+func _on_mod_hovered(modifier):
+	$SelectionWindow/SelectionUI/Weight.show()
+	$SelectionWindow/SelectionUI/Weight.text = "+%s weight" % Global.MODIFIERS[modifier].WEIGHT
+
+func _on_mod_unhovered():
+	$SelectionWindow/SelectionUI/Weight.hide()
+
+func _on_boss3_dead():
+	get_tree().get_first_node_in_group("exit").enemies_gone = true

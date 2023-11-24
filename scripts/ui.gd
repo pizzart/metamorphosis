@@ -30,3 +30,11 @@ func blink_packs():
 	var tween = create_tween()
 	$Control/M/Bars/Packs.modulate = Color.RED
 	tween.tween_property($Control/M/Bars/Packs, "modulate", Color.WHITE, 1.0)
+
+func transition_in(time: float = 1):
+	var tween = create_tween()
+	tween.tween_property($Black, "color", Color.BLACK, time)
+
+func transition_out(time: float = 1):
+	var tween = create_tween()
+	tween.tween_property($Black, "color", Color(0, 0, 0, 0), time)

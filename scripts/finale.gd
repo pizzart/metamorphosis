@@ -25,3 +25,6 @@ func _on_final_dialogue_finished():
 	get_tree().get_first_node_in_group("player").cam.process_mode = PROCESS_MODE_PAUSABLE
 	get_tree().paused = true
 	$Validation.show()
+
+func _on_stats_confirmed():
+	get_tree().quit()

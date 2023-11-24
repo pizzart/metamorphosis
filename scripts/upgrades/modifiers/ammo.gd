@@ -1,9 +1,11 @@
 class_name AmmoModifier
 extends Upgrade
 
+const WEIGHT = 1
+
 func _init():
 	super._init()
-	weight = 1
+	weight = WEIGHT
 
 func _ready():
 	player.max_ammo = 150

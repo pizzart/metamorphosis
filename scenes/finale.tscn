@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bcx2rpy3kh0r6"]
+[gd_scene load_steps=10 format=3 uid="uid://bcx2rpy3kh0r6"]
 
 [ext_resource type="TileSet" uid="uid://uvyca8uwcqd5" path="res://misc/map.tres" id="1_ujaxs"]
 [ext_resource type="Script" path="res://scripts/finale.gd" id="1_xuuhp"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scripts/npc.gd" id="2_pvx2t"]
 [ext_resource type="Resource" uid="uid://dljta2qwhm7x1" path="res://resources/dialogue_lines/area_3/final.tres" id="3_hj4sl"]
 [ext_resource type="AudioStream" uid="uid://ch7eofx75pjbi" path="res://audio/sfx/talk.wav" id="7_jrnai"]
+[ext_resource type="PackedScene" uid="uid://csr2d2jr8sm67" path="res://scenes/exit.tscn" id="8_ibxoh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uw2x5"]
 size = Vector2(90, 90)
@@ -91,6 +92,8 @@ dialog_text = "DO YOU WANT TO TRY AGAIN?"
 title = "PROGRAM STATISTICS"
 dialog_icon = 0
 
+[node name="Exit" parent="." instance=ExtResource("8_ibxoh")]
+
 [connection signal="dialogue_finished" from="Final" to="." method="_on_final_dialogue_finished"]
 [connection signal="canceled" from="Validation" to="." method="_on_validation_canceled"]
 [connection signal="confirmed" from="Validation" to="." method="_on_validation_confirmed"]
@@ -98,3 +101,4 @@ dialog_icon = 0
 [connection signal="confirmed" from="Confirm" to="." method="_on_confirm_confirmed"]
 [connection signal="canceled" from="Again" to="." method="_on_again_canceled"]
 [connection signal="confirmed" from="Again" to="." method="_on_again_confirmed"]
+[connection signal="confirmed" from="Stats" to="." method="_on_stats_confirmed"]

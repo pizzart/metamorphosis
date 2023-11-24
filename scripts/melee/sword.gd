@@ -32,7 +32,7 @@ func attack():
 		delayed_reset_speed()
 	combo_lost_timer.start(recharge_speed)
 	
-	var proj = SwordSwing.new()
+	var proj = SwordSwing.new(can_deflect)
 	proj.global_rotation = sprite.global_rotation
 	proj.body_entered.connect(_on_projectile_hit)
 	add_child(proj)

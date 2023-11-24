@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://dqhmimg8fsh0c"
-path="res://.godot/imported/scary.wav-c3686fda04762546fd8017d1f70f060c.sample"
+uid="uid://dswutgr1kehy1"
+path="res://.godot/imported/scary2.wav-aed79c40380f6e06ea727b2aef6f0189.sample"
 
 [deps]
 
-source_file="res://audio/sfx/scary.wav"
-dest_files=["res://.godot/imported/scary.wav-c3686fda04762546fd8017d1f70f060c.sample"]
+source_file="res://audio/sfx/scary2.wav"
+dest_files=["res://.godot/imported/scary2.wav-aed79c40380f6e06ea727b2aef6f0189.sample"]
 
 [params]
 

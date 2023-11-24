@@ -1,0 +1,21 @@
+[remap]
+
+importer="font_data_image"
+type="FontFile"
+uid="uid://d1m58orx0g3ym"
+path="res://.godot/imported/font_halfreadable.png-7ec0151e87495517cbbf42b8f5a436d3.fontdata"
+
+[deps]
+
+source_file="res://misc/font_halfreadable.png"
+dest_files=["res://.godot/imported/font_halfreadable.png-7ec0151e87495517cbbf42b8f5a436d3.fontdata"]
+
+[params]
+
+character_ranges=PackedStringArray("0-127")
+columns=16
+rows=8
+image_margin=Rect2i(0, 0, 0, 0)
+character_margin=Rect2i(0, 0, 0, 0)
+fallbacks=[]
+compress=true

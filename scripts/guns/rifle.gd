@@ -10,5 +10,7 @@ func _init():
 func attack():
 	super.attack()
 	for i in range(3):
+		if i != 0:
+			audio.play()
 		send_bullet()
 		await get_tree().create_timer(0.1).timeout

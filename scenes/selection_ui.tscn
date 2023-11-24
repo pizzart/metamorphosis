@@ -1,0 +1,83 @@
+[gd_scene load_steps=6 format=3 uid="uid://bvavc4mygdyug"]
+
+[ext_resource type="Texture2D" uid="uid://b4tr1ysqmrioe" path="res://sprites/ui/selection_screen.png" id="1_6nhe0"]
+[ext_resource type="Texture2D" uid="uid://cqqnnt6pfrob" path="res://sprites/ui/modifiers/modifier_00.png" id="2_3l0ck"]
+[ext_resource type="Texture2D" uid="uid://d1d8sgydsqmw" path="res://sprites/ui/modifiers/modifier_01.png" id="3_1ehk6"]
+[ext_resource type="Shader" path="res://misc/bloom.gdshader" id="4_0sl5f"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_svfpy"]
+shader = ExtResource("4_0sl5f")
+shader_parameter/scanlines_shown = true
+shader_parameter/curvature_shown = false
+shader_parameter/warp_shown = false
+shader_parameter/aberration_amount = 1.0
+shader_parameter/static_intensity = 0.0
+shader_parameter/time_scale = 1.0
+shader_parameter/warp_amount = 0.05
+shader_parameter/scanlines_opacity = 0.03
+shader_parameter/scanlines_amount = 70.0
+shader_parameter/scanlines_speed = -0.004
+shader_parameter/scanlines_width = 0.1
+shader_parameter/bloom_threshold = 0.2
+shader_parameter/bloom_strength = 1.0
+shader_parameter/bloom_size = 4.0
+
+[node name="SelectionUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_6nhe0")
+
+[node name="Modifier1" type="Button" parent="."]
+layout_mode = 0
+anchor_left = 0.2375
+anchor_top = 0.391667
+anchor_right = 0.4625
+anchor_bottom = 0.691667
+action_mode = 0
+icon = ExtResource("2_3l0ck")
+flat = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Modifier2" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.559375
+anchor_top = 0.4
+anchor_right = 0.784375
+anchor_bottom = 0.7
+action_mode = 0
+icon = ExtResource("3_1ehk6")
+flat = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Weight" type="Label" parent="."]
+visible = false
+layout_mode = 0
+anchor_left = 0.3875
+anchor_top = 0.741667
+anchor_right = 0.6375
+anchor_bottom = 0.825
+text = "+1 weight"
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_svfpy")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

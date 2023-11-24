@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://c5dheil0clhrh"]
+[gd_scene load_steps=6 format=3 uid="uid://c5dheil0clhrh"]
 
 [ext_resource type="Theme" uid="uid://t6wu146mxlyh" path="res://misc/theme.tres" id="1_255qw"]
 [ext_resource type="Script" path="res://scripts/pause_menu.gd" id="1_cqiud"]
+[ext_resource type="PackedScene" uid="uid://b77lvbvumc7uj" path="res://scenes/settings_menu.tscn" id="3_hcod4"]
+[ext_resource type="AudioStream" uid="uid://crv0ic1kxw0nt" path="res://audio/sfx/click.wav" id="4_4r783"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7tgrp"]
 bg_color = Color(0.0196078, 0.0196078, 0.0196078, 0.490196)
@@ -30,23 +32,39 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_7tgrp")
 
-[node name="PanelContainer" type="PanelContainer" parent="Control/PanelContainer"]
-custom_minimum_size = Vector2(80, 70)
+[node name="Main" type="PanelContainer" parent="Control/PanelContainer"]
+custom_minimum_size = Vector2(170, 150)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/PanelContainer/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/PanelContainer/Main"]
 layout_mode = 2
 size_flags_vertical = 4
+theme_override_constants/separation = -1
 
-[node name="Continue" type="Button" parent="Control/PanelContainer/PanelContainer/VBoxContainer"]
+[node name="Continue" type="Button" parent="Control/PanelContainer/Main/VBoxContainer"]
 layout_mode = 2
 text = "continue"
 
-[node name="Quit" type="Button" parent="Control/PanelContainer/PanelContainer/VBoxContainer"]
+[node name="Settings" type="Button" parent="Control/PanelContainer/Main/VBoxContainer"]
+layout_mode = 2
+text = "settings"
+
+[node name="Quit" type="Button" parent="Control/PanelContainer/Main/VBoxContainer"]
 layout_mode = 2
 text = "quit"
 
-[connection signal="pressed" from="Control/PanelContainer/PanelContainer/VBoxContainer/Continue" to="." method="_on_continue_pressed"]
-[connection signal="pressed" from="Control/PanelContainer/PanelContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
+[node name="Settings" parent="Control/PanelContainer" instance=ExtResource("3_hcod4")]
+visible = false
+layout_mode = 2
+
+[node name="ClickSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_4r783")
+volume_db = -5.0
+bus = &"sfx"
+
+[connection signal="pressed" from="Control/PanelContainer/Main/VBoxContainer/Continue" to="." method="_on_continue_pressed"]
+[connection signal="pressed" from="Control/PanelContainer/Main/VBoxContainer/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="Control/PanelContainer/Main/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="back" from="Control/PanelContainer/Settings" to="." method="_on_settings_back"]

@@ -13,7 +13,7 @@ func attack():
 	player.speed_multiplier = 0.2
 	player.cam.add_trauma(0.05)
 	
-	var proj = HammerSwing.new()
+	var proj = HammerSwing.new(can_deflect)
 	proj.global_rotation = sprite.global_rotation
 	proj.body_entered.connect(_on_projectile_hit)
 	add_child(proj)

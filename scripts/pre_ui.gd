@@ -6,6 +6,9 @@ var equipped_hat: int = Global.equipped_hat
 func _ready():
 	RenderingServer.global_shader_parameter_set("vignette_opacity", Global.VIGNETTE_OPACITY)
 	UI.hide()
+	PauseMenu.can_show = false
+	Global.timer = 0
+	Global.current_area = 0
 	
 	$HatTexture.visible = equipped_hat != 0
 	$HatTexture.texture = Global.HATS[equipped_hat][1]

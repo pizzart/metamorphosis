@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dph8pd3qblx44"]
+[gd_scene load_steps=21 format=3 uid="uid://dph8pd3qblx44"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_bsqet"]
 [ext_resource type="SpriteFrames" uid="uid://decjog7dp6jgi" path="res://resources/player.tres" id="2_p00mm"]
@@ -8,8 +8,12 @@
 [ext_resource type="Script" path="res://scripts/camera.gd" id="4_wndim"]
 [ext_resource type="Texture2D" uid="uid://c21jv58ntw46j" path="res://sprites/character/emotions/emotion_0.png" id="4_wtmoa"]
 [ext_resource type="PackedScene" uid="uid://dyyfpg3oe0gjc" path="res://scenes/cost_box.tscn" id="7_48x62"]
+[ext_resource type="PackedScene" uid="uid://cmon6c5lgtffc" path="res://scenes/disk_box.tscn" id="9_aleyf"]
 [ext_resource type="Shader" path="res://misc/mask.gdshader" id="11_wrglk"]
+[ext_resource type="AudioStream" uid="uid://dqhmimg8fsh0c" path="res://audio/sfx/scary1.wav" id="12_6tig4"]
 [ext_resource type="Shader" path="res://misc/mask2.gdshader" id="13_mf1ml"]
+[ext_resource type="AudioStream" uid="uid://bx7jlv0q2lsqf" path="res://audio/sfx/change_weapon.wav" id="13_oubmp"]
+[ext_resource type="AudioStream" uid="uid://bjokrmbkn56bi" path="res://audio/sfx/step.wav" id="14_ki3hq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_onp71"]
 size = Vector2(20, 6)
@@ -26,6 +30,11 @@ shader_parameter/silhouette_color = Color(0.203922, 0.203922, 0.203922, 1)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_b3ial"]
 viewport_path = NodePath("V")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_dasfg"]
+streams_count = 1
+stream_0/stream = ExtResource("14_ki3hq")
+stream_0/weight = 1.0
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 visibility_layer = 2
@@ -61,7 +70,6 @@ texture = ExtResource("3_46xsb")
 texture = ExtResource("4_wtmoa")
 
 [node name="Shadow" type="Sprite2D" parent="."]
-modulate = Color(1, 1, 1, 0.513726)
 z_index = -1
 position = Vector2(0, 4)
 texture = ExtResource("4_8nt6r")
@@ -98,6 +106,11 @@ anchor_bottom = -0.116667
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="DiskBox" parent="." instance=ExtResource("9_aleyf")]
+visible = false
+offset_right = 22.0
+offset_bottom = 22.0
+
 [node name="Mask" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_7mexb")
 position = Vector2(0, -7)
@@ -110,4 +123,18 @@ material = SubResource("ShaderMaterial_wkdf5")
 position = Vector2(0, -7)
 texture = SubResource("ViewportTexture_b3ial")
 
+[node name="DeathSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("12_6tig4")
+bus = &"sfx"
+
+[node name="ChangeSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("13_oubmp")
+bus = &"sfx"
+
+[node name="StepSFX" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_dasfg")
+volume_db = -20.0
+bus = &"sfx"
+
+[connection signal="frame_changed" from="V/Sprite" to="." method="_on_sprite_frame_changed"]
 [connection signal="timeout" from="InvTimer" to="." method="_on_inv_timer_timeout"]

@@ -51,6 +51,7 @@ func set_by_player():
 func set_by_enemy():
 	type = BulletType.ENEMY
 	set_collision_mask_value(1, true)
+	set_collision_mask_value(2, false)
 	sprite.material = preload("res://misc/outline_mat_enemy.tres")
 
 func _on_body_entered(body):

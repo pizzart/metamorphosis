@@ -22,6 +22,7 @@ func _init(_position, _next_position):
 	arrow_sprite.texture = ARROW
 	arrow_sprite.position = direction * 25
 	arrow_sprite.rotation = direction.angle()
+	arrow_sprite.z_index = 1
 	add_child(collision_shape)
 	add_child(sprite)
 	add_child(arrow_sprite)

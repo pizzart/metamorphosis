@@ -1,7 +1,7 @@
 extends Camera2D
 
 var decay = 0.8
-var max_offset = Vector2(40, 40)
+var max_offset = Vector2(40, 30)
 
 var trauma: float = 0
 var trauma_power = 1.5
@@ -19,7 +19,7 @@ func add_trauma(amount: float):
 	trauma = min(trauma + amount, 0.4)
 
 func shake():
-	var amount = pow(trauma, trauma_power)
+	var amount = pow(trauma, trauma_power) * Global.shake_strength
 #	rotation = max_roll * amount * rand_range(-1, 1)
 	return Vector2(max_offset.x * amount * randf_range(-1, 1), max_offset.y * amount * randf_range(-1, 1))
 

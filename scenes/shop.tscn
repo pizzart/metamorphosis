@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://iwx7sruoi7vk"]
+[gd_scene load_steps=11 format=3 uid="uid://iwx7sruoi7vk"]
 
 [ext_resource type="Theme" uid="uid://t6wu146mxlyh" path="res://misc/theme.tres" id="1_470nb"]
 [ext_resource type="Script" path="res://scripts/shop.gd" id="1_ine4k"]
@@ -6,6 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://otjho05rs8w3" path="res://sprites/disk.png" id="3_v26hx"]
 [ext_resource type="Texture2D" uid="uid://brgyum6y2aaeb" path="res://sprites/shop/niko_hat_big.png" id="4_ylgyy"]
 [ext_resource type="Shader" path="res://misc/bloom.gdshader" id="6_wrmtl"]
+[ext_resource type="AudioStream" uid="uid://crv0ic1kxw0nt" path="res://audio/sfx/click.wav" id="7_o3w42"]
+[ext_resource type="AudioStream" uid="uid://cog1kii5obkkn" path="res://audio/sfx/error.wav" id="8_m7lpk"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0en1i"]
 content_margin_left = 0.0
@@ -87,19 +89,9 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 3
 
-[node name="V" type="VBoxContainer" parent="M"]
+[node name="V" type="HBoxContainer" parent="M"]
 layout_mode = 2
 size_flags_vertical = 8
-
-[node name="Disks" type="HBoxContainer" parent="M/V"]
-layout_mode = 2
-
-[node name="Disk" type="TextureRect" parent="M/V/Disks"]
-visible = false
-layout_mode = 2
-texture = ExtResource("3_v26hx")
-stretch_mode = 2
-metadata/_edit_use_anchors_ = true
 
 [node name="Buy" type="Button" parent="M/V"]
 layout_mode = 2
@@ -107,6 +99,17 @@ size_flags_horizontal = 0
 size_flags_vertical = 8
 disabled = true
 text = "buy"
+
+[node name="Disks" type="HBoxContainer" parent="M/V"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Disk" type="TextureRect" parent="M/V/Disks"]
+visible = false
+layout_mode = 2
+texture = ExtResource("3_v26hx")
+stretch_mode = 2
+metadata/_edit_use_anchors_ = true
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_1bnhc")
@@ -118,5 +121,16 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="ClickSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_o3w42")
+volume_db = -5.0
+bus = &"sfx"
+
+[node name="ErrorSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_m7lpk")
+volume_db = -5.0
+bus = &"sfx"
+
 [connection signal="item_selected" from="M/ItemList" to="." method="_on_item_list_item_selected"]
+[connection signal="focus_entered" from="M/V/Buy" to="." method="_on_buy_focus_entered"]
 [connection signal="pressed" from="M/V/Buy" to="." method="_on_buy_pressed"]

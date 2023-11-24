@@ -9,7 +9,7 @@ size = Vector2(48, 16)
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_cu4q1"]
 polygon = PackedVector2Array(-23, 5, -20, -6, 6, -10, 32, -6, 34, 6, 2, 10)
 
-[node name="Tree" type="StaticBody2D" groups=["cleanup"]]
+[node name="Tree" type="StaticBody2D" groups=["cleanup", "tree"]]
 y_sort_enabled = true
 collision_layer = 32
 
