@@ -138,5 +138,6 @@ bus = &"sfx"
 [connection signal="drag_ended" from="M/List/Sensitivity/HSlider" to="." method="_on_sens_drag_ended"]
 [connection signal="value_changed" from="M/List/Sensitivity/HSlider" to="." method="_on_sens_value_changed"]
 [connection signal="drag_ended" from="M/List/Shake/HSlider" to="." method="_on_shake_drag_ended"]
+[connection signal="value_changed" from="M/List/Shake/HSlider" to="." method="_on_shake_value_changed"]
 [connection signal="toggled" from="M/List/Fullscreen" to="." method="_on_fullscreen_toggled"]
 [connection signal="pressed" from="M/List/Back" to="." method="_on_back_pressed"]

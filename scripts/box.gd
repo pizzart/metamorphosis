@@ -1,11 +1,14 @@
 class_name Box
 extends Area2D
 
+signal broken(pickup: WeaponPickup)
+
 const PARTICLES = preload("res://scenes/particles/box_particles.tscn")
+
 var sprite = Sprite2D.new()
 var audio = AudioStreamPlayer2D.new()
-var item: Weapon
 var can_interact: bool
+var item: Weapon
 
 func _init(_item):
 	set_collision_layer_value(1, false)
@@ -55,6 +58,7 @@ func break_box():
 	set_deferred("monitoring", false)
 	audio.play()
 	hide()
+	broken.emit(pickup)
 	await audio.finished
 	queue_free()
 

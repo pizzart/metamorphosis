@@ -17,6 +17,7 @@ func _on_attack_timer_timeout():
 	speed = attack_speed
 	area.monitoring = true
 	nav_timer.paused = true
+	attack_audio.play()
 	await get_tree().create_timer(0.2).timeout
 #	sprite.animation = "attack"
 	sprite.modulate = Color.WHITE

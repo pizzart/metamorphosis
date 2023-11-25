@@ -31,6 +31,8 @@ func _ready():
 		player = PLAYER.instantiate()
 	add_child(player)
 	
+	player.dead.connect(_on_player_dead)
+	
 	generator = Generator.new(player, tilemap)
 	add_child(generator)
 	if Global.after_boss:
@@ -166,3 +168,6 @@ func _on_mod_unhovered():
 
 func _on_boss3_dead():
 	get_tree().get_first_node_in_group("exit").enemies_gone = true
+
+func _on_player_dead():
+	get_tree().change_scene_to_file("res://scenes/pre_ui.tscn")

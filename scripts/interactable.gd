@@ -15,13 +15,14 @@ func _init():
 	add_to_group("interactable")
 	add_to_group("cleanup")
 
-func _on_body_entered(body):
+func _on_body_entered(_body):
 #	for i in get_tree().get_nodes_in_group("interactable"):
 #		if i != self:
 #			i.unfocus()
 #	can_interact = true
-	inside = true
-	UI.show_help()
+	if player.can_move:
+		inside = true
+		UI.show_help()
 
 func _on_body_exited(_body):
 	inside = false

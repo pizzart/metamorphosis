@@ -3,7 +3,7 @@ extends SimplePickup
 
 func _init():
 	var rect = RectangleShape2D.new()
-	rect.size = Vector2(24, 24)
+	rect.size = Vector2(32, 32)
 	super._init(rect, preload("res://sprites/battery.png"))
 
 func interact():

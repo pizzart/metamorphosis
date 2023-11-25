@@ -91,6 +91,7 @@ wait_time = 0.1
 one_shot = true
 
 [node name="Light" type="PointLight2D" parent="."]
+visible = false
 range_z_max = 1
 shadow_enabled = true
 shadow_color = Color(0, 0, 0, 1)

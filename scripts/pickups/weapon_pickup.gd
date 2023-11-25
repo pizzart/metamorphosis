@@ -1,6 +1,8 @@
 class_name WeaponPickup
 extends Pickup
 
+signal picked_up
+
 enum Type {
 	Gun,
 	Melee,
@@ -38,7 +40,9 @@ func _input(event):
 		
 		if check:
 			var weapon = player.replace_weapon(item)
-			var new_pickup = WeaponPickup.new(weapon.weapon_name, weapon)
-			new_pickup.global_position = player.global_position
-			get_parent().add_child(new_pickup)
+			if weapon != null:
+				var new_pickup = WeaponPickup.new(weapon.weapon_name, weapon)
+				new_pickup.global_position = player.global_position
+				get_parent().add_child(new_pickup)
+			picked_up.emit()
 			queue_free()

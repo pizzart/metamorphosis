@@ -52,6 +52,7 @@ const WINDOW = preload("res://scenes/window.tscn")
 const BOSS = preload("res://scenes/bosses/boss_1.tscn")
 const VENDING = preload("res://scenes/vending_machine.tscn")
 const TREE = preload("res://scenes/tree.tscn")
+const POLE = preload("res://scenes/pole.tscn")
 
 var rng = RandomNumberGenerator.new()
 var current_map: int = 2
@@ -103,9 +104,10 @@ func generate_map_full(size):
 	var exit_pos = place_exit(GenerationType.Intermission, true)
 	var enemy_count = 0
 	for i in range(island_count):
-		enemy_count += rng.randi_range(3 + pow(Global.current_area, 2), 5 + pow(Global.current_area, 2) + rng.randi_range(0, current_map + Global.current_area))
+		enemy_count += rng.randi_range(4 + pow(Global.current_area, 2), 6 + pow(Global.current_area, 2) + rng.randi_range(0, current_map + Global.current_area))
 	enemies_left = enemy_count
 	place_enemies(enemy_count, exit_pos)
+	place_poles([exit_pos])
 #	place_player(exit_placement)
 	generated.emit()
 
@@ -324,7 +326,7 @@ func place_vending(taken_positions: Array[Vector2i]):
 	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
 	var j = rng.randi() % cells.size()
 	for pos in taken_positions:
-		while (cells[j] - pos).length() < 5:
+		while abs(cells[j].x - pos.x) < 4:
 			cells.remove_at(j)
 			j = rng.randi() % cells.size()
 	var vending = VENDING.instantiate()
@@ -344,6 +346,22 @@ func place_props():
 	world.add_child.call_deferred(tree)
 	return [position]
 
+func place_poles(taken_positions: Array[Vector2i]):
+	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
+	var pole_positions: Array[Vector2i] = []
+	for i in range(3):
+		var j = rng.randi() % cells.size()
+		for pos in taken_positions:
+			while (cells[j] - pos).length_squared() < 16:
+				cells.remove_at(j)
+				j = rng.randi() % cells.size()
+			pole_positions.append(cells[j])
+	for pos in pole_positions:
+		var pole = POLE.instantiate()
+		pole.global_position = tilemap.map_to_local(pos)
+		world.add_child.call_deferred(pole)
+	return pole_positions
+
 func cleanup():
 	tilemap.clear()
 	get_tree().call_group("enemy", "queue_free")
@@ -357,6 +375,7 @@ func update_surroundings():
 	tilemap.tile_set.get_source(BOTTOM_ID).texture = AREA_TEXTURES[Global.current_area][1]
 	match Global.current_area:
 		Area.City:
+			player.light.show()
 			world.get_node("SkyBG").hide()
 			world.get_node("SkyModulate").hide()
 			world.get_node("CityBG").show()

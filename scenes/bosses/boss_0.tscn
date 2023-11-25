@@ -1,0 +1,78 @@
+[gd_scene load_steps=13 format=3 uid="uid://cbds7bk4ydu8n"]
+
+[ext_resource type="Script" path="res://scripts/bosses/boss_0.gd" id="1_5udne"]
+[ext_resource type="Texture2D" uid="uid://b8srpiwlre7bw" path="res://sprites/bosses/boss0.png" id="2_7kfwv"]
+[ext_resource type="AudioStream" uid="uid://cik4wisfdfhr5" path="res://audio/sfx/hurt1.wav" id="3_xwfts"]
+[ext_resource type="AudioStream" uid="uid://cenmwjrpojswt" path="res://audio/sfx/hurt2.wav" id="4_1l0kx"]
+[ext_resource type="AudioStream" uid="uid://6ayrg7mldub" path="res://audio/sfx/hurt3.wav" id="5_rkmbb"]
+[ext_resource type="AudioStream" uid="uid://bis68hj4x3yv8" path="res://audio/sfx/enemy_shoot.wav" id="6_fls88"]
+[ext_resource type="AudioStream" uid="uid://wy8d7b8sp3jv" path="res://audio/sfx/death.wav" id="7_brgmb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3wssf"]
+size = Vector2(48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nft7v"]
+atlas = ExtResource("2_7kfwv")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_t2q2p"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nft7v")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_m7e5s"]
+streams_count = 3
+stream_0/stream = ExtResource("3_xwfts")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("4_1l0kx")
+stream_1/weight = 1.0
+stream_2/stream = ExtResource("5_rkmbb")
+stream_2/weight = 1.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_hblp0"]
+streams_count = 1
+stream_0/stream = ExtResource("6_fls88")
+stream_0/weight = 1.0
+
+[node name="Boss0" type="CharacterBody2D" groups=["boss"]]
+collision_layer = 2
+collision_mask = 27
+motion_mode = 1
+script = ExtResource("1_5udne")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_3wssf")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_t2q2p")
+animation = &"idle"
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+autostart = true
+
+[node name="HitSFX" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_m7e5s")
+pitch_scale = 0.8
+max_polyphony = 3
+bus = &"sfx"
+
+[node name="ShootSFX" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_hblp0")
+max_polyphony = 3
+bus = &"sfx"
+
+[node name="DeathSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_brgmb")
+pitch_scale = 0.8
+max_polyphony = 3
+bus = &"sfx"
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

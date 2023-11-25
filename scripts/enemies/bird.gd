@@ -44,6 +44,7 @@ func hit(damage: int, force: Vector2):
 func _on_attack_timer_timeout():
 	attack_timer.start(rng.randf_range(4, 7))
 	
+	attack_audio.play()
 	set_movement_target(player.global_position)
 	sprite.animation = "attack"
 	speed = attack_speed

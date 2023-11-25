@@ -38,3 +38,6 @@ func transition_in(time: float = 1):
 func transition_out(time: float = 1):
 	var tween = create_tween()
 	tween.tween_property($Black, "color", Color(0, 0, 0, 0), time)
+
+func set_progress(progress: float):
+	$Control/M/PressProgress.value = progress

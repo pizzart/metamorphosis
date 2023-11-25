@@ -1,0 +1,91 @@
+[gd_scene load_steps=6 format=3 uid="uid://cf5lp617t63fk"]
+
+[ext_resource type="Texture2D" uid="uid://cjx1d1noylypb" path="res://sprites/shadow_big.png" id="1_lbiqi"]
+[ext_resource type="Texture2D" uid="uid://f2c6ry30ltta" path="res://sprites/props/pole.png" id="2_m0qas"]
+[ext_resource type="PackedScene" uid="uid://bdbhx11e6xvwf" path="res://scenes/wire_part.tscn" id="3_er8qs"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dgqh0"]
+size = Vector2(16, 18)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_cu4q1"]
+polygon = PackedVector2Array(-8, 10, -8, -4, 2, -4, 2, 10)
+
+[node name="Pole" type="StaticBody2D" groups=["cleanup", "tree"]]
+y_sort_enabled = true
+collision_layer = 32
+
+[node name="Shadow" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(4, 1)
+texture = ExtResource("1_lbiqi")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+light_mask = 2
+y_sort_enabled = true
+texture = ExtResource("2_m0qas")
+offset = Vector2(0, -54)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_dgqh0")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
+radius = 11.75
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_cu4q1")
+
+[node name="PinJoint2D" type="PinJoint2D" parent="."]
+position = Vector2(55, -113)
+node_a = NodePath("..")
+node_b = NodePath("../WirePart")
+softness = 0.1
+
+[node name="WirePart" parent="." instance=ExtResource("3_er8qs")]
+position = Vector2(55, -113)
+collision_layer = 0
+collision_mask = 7
+
+[node name="PinJoint2D2" type="PinJoint2D" parent="."]
+position = Vector2(55, -98)
+node_a = NodePath("../WirePart")
+node_b = NodePath("../WirePart2")
+softness = 0.1
+
+[node name="WirePart2" parent="." instance=ExtResource("3_er8qs")]
+position = Vector2(55, -98)
+collision_layer = 0
+collision_mask = 7
+
+[node name="PinJoint2D3" type="PinJoint2D" parent="."]
+position = Vector2(55, -83)
+node_a = NodePath("../WirePart2")
+node_b = NodePath("../WirePart3")
+softness = 0.1
+
+[node name="WirePart3" parent="." instance=ExtResource("3_er8qs")]
+position = Vector2(55, -83)
+collision_layer = 0
+collision_mask = 7
+
+[node name="PinJoint2D4" type="PinJoint2D" parent="."]
+position = Vector2(55, -68)
+node_a = NodePath("../WirePart3")
+node_b = NodePath("../WirePart4")
+softness = 0.1
+
+[node name="WirePart4" parent="." instance=ExtResource("3_er8qs")]
+position = Vector2(55, -68)
+collision_layer = 0
+collision_mask = 7
+
+[node name="PinJoint2D5" type="PinJoint2D" parent="."]
+position = Vector2(55, -53)
+node_a = NodePath("../WirePart4")
+node_b = NodePath("../WirePart5")
+softness = 0.1
+
+[node name="WirePart5" parent="." instance=ExtResource("3_er8qs")]
+position = Vector2(55, -53)
+collision_layer = 0
+collision_mask = 7

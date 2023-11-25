@@ -52,8 +52,10 @@ func _process(delta):
 		sprite.position = position.rotated(offset_rotation) - position
 		sprite.rotation = direction.angle() + offset_rotation
 		sprite.flip_v = sprite.rotation < -PI / 2 or sprite.rotation > PI / 2
+		sprite.modulate = Color.WHITE
 	else:
 		position = Vector2.ZERO
+		sprite.modulate = Color(0.5, 0.5, 0.5)
 
 func attack():
 	can_attack = false

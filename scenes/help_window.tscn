@@ -1,0 +1,62 @@
+[gd_scene load_steps=5 format=3 uid="uid://kfhjuvx6ml75"]
+
+[ext_resource type="Theme" uid="uid://t6wu146mxlyh" path="res://misc/theme.tres" id="1_mi7mf"]
+[ext_resource type="Texture2D" uid="uid://d10sfp02gh28q" path="res://sprites/ui/lmb.png" id="2_pup30"]
+[ext_resource type="Texture2D" uid="uid://dtevbt4tf84hq" path="res://sprites/ui/rmb.png" id="3_37w80"]
+[ext_resource type="Texture2D" uid="uid://w1tok5867t02" path="res://sprites/ui/ammo_help.png" id="4_oykd5"]
+
+[node name="HelpWindow" type="Window"]
+canvas_item_default_texture_filter = 0
+title = "HELP"
+initial_position = 2
+size = Vector2i(240, 240)
+unresizable = true
+always_on_top = true
+unfocusable = true
+content_scale_size = Vector2i(40, 40)
+content_scale_mode = 2
+content_scale_aspect = 1
+
+[node name="Help" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_mi7mf")
+
+[node name="C" type="CenterContainer" parent="Help"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Key" type="PanelContainer" parent="Help/C"]
+custom_minimum_size = Vector2(19, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Help/C/Key"]
+layout_mode = 2
+text = "E"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MouseLeft" type="TextureRect" parent="Help/C/Key"]
+visible = false
+layout_mode = 2
+texture = ExtResource("2_pup30")
+
+[node name="MouseRight" type="TextureRect" parent="Help/C/Key"]
+visible = false
+layout_mode = 2
+texture = ExtResource("3_37w80")
+
+[node name="AmmoHelp" type="TextureRect" parent="Help"]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("4_oykd5")

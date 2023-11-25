@@ -13,7 +13,7 @@ void fragment() {
 
 	// If the pixel's value is lower than the Mask's output color, it means the
 	// mask is being occluded, so we draw the silhouette instead.
-	if (screen_color.rgb != vec3(0.0, 1.0, 0.0)) {
+	if (screen_color.g < 1.0 && screen_color.rb != vec2(0.0, 0.0)) {
 		COLOR.rgb = silhouette_color.rgb;
 	}
 }

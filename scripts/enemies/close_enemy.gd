@@ -55,8 +55,5 @@ func get_close_position():
 func hit(damage: int, force: Vector2):
 	super.hit(damage, force * 2)
 
-func _on_attack_timer_timeout():
-	pass
-
 func _on_attack_entered(body):
 	body.hit(1, global_position.direction_to(body.global_position))

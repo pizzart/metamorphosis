@@ -2,13 +2,29 @@ class_name Exit
 extends Area2D
 
 signal moved
+
+const WAIT_TIME = 0.8
+
 var counter: int
 var can_interact: bool
 var enemies_gone: bool
+var timer: float
+
 @onready var player: Player = get_tree().get_first_node_in_group("player")
 
 func _ready():
 	end_descent()
+
+func _process(delta):
+	if Input.is_action_pressed("use") and can_interact:
+		timer += delta
+		UI.set_progress(timer / WAIT_TIME)
+		if timer >= WAIT_TIME:
+			timer = 0
+			start_descent()
+	else:
+		timer = 0
+		UI.set_progress(timer / WAIT_TIME)
 
 func start_descent():
 	can_interact = false
@@ -53,9 +69,9 @@ func end_descent():
 
 func _input(event):
 	if event.is_action_pressed("use"):
-		if can_interact:
-			start_descent()
-		elif overlaps_body(player):
+#		if can_interact:
+#			start_descent()
+		if not can_interact and overlaps_body(player):
 			$ErrorSFX.play()
 
 func _on_body_entered(_body):

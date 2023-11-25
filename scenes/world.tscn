@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/world.gd" id="1_eoi30"]
 [ext_resource type="Shader" path="res://misc/matrix.gdshader" id="2_1rf8u"]
-[ext_resource type="TileSet" uid="uid://uvyca8uwcqd5" path="res://misc/map.tres" id="3_mb8tr"]
+[ext_resource type="TileSet" uid="uid://dlbjv13cr2qh0" path="res://misc/tutorial_map.tres" id="2_hqgsx"]
 [ext_resource type="Texture2D" uid="uid://bl8yj5xlmibox" path="res://sprites/bgs/1/cloud_fill.png" id="6_3tv2d"]
 [ext_resource type="Texture2D" uid="uid://b5g8dpf40np5l" path="res://sprites/bgs/1/bg1_0.png" id="7_jgl2r"]
 [ext_resource type="Texture2D" uid="uid://dae4vt3bhwj3k" path="res://sprites/bgs/3/bg3_0.png" id="8_fhbtx"]
@@ -48,7 +48,7 @@ clip_children = 2
 visibility_layer = 4
 z_index = -1
 y_sort_enabled = true
-tile_set = ExtResource("3_mb8tr")
+tile_set = ExtResource("2_hqgsx")
 cell_quadrant_size = 24
 format = 2
 layer_0/name = "Ground"

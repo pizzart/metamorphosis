@@ -1,13 +1,14 @@
 class_name Player
 extends CharacterBody2D
 
+signal dead
 signal weapon_changed(weapon: Weapon)
 
 const PARTICLES = preload("res://scenes/particles/hit_particles.tscn")
 
 const INIT_AMMO = 100
-const INIT_SPEED = 120
-const INIT_HEALTH = 15
+const INIT_SPEED = 130
+const INIT_HEALTH = 12
 const MAX_PACKS = 3
 const HAT_Y = -4
 const COST_BOX_POS = Vector2(12, -54)
@@ -45,6 +46,7 @@ var rng = RandomNumberGenerator.new()
 @onready var melee: Melee = Sword.new()
 @onready var cam: Camera2D = $Camera
 @onready var shadow = $Shadow
+@onready var light = $Light
 @onready var coin_box = $CoinBox
 @onready var disk_box = $DiskBox
 @onready var hat = $V/Sprite/Hat
@@ -73,6 +75,8 @@ func _ready():
 		add_coin()
 	
 	UI.set_health_packs(health_packs)
+	
+	add_upgrade(TeleportUpgrade.new())
 
 func _physics_process(delta):
 	if not can_move:
@@ -128,9 +132,10 @@ func _process(delta):
 
 func _input(event):
 	if event.is_action_pressed("change_gun"):
-		gun.is_equipped = not gun.is_equipped
-		melee.is_equipped = not melee.is_equipped
-		change_sfx.play()
+		if gun != null and melee != null:
+			gun.is_equipped = not gun.is_equipped
+			melee.is_equipped = not melee.is_equipped
+			change_sfx.play()
 	if event.is_action_pressed("heal"):
 		if health_packs > 0:
 			heal(5)
@@ -165,7 +170,7 @@ func hit(damage: int, force: Vector2):
 		set_collision_layer_value(1, false)
 		
 		await get_tree().create_timer(3).timeout
-		get_tree().change_scene_to_file("res://scenes/pre_ui.tscn")
+		dead.emit()
 	
 	invincible = true
 	$InvTimer.start()
@@ -192,11 +197,12 @@ func hit(damage: int, force: Vector2):
 func replace_weapon(new_weapon: Weapon):
 	var new_weight = new_weapon.weight
 	
-	var old_weight
+	var old_weight: int = 0
 	if new_weapon is Gun:
-		old_weight = gun.weight
-	else:
-		old_weight = melee.weight
+		if gun != null:
+			old_weight = gun.weight
+	elif melee != null:
+			old_weight = melee.weight
 		
 	if new_weight > old_weight:
 		var free = max_health - health
@@ -217,12 +223,17 @@ func replace_weapon(new_weapon: Weapon):
 	
 	var old_weapon
 	if new_weapon is Gun:
-		old_weapon = gun
-	else:
+		if gun != null:
+			old_weapon = gun
+	elif melee != null:
 		old_weapon = melee
 	
-	remove_child(old_weapon)
-	new_weapon.is_equipped = old_weapon.is_equipped
+	if old_weapon != null:
+		remove_child(old_weapon)
+		new_weapon.is_equipped = old_weapon.is_equipped
+	else:
+		new_weapon.is_equipped = gun == null and melee == null
+	
 	if new_weapon is Gun:
 		gun = new_weapon
 	else:
@@ -266,10 +277,16 @@ func add_health_pack():
 	UI.set_health_packs(health_packs)
 
 func is_less_gun_weight(gun_weight: int):
-	return max_health - melee.weight - gun_weight > 0
+	if melee != null:
+		return max_health - melee.weight - gun_weight > 0
+	else:
+		return max_health - gun_weight > 0
 
 func is_less_melee_weight(melee_weight: int):
-	return max_health - gun.weight - melee_weight > 0
+	if gun != null:
+		return max_health - gun.weight - melee_weight > 0
+	else:
+		return max_health - melee_weight > 0
 
 func show_coins(amount: int):
 	coins_visible = true

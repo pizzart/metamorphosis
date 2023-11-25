@@ -5,8 +5,8 @@ const CORPSE = preload("res://scenes/corpse.tscn")
 const PARTICLES = preload("res://scenes/particles/hit_enemy_particles.tscn")
 const LIGHT = preload("res://scenes/pickup_light.tscn")
 
-const DROP_CHANCE = 0.1
-const HEALTH_DROP_CHANCE = 0.05
+const DROP_CHANCE = 0.07
+const HEALTH_DROP_CHANCE = 0.03
 const STUN_TIME = 0.2
 
 var walk_speed: float
@@ -15,12 +15,15 @@ var speed: float = walk_speed
 var shuffle_min: float = 1
 var shuffle_max: float = 3
 var max_distance: float = 300
+@export var rigged_chance: float = -1
 
 var navigation_agent: NavigationAgent2D = NavigationAgent2D.new()
 var nav_timer: Timer = Timer.new()
 var attack_timer: Timer = Timer.new()
 var collision_shape: CollisionShape2D = CollisionShape2D.new()
-var audio: AudioStreamPlayer2D = AudioStreamPlayer2D.new()
+var hit_audio: AudioStreamPlayer2D = AudioStreamPlayer2D.new()
+var prepare_audio: AudioStreamPlayer2D = AudioStreamPlayer2D.new()
+var attack_audio: AudioStreamPlayer2D = AudioStreamPlayer2D.new()
 
 func _init(_health: int, _shuffle_min: float, _shuffle_max: float, _walk_speed: float, _attack_speed: float, _max_distance: float):
 	super._init()
@@ -29,6 +32,7 @@ func _init(_health: int, _shuffle_min: float, _shuffle_max: float, _walk_speed: 
 	set_collision_layer_value(1, false)
 	set_collision_layer_value(2, true)
 	set_collision_mask_value(2, true)
+	set_collision_mask_value(5, true)
 #	set_collision_mask_value(4, true)
 	
 	collision_shape.shape = RectangleShape2D.new()
@@ -49,12 +53,20 @@ func _init(_health: int, _shuffle_min: float, _shuffle_max: float, _walk_speed: 
 	
 	sprite = AnimatedSprite2D.new()
 	
-	var stream = AudioStreamRandomizer.new()
-	stream.add_stream(0, preload("res://audio/sfx/hurt1.wav"))
-	stream.add_stream(1, preload("res://audio/sfx/hurt2.wav"))
-	stream.add_stream(2, preload("res://audio/sfx/hurt3.wav"))
-	audio.stream = stream
-	audio.max_polyphony = 3
+	var hit_stream = AudioStreamRandomizer.new()
+	hit_stream.add_stream(0, preload("res://audio/sfx/hurt1.wav"))
+	hit_stream.add_stream(1, preload("res://audio/sfx/hurt2.wav"))
+	hit_stream.add_stream(2, preload("res://audio/sfx/hurt3.wav"))
+	hit_audio.stream = hit_stream
+	hit_audio.max_polyphony = 3
+	
+	var prepare_stream = AudioStreamRandomizer.new()
+	prepare_stream.add_stream(0, preload("res://audio/sfx/enemy_prepare.wav"))
+	prepare_audio.stream = prepare_stream
+	
+	var attack_stream = AudioStreamRandomizer.new()
+	attack_stream.add_stream(0, preload("res://audio/sfx/enemy_shoot.wav"))
+	attack_audio.stream = attack_stream
 	
 	var light = LIGHT.instantiate()
 	
@@ -64,8 +76,10 @@ func _init(_health: int, _shuffle_min: float, _shuffle_max: float, _walk_speed: 
 	add_child(attack_timer)
 	add_child(shadow)
 	add_child(sprite)
-	add_child(audio)
 	add_child(light)
+	add_child(hit_audio)
+	add_child(prepare_audio)
+	add_child(attack_audio)
 	
 	health = _health
 	shuffle_min = _shuffle_min
@@ -122,7 +136,7 @@ func hit(damage: int, force: Vector2):
 	particles.emitting = true
 	get_parent().add_child(particles)
 	
-	audio.play()
+	hit_audio.play()
 	
 	attack_timer.paused = true
 	sprite.modulate = Color.RED
@@ -133,11 +147,14 @@ func hit(damage: int, force: Vector2):
 func die():
 	super.die()
 	
-	if rng.randf() <= HEALTH_DROP_CHANCE:
+	var chance = rng.randf()
+	if rigged_chance != -1:
+		chance = rigged_chance
+	if chance <= HEALTH_DROP_CHANCE:
 		var pack = HealthPickup.new()
 		pack.global_position = global_position
 		get_parent().add_child.call_deferred(pack)
-	elif rng.randf() <= DROP_CHANCE:
+	elif chance <= DROP_CHANCE:
 		var coin = CoinPickup.new()
 		coin.global_position = global_position
 		get_parent().add_child.call_deferred(coin)
