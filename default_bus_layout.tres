@@ -7,10 +7,10 @@ resonance = 0.16
 db = 1
 
 [resource]
-bus/0/volume_db = -15.7883
+bus/0/volume_db = -6.91795
 bus/1/name = &"mus"
 bus/1/solo = false
-bus/1/mute = true
+bus/1/mute = false
 bus/1/bypass_fx = false
 bus/1/volume_db = 0.0
 bus/1/send = &"Master"

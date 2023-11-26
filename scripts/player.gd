@@ -78,7 +78,7 @@ func _ready():
 	
 	add_upgrade(TeleportUpgrade.new())
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if not can_move:
 		return
 	

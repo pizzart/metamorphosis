@@ -14,9 +14,7 @@ func _on_confirm_canceled():
 	$Validation.show()
 
 func _on_again_confirmed():
-	get_tree().get_first_node_in_group("player").cam.process_mode = PROCESS_MODE_ALWAYS
-	get_tree().paused = false
-	get_tree().reload_current_scene()
+	$AgainWarning.show()
 
 func _on_again_canceled():
 	$Validation.show()
@@ -28,3 +26,16 @@ func _on_final_dialogue_finished():
 
 func _on_stats_confirmed():
 	get_tree().quit()
+
+func _on_again_warning_canceled():
+	$Validation.show()
+
+func _on_again_warning_confirmed():
+	get_tree().get_first_node_in_group("player").cam.process_mode = PROCESS_MODE_ALWAYS
+	get_tree().paused = false
+	
+	Global.current_area = 0
+	Global.after_boss = false
+	Global.loop += 1
+	
+	get_tree().reload_current_scene()

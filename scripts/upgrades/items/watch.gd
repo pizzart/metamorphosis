@@ -36,7 +36,7 @@ func _process(delta):
 
 func _input(event):
 	if event.is_action_pressed("special"):
-		if can_activate:
+		if can_activate and player.can_move:
 			active = true
 			sprite.animation = "open"
 			var tween = create_tween()

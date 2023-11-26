@@ -44,7 +44,6 @@ y_sort_enabled = true
 script = ExtResource("1_eoi30")
 
 [node name="TileMap" type="TileMap" parent="."]
-clip_children = 2
 visibility_layer = 4
 z_index = -1
 y_sort_enabled = true

@@ -10,10 +10,6 @@ func _init():
 	sprite.sprite_frames = preload("res://resources/frames/bird.tres")
 	sprite.autoplay = "idle"
 
-func _ready():
-	call_deferred("actor_setup")
-	nav_timer.start(rng.randf_range(2, 9))
-
 func _process(delta):
 	if attacking:
 		attacking_time += delta

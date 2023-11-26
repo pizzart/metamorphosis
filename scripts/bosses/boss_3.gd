@@ -7,13 +7,13 @@ func _init():
 	super._init()
 	health = 20
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	var direction = global_position.direction_to(player.global_position)
 	velocity = direction * SPEED
 
 	move_and_slide()
 
-func hit(damage: int, force: Vector2):
+func hit(damage: int, _force: Vector2):
 	health -= damage
 	if health <= 0:
 		die()

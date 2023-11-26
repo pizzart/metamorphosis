@@ -10,7 +10,7 @@ var bullet_acceleration: float
 
 var error_audio: AudioStreamPlayer2D = AudioStreamPlayer2D.new()
 
-func _init(_ammo_cost: float, _reload_speed: float, _knockback: float, _spread: float, _weight: int, \
+func _init(_ammo_cost: int, _reload_speed: float, _knockback: float, _spread: float, _weight: int, \
 			_bullet_speed: float, _bullet_acceleration: float, _texture: Texture2D, _gun_name: String):
 	ammo_cost = _ammo_cost
 	spread = _spread
@@ -20,7 +20,7 @@ func _init(_ammo_cost: float, _reload_speed: float, _knockback: float, _spread: 
 	is_equipped = true
 	
 	var stream = AudioStreamRandomizer.new()
-	stream.add_stream(0, preload("res://audio/sfx/dink.wav"))
+	stream.add_stream(0, preload("res://audio/sfx/shoot.wav"))
 	audio.stream = stream
 	error_audio.stream = preload("res://audio/sfx/error.wav")
 	add_child(error_audio)

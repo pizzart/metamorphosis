@@ -93,7 +93,7 @@ func _ready():
 	actor_setup.call_deferred()
 	nav_timer.start(rng.randf_range(2, 9))
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	var new_velocity: Vector2
 	
 	if not navigation_agent.is_navigation_finished():

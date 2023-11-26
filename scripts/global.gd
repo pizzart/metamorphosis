@@ -55,7 +55,7 @@ const DIALOGUES = {
 const VIGNETTE_OPACITY = 0.035
 
 var current_area: Generator.Area = Generator.Area.Sky
-var after_boss: bool = true
+var after_boss: bool = false
 
 var coins: int = 0
 var equipped_hat: int = Hat.None
@@ -70,6 +70,7 @@ var mouse_sens: float = 0.003
 var shake_strength: float = 1
 
 var player_state: Player
+var loop: int = 0
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 @onready var modifier_pool = MODIFIERS.keys()

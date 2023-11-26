@@ -27,7 +27,7 @@ func _init(_pickup_name: String, _item: Weapon):
 func _ready():
 	sprite.rotation = (global_position.x + global_position.y) / PI
 
-func _process(delta):
+func _process(_delta):
 	drawer.visible = can_interact
 
 func _input(event):

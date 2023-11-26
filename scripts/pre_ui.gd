@@ -8,7 +8,7 @@ func _ready():
 	UI.hide()
 	PauseMenu.can_show = false
 	Global.timer = 0
-	Global.current_area = 0
+	Global.current_area = Generator.Area.Sky
 	
 	$HatTexture.visible = equipped_hat != 0
 	$HatTexture.texture = Global.HATS[equipped_hat][1]

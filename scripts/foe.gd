@@ -12,7 +12,7 @@ var rng = RandomNumberGenerator.new()
 func _init():
 	add_to_group("foe")
 
-func hit(damage: int, force: Vector2):
+func hit(_damage: int, _force: Vector2):
 	pass
 
 func die():

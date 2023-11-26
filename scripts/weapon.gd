@@ -39,7 +39,7 @@ func _init(_recharge_speed: float, _weight: int, _knockback: float, _texture: Te
 	
 	y_sort_enabled = true
 
-func _process(delta):
+func _process(_delta):
 	if is_equipped:
 		offset_position = lerpf(offset_position, OFFSET, 0.05)
 		var input_dir = Input.get_vector("aim_left", "aim_right", "aim_up", "aim_down")

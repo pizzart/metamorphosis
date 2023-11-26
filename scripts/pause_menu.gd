@@ -30,6 +30,9 @@ func _on_quit_pressed():
 	unpause()
 	get_tree().change_scene_to_file("res://scenes/menu.tscn")
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	Global.after_boss = false
+	Global.current_area = 0
+	Global.loop = 0
 
 func _on_settings_back():
 	$Control/PanelContainer/Main.show()

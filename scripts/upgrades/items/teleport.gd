@@ -26,8 +26,10 @@ func _ready():
 	player.add_child.call_deferred(sprite)
 
 func _input(event):
-	if event.is_action_pressed("special") and can_activate:
+	if event.is_action_pressed("special") and can_activate and player.can_move:
 		player.global_position = player.get_global_mouse_position()
+		can_activate = false
+		
 		timer.start()
 		var tilemap = player.get_parent().tilemap
 		if tilemap.get_cell_source_id(0, tilemap.local_to_map(player.global_position)) <= 0:

@@ -32,7 +32,7 @@ const AREA_NAMES = {
 const AREA_SIZES = {
 	Area.Sky: 9,
 	Area.City: 20,
-	Area.Abyss: 25,
+	Area.Abyss: 15,
 }
 
 const ISLAND_SPREAD = 15
@@ -51,8 +51,9 @@ const EXIT = preload("res://scenes/exit.tscn")
 const WINDOW = preload("res://scenes/window.tscn")
 const BOSS = preload("res://scenes/bosses/boss_1.tscn")
 const VENDING = preload("res://scenes/vending_machine.tscn")
-const TREE = preload("res://scenes/tree.tscn")
-const POLE = preload("res://scenes/pole.tscn")
+const TREE = preload("res://scenes/props/tree.tscn")
+const POLE = preload("res://scenes/props/pole.tscn")
+const TURBINE = preload("res://scenes/props/turbine.tscn")
 
 var rng = RandomNumberGenerator.new()
 var current_map: int = 2
@@ -104,7 +105,7 @@ func generate_map_full(size):
 	var exit_pos = place_exit(GenerationType.Intermission, true)
 	var enemy_count = 0
 	for i in range(island_count):
-		enemy_count += rng.randi_range(4 + pow(Global.current_area, 2), 6 + pow(Global.current_area, 2) + rng.randi_range(0, current_map + Global.current_area))
+		enemy_count += rng.randi_range(4 + Global.current_area, 6 + Global.loop * 2 + Global.current_area + rng.randi_range(0, current_map + Global.current_area))
 	enemies_left = enemy_count
 	place_enemies(enemy_count, exit_pos)
 	place_poles([exit_pos])
@@ -147,7 +148,7 @@ func generate_boss1():
 func generate_boss3():
 	cleanup()
 	tilemap.set_pattern(0, Vector2i.ZERO, tilemap.tile_set.get_pattern(1))
-	var exit_placement = place_exit(GenerationType.Finale, true)
+	var _exit_placement = place_exit(GenerationType.Finale, true)
 #	place_player(exit_placement)
 	generated.emit()
 	world.init_boss3()
@@ -220,6 +221,7 @@ func place_enemies(count: int, exit_pos: Vector2i):
 			placements.append(cells.pop_at(j))
 	for placement in placements:
 		var enemy = choose(Global.enemy_pool[Global.current_area]).new()
+		enemy.health *= Global.loop + 1
 		enemy.global_position = tilemap.map_to_local(placement)
 		if Global.current_area == Area.Abyss:
 			enemy.modulate = Color.BLACK
@@ -286,18 +288,18 @@ func place_exit(next_gen_type: GenerationType, with_enemies: bool) -> Vector2i:
 func place_pickups():
 	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
 	var placement = cells.pop_at(rng.randi() % cells.size())
-	while not placement + Vector2i.LEFT in cells and not placement + Vector2i.RIGHT in cells and not cells.is_empty():
+	while placement + Vector2i.LEFT in cells and placement + Vector2i.RIGHT in cells and not cells.is_empty():
 		placement = cells.pop_at(rng.randi() % cells.size())
 	
-	var gun_placement = tilemap.map_to_local(placement + Vector2i.LEFT)
-	var melee_placement = tilemap.map_to_local(placement + Vector2i.RIGHT)
+#	var gun_placement = tilemap.map_to_local(placement + Vector2i.LEFT)
+#	var melee_placement = tilemap.map_to_local(placement + Vector2i.RIGHT)
 	
 	var gun = Global.weapon_pool["gun"].pick_random().new()
 	var melee = Global.weapon_pool["melee"].pick_random().new()
 	var gun_pickup = Box.new(gun)
 	var melee_pickup = Box.new(melee)
-	gun_pickup.global_position = gun_placement
-	melee_pickup.global_position = melee_placement
+	gun_pickup.global_position = placement
+	melee_pickup.global_position = placement + Vector2i.RIGHT
 	world.add_child.call_deferred(gun_pickup)
 	world.add_child.call_deferred(melee_pickup)
 
@@ -357,7 +359,11 @@ func place_poles(taken_positions: Array[Vector2i]):
 				j = rng.randi() % cells.size()
 			pole_positions.append(cells[j])
 	for pos in pole_positions:
-		var pole = POLE.instantiate()
+		var pole
+		if rng.randf() >= 0.5:
+			pole = POLE.instantiate()
+		else:
+			pole = TURBINE.instantiate()
 		pole.global_position = tilemap.map_to_local(pos)
 		world.add_child.call_deferred(pole)
 	return pole_positions
@@ -381,6 +387,7 @@ func update_surroundings():
 			world.get_node("CityBG").show()
 			world.get_node("CityModulate").show()
 		Area.Abyss:
+			player.light.show()
 			world.get_node("SkyBG").hide()
 			world.get_node("SkyModulate").hide()
 			world.get_node("CityBG").hide()

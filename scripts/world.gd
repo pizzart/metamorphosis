@@ -56,7 +56,7 @@ func _process(delta):
 #	if $SelectionScreen:
 #		$SelectionScreen.offset = -(get_viewport().get_mouse_position() - get_viewport_rect().size / 2) / 8
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	var closest = [INF, null]
 	for i in get_tree().get_nodes_in_group("interactable"):
 		var dist = player.global_position.distance_squared_to(i.global_position)
@@ -127,7 +127,7 @@ func fade_music_in(key: String, time: float):
 	mus[key].volume_db = -80
 	mus[key].play()
 	var tween = create_tween()
-	tween.tween_property(mus[key], "volume_db", 0, time).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
+	tween.tween_property(mus[key], "volume_db", 0, time).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
 
 func show_selection():
 	fade_music_out(2)

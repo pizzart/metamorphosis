@@ -34,7 +34,7 @@ func _init(_velocity: Vector2, _acceleration: float, is_player: bool):
 	
 	body_entered.connect(_on_body_entered)
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	position += velocity
 	rotation = velocity.angle()
 	velocity = velocity.limit_length(velocity.length() + acceleration)
@@ -62,4 +62,8 @@ func _on_body_entered(body):
 		body.hit(damage, global_position.direction_to(body.global_position))
 	await get_tree().physics_frame
 	if has_overlapping_bodies():
+		set_deferred("monitoring", false)
+		audio.play()
+		hide()
+		await audio.finished
 		queue_free()

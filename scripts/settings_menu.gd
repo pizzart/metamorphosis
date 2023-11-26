@@ -18,21 +18,21 @@ func _on_music_value_changed(value):
 func _on_sound_value_changed(value):
 	AudioServer.set_bus_volume_db(2, linear_to_db(value / 20))
 
-func _on_music_drag_ended(value_changed):
+func _on_music_drag_ended(_value_changed):
 	get_tree().call_group("settings", "update_settings")
 
-func _on_sound_drag_ended(value_changed):
+func _on_sound_drag_ended(_value_changed):
 	$ClickSFX.play()
 	get_tree().call_group("settings", "update_settings")
 
-func _on_sens_drag_ended(value_changed):
+func _on_sens_drag_ended(_value_changed):
 	$ClickSFX.play()
 	get_tree().call_group("settings", "update_settings")
 
 func _on_sens_value_changed(value):
 	Global.mouse_sens = max((value / 20 + 0.01) * 0.01 - 0.0005, 0.00001)
 
-func _on_shake_drag_ended(value_changed):
+func _on_shake_drag_ended(_value_changed):
 	get_tree().call_group("settings", "update_settings")
 
 func _on_shake_value_changed(value):

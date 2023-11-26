@@ -1,8 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://csr2d2jr8sm67"]
+[gd_scene load_steps=8 format=3 uid="uid://csr2d2jr8sm67"]
 
 [ext_resource type="Script" path="res://scripts/exit.gd" id="1_siwnp"]
 [ext_resource type="Texture2D" uid="uid://k5om4belpo0h" path="res://sprites/exit.png" id="2_fte6u"]
 [ext_resource type="AudioStream" uid="uid://cog1kii5obkkn" path="res://audio/sfx/error.wav" id="3_jtliu"]
+[ext_resource type="AudioStream" uid="uid://bma1gotdelqk6" path="res://audio/sfx/elevator_start.wav" id="4_2xm5w"]
+[ext_resource type="AudioStream" uid="uid://cp2ihyx6lfsje" path="res://audio/sfx/elevator_loop.wav" id="5_6h68n"]
+[ext_resource type="AudioStream" uid="uid://dhluwn0vhhrhr" path="res://audio/sfx/elevator_end.wav" id="6_n8su1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2kcqq"]
 size = Vector2(34, 34)
@@ -26,6 +29,18 @@ one_shot = true
 
 [node name="ErrorSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_jtliu")
+bus = &"sfx"
+
+[node name="Start" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_2xm5w")
+bus = &"sfx"
+
+[node name="Loop" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_6h68n")
+bus = &"sfx"
+
+[node name="End" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_n8su1")
 bus = &"sfx"
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

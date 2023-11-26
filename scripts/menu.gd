@@ -15,8 +15,7 @@ func _on_start_mouse_exited():
 func _on_start_pressed():
 	$ClickSFX.play()
 	await $ClickSFX.finished
-	get_tree().change_scene_to_file("res://scenes/temp_tutorial.tscn")
-#	get_tree().change_scene_to_file("res://scenes/pre_ui.tscn")
+	get_tree().change_scene_to_file("res://scenes/tutorial.tscn")
 
 func _on_settings_pressed():
 	$ClickSFX.play()

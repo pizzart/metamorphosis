@@ -38,6 +38,7 @@ func _on_body_entered(body):
 	if body.is_in_group("foe"):
 		body.hit(damage, get_parent().direction * 30)
 		set_deferred("monitoring", false)
+		audio.play()
 
 func _on_area_entered(area):
 	if area is Bullet:
