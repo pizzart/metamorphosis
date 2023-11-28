@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=26 format=3 uid="uid://t6wu146mxlyh"]
+[gd_resource type="Theme" load_steps=31 format=3 uid="uid://t6wu146mxlyh"]
 
 [ext_resource type="Texture2D" uid="uid://ca0dl75ixmul" path="res://sprites/ui/rects/button_disabled.png" id="1_uayas"]
 [ext_resource type="Texture2D" uid="uid://dcjragarjiw2e" path="res://sprites/ui/rects/button_hover.png" id="2_toqw2"]
@@ -120,6 +120,23 @@ texture_margin_right = 5.0
 texture_margin_bottom = 5.0
 axis_stretch_vertical = 1
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_enipf"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a88sv"]
+bg_color = Color(0.8, 0.184314, 0.482353, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_it6kw"]
+bg_color = Color(1, 0.321569, 0.466667, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4r7nl"]
+content_margin_left = 4.0
+bg_color = Color(0.160784, 0.113725, 0.168627, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5frdt"]
+content_margin_left = 2.0
+bg_color = Color(0, 0, 0, 1)
+
 [resource]
 default_font = ExtResource("5_7e85i")
 Button/styles/disabled = SubResource("StyleBoxTexture_7gdyh")
@@ -142,3 +159,8 @@ ItemList/styles/panel = SubResource("StyleBoxTexture_hgf17")
 ItemList/styles/selected = SubResource("StyleBoxTexture_vyy0s")
 ItemList/styles/selected_focus = SubResource("StyleBoxTexture_mx3jo")
 PanelContainer/styles/panel = SubResource("StyleBoxTexture_elu4j")
+VScrollBar/styles/grabber = SubResource("StyleBoxFlat_enipf")
+VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_a88sv")
+VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_it6kw")
+VScrollBar/styles/scroll = SubResource("StyleBoxFlat_4r7nl")
+VScrollBar/styles/scroll_focus = SubResource("StyleBoxFlat_5frdt")

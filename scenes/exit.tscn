@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://csr2d2jr8sm67"]
+[gd_scene load_steps=9 format=3 uid="uid://csr2d2jr8sm67"]
 
 [ext_resource type="Script" path="res://scripts/exit.gd" id="1_siwnp"]
 [ext_resource type="Texture2D" uid="uid://k5om4belpo0h" path="res://sprites/exit.png" id="2_fte6u"]
@@ -6,6 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://bma1gotdelqk6" path="res://audio/sfx/elevator_start.wav" id="4_2xm5w"]
 [ext_resource type="AudioStream" uid="uid://cp2ihyx6lfsje" path="res://audio/sfx/elevator_loop.wav" id="5_6h68n"]
 [ext_resource type="AudioStream" uid="uid://dhluwn0vhhrhr" path="res://audio/sfx/elevator_end.wav" id="6_n8su1"]
+[ext_resource type="AudioStream" uid="uid://bvnsopsl5w38p" path="res://audio/sfx/map_finished.wav" id="7_tva56"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2kcqq"]
 size = Vector2(34, 34)
@@ -41,6 +42,14 @@ bus = &"sfx"
 
 [node name="End" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_n8su1")
+bus = &"sfx"
+
+[node name="Finished" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_tva56")
+volume_db = 6.985
+max_distance = 5000.0
+attenuation = 0.466517
+panning_strength = 1.6
 bus = &"sfx"
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

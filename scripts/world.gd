@@ -24,6 +24,7 @@ func _ready():
 	PauseMenu.can_show = true
 	UI.show()
 	RenderingServer.global_shader_parameter_set("vignette_opacity", Global.VIGNETTE_OPACITY)
+	Global.set_game_cursor()
 	
 	if Global.player_state != null:
 		player = Global.player_state

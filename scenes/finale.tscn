@@ -105,6 +105,11 @@ dialog_icon = 1
 title = "PROGRAM STATISTICS"
 dialog_icon = 0
 
+[node name="Reward" type="NativeAcceptDialog" parent="."]
+title = "PROGRAM STATISTICS"
+dialog_text = "YOU HAVE EARNED A REWARD FOR YOUR DEDICATION."
+dialog_icon = 0
+
 [node name="Exit" parent="." instance=ExtResource("8_ibxoh")]
 long = true
 
@@ -125,3 +130,4 @@ texture_scale = 14.81
 [connection signal="canceled" from="AgainWarning" to="." method="_on_again_warning_canceled"]
 [connection signal="confirmed" from="AgainWarning" to="." method="_on_again_warning_confirmed"]
 [connection signal="confirmed" from="Stats" to="." method="_on_stats_confirmed"]
+[connection signal="confirmed" from="Reward" to="." method="_on_reward_confirmed"]

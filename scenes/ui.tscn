@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://xijpue6425q1"]
+[gd_scene load_steps=18 format=3 uid="uid://xijpue6425q1"]
 
 [ext_resource type="Script" path="res://scripts/ui.gd" id="1_15qrl"]
 [ext_resource type="Texture2D" uid="uid://dogrw6x5yr343" path="res://sprites/ui/icons/health_icon.png" id="1_tplxv"]
@@ -24,6 +24,8 @@ color = Color(0.960784, 1, 0.909804, 1)
 grow_begin = 0.0
 grow_end = 0.0
 vertical = true
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2v77o"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j8qpv"]
 content_margin_left = 5.0
@@ -181,6 +183,25 @@ layout_mode = 2
 size_flags_vertical = 0
 texture = ExtResource("10_kbdf8")
 stretch_mode = 2
+
+[node name="VSeparator" type="VSeparator" parent="Control/M/Bars"]
+layout_mode = 2
+theme_override_constants/separation = 2
+theme_override_styles/separator = SubResource("StyleBoxEmpty_2v77o")
+
+[node name="Help" type="PanelContainer" parent="Control/M/Bars"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxTexture_j8qpv")
+
+[node name="Text" type="Label" parent="Control/M/Bars/Help"]
+z_index = 1
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_fonts/font = ExtResource("9_78whp")
+text = "Q"
 
 [node name="Help" type="PanelContainer" parent="Control/M"]
 layout_mode = 2

@@ -45,13 +45,14 @@ func _input(event):
 			tween.tween_property(player, "global_position", player.global_position + Vector2(0, 200), 0.6).set_trans(Tween.TRANS_CIRC)
 			await tween.finished
 			
-			player.hit(1, Vector2.ZERO)
 			player.global_position = get_tree().get_first_node_in_group("exit").global_position
 			player.can_move = true
 			player.z_index = old_z
 			player.cam.top_level = false
 			player.cam.position = Vector2.ZERO
 			player.shadow.show()
+			
+			player.hit(1, Vector2.ZERO)
 
 func _on_timeout():
 	can_activate = true

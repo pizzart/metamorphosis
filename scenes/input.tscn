@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://b3dgp2j4g5f5q"]
+
+[node name="Input" type="HBoxContainer"]
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "up"
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 10
+focus_mode = 1
+text = "w"

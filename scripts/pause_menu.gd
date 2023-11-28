@@ -13,7 +13,7 @@ func unpause():
 	AudioServer.set_bus_effect_enabled(1, 0, false)
 
 func _input(event):
-	if event.is_action_pressed("pause"):
+	if event.is_action_pressed("pause") and can_show:
 		$ClickSFX.play()
 		
 		$Control/PanelContainer/Main.show()
@@ -22,9 +22,14 @@ func _input(event):
 		visible = not visible
 		get_tree().paused = not get_tree().paused
 		AudioServer.set_bus_effect_enabled(1, 0, not AudioServer.is_bus_effect_enabled(1, 0))
+		if visible:
+			Global.set_menu_cursor()
+		else:
+			Global.set_game_cursor()
 
 func _on_continue_pressed():
 	unpause()
+	Global.set_game_cursor()
 
 func _on_quit_pressed():
 	unpause()

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DialogueLines" load_steps=4 format=3 uid="uid://bra6d65u5eluu"]
+
+[ext_resource type="Script" path="res://resources/dialogue_line.gd" id="1_vpuv7"]
+[ext_resource type="Script" path="res://resources/dialogue.gd" id="2_ou7la"]
+
+[sub_resource type="Resource" id="Resource_ft06s"]
+script = ExtResource("1_vpuv7")
+line = "you have crossed the half way point
+keep going"
+speaker = 1
+
+[resource]
+script = ExtResource("2_ou7la")
+lines = Array[ExtResource("1_vpuv7")]([SubResource("Resource_ft06s")])

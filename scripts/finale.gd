@@ -25,7 +25,11 @@ func _on_final_dialogue_finished():
 	$Validation.show()
 
 func _on_stats_confirmed():
-	get_tree().quit()
+	if Global.condition:
+		Global.save_image()
+		$Reward.show()
+	else:
+		get_tree().quit()
 
 func _on_again_warning_canceled():
 	$Validation.show()
@@ -39,3 +43,6 @@ func _on_again_warning_confirmed():
 	Global.loop += 1
 	
 	get_tree().reload_current_scene()
+
+func _on_reward_confirmed():
+	get_tree().quit()

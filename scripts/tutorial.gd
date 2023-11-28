@@ -9,6 +9,9 @@ var pickup = WeaponPickup.new(Sword.NAME, Sword.new())
 @onready var tilemap = $TileMap
 
 func _ready():
+	UI.show()
+	Global.set_game_cursor()
+	
 	player.gun.queue_free()
 	player.melee.queue_free()
 	player.ammo = 0
@@ -55,7 +58,7 @@ func _on_sword_picked_up():
 	
 	$HelpWindow/Help/C/Key/Label.hide()
 	$HelpWindow/Help/C/Key/MouseLeft.show()
-	$HelpWindow.position = get_window().position + Vector2i(get_window().size.x, get_window().size.y / 2)
+	$HelpWindow.position = get_window().position + get_window().size - $HelpWindow.size
 	$HelpWindow.show()
 	$Timer.start()
 
@@ -64,7 +67,7 @@ func _on_gun_picked_up():
 	$HelpWindow/Help/C/Key/Label.text = "space"
 	$HelpWindow/Help/C/Key/MouseLeft.hide()
 	$HelpWindow/Help/C/Key/Label.show()
-	$HelpWindow.position = get_window().position + Vector2i(get_window().size.x, get_window().size.y / 2)
+	$HelpWindow.position = get_window().position + get_window().size - $HelpWindow.size
 	$HelpWindow.show()
 	
 	$Timer.stop()

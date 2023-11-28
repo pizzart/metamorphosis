@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://qyk1wq0h6ttu"]
+[gd_scene load_steps=9 format=3 uid="uid://qyk1wq0h6ttu"]
 
 [ext_resource type="Script" path="res://scripts/3d/player.gd" id="1_i5ib5"]
 [ext_resource type="PackedScene" uid="uid://0284mnhe44cj" path="res://3d/revolver.glb" id="2_gjged"]
 [ext_resource type="Shader" path="res://misc/psx.gdshader" id="3_7kjlj"]
-[ext_resource type="AudioStream" uid="uid://d2ri4mrxoqhbu" path="res://audio/sfx/dink.wav" id="4_kfjmq"]
+[ext_resource type="AudioStream" uid="uid://elyglt6ogd1" path="res://audio/sfx/shoot.wav" id="4_of83e"]
+[ext_resource type="AudioStream" uid="uid://bjokrmbkn56bi" path="res://audio/sfx/step.wav" id="5_xrprj"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lnfi8"]
 height = 1.5
@@ -44,5 +45,17 @@ extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_76plf")
 
 [node name="ShootSFX" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("4_kfjmq")
-bus = &"sfx"
+stream = ExtResource("4_of83e")
+bus = &"3d_sfx"
+
+[node name="StepSFX" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.709278, 0)
+stream = ExtResource("5_xrprj")
+unit_size = 0.8
+bus = &"3d_sfx"
+
+[node name="StepTimer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[connection signal="timeout" from="StepTimer" to="." method="_on_step_timer_timeout"]

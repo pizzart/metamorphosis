@@ -4,7 +4,7 @@ uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
 uniform bool scanlines_shown = true;
 uniform bool curvature_shown = true;
 uniform bool warp_shown = false;
-uniform float aberration_amount = 3.0;
+global uniform float aberration_amount;
 uniform float static_intensity = 0.0;
 uniform float time_scale = 1.0;
 uniform float warp_amount = 0.7;

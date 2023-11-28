@@ -9,6 +9,7 @@ func _ready():
 	PauseMenu.can_show = false
 	Global.timer = 0
 	Global.current_area = Generator.Area.Sky
+	Global.set_menu_cursor()
 	
 	$HatTexture.visible = equipped_hat != 0
 	$HatTexture.texture = Global.HATS[equipped_hat][1]

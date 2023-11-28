@@ -139,7 +139,7 @@ script = ExtResource("10_msxe0")
 rigged_chance = 1.0
 
 [node name="Birdie4" type="CharacterBody2D" parent="."]
-position = Vector2(365, -581)
+position = Vector2(313, -542)
 script = ExtResource("10_msxe0")
 rigged_chance = 0.02
 

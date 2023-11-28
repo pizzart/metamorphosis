@@ -1,4 +1,4 @@
-[gd_resource type="AudioBusLayout" load_steps=2 format=3 uid="uid://cjnjg3qs2qw5g"]
+[gd_resource type="AudioBusLayout" load_steps=3 format=3 uid="uid://cjnjg3qs2qw5g"]
 
 [sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_8su6r"]
 resource_name = "LowPassFilter"
@@ -6,11 +6,17 @@ cutoff_hz = 1895.0
 resonance = 0.16
 db = 1
 
+[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_6v6os"]
+resource_name = "Reverb"
+room_size = 0.65
+damping = 0.74
+wet = 0.24
+
 [resource]
 bus/0/volume_db = -6.91795
 bus/1/name = &"mus"
 bus/1/solo = false
-bus/1/mute = false
+bus/1/mute = true
 bus/1/bypass_fx = false
 bus/1/volume_db = 0.0
 bus/1/send = &"Master"
@@ -22,3 +28,11 @@ bus/2/mute = false
 bus/2/bypass_fx = false
 bus/2/volume_db = 0.0
 bus/2/send = &"Master"
+bus/3/name = &"3d_sfx"
+bus/3/solo = false
+bus/3/mute = false
+bus/3/bypass_fx = false
+bus/3/volume_db = 0.0
+bus/3/send = &"sfx"
+bus/3/effect/0/effect = SubResource("AudioEffectReverb_6v6os")
+bus/3/effect/0/enabled = true

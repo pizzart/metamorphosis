@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://64kdpv3e4j6m"]
+[gd_scene load_steps=29 format=3 uid="uid://ccfjmn2857i0f"]
 
 [ext_resource type="Script" path="res://scripts/world.gd" id="1_eoi30"]
 [ext_resource type="Shader" path="res://misc/matrix.gdshader" id="2_1rf8u"]
@@ -38,6 +38,34 @@ noise = SubResource("FastNoiseLite_k3f30")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5m35t"]
 shader = ExtResource("2_1rf8u")
 shader_parameter/noise_tex = SubResource("NoiseTexture2D_joxvr")
+
+[sub_resource type="Gradient" id="Gradient_ls6gp"]
+offsets = PackedFloat32Array(0, 0.110497, 0.734807, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_l0fa0"]
+gradient = SubResource("Gradient_ls6gp")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_y0r4t"]
+lifetime_randomness = 0.42
+emission_shape = 3
+emission_box_extents = Vector3(320, 240, 1)
+particle_flag_disable_z = true
+direction = Vector3(1, 1, 0)
+spread = 90.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 2.9
+initial_velocity_max = 4.45
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+linear_accel_min = -0.55
+linear_accel_max = 0.6
+angle_min = -109.8
+angle_max = 85.4
+scale_min = 1.45
+scale_max = 2.3
+color = Color(0.890196, 0.890196, 0.890196, 0.760784)
+color_ramp = SubResource("GradientTexture1D_l0fa0")
 
 [node name="World" type="Node2D"]
 y_sort_enabled = true
@@ -205,6 +233,22 @@ offset_right = 640.0
 offset_bottom = 480.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Front" type="ParallaxBackground" parent="."]
+layer = 3
+
+[node name="ParallaxLayer8" type="ParallaxLayer" parent="Front"]
+motion_scale = Vector2(1.1, 1.1)
+motion_mirroring = Vector2(640, 480)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="Front/ParallaxLayer8"]
+position = Vector2(160, 120)
+amount = 30
+process_material = SubResource("ParticleProcessMaterial_y0r4t")
+lifetime = 4.0
+randomness = 1.0
+visibility_rect = Rect2(-320, -240, 640, 480)
+local_coords = true
 
 [node name="SkyModulate" type="CanvasModulate" parent="."]
 color = Color(0.713726, 0.619608, 0.482353, 1)

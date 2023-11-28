@@ -1,9 +1,39 @@
-[gd_scene load_steps=5 format=3 uid="uid://c3au5c0hj6olp"]
+[gd_scene load_steps=10 format=3 uid="uid://c3au5c0hj6olp"]
 
 [ext_resource type="Theme" uid="uid://t6wu146mxlyh" path="res://misc/theme.tres" id="1_l8qyt"]
 [ext_resource type="Script" path="res://scripts/menu.gd" id="2_516qa"]
 [ext_resource type="PackedScene" uid="uid://b77lvbvumc7uj" path="res://scenes/settings_menu.tscn" id="3_5880d"]
 [ext_resource type="AudioStream" uid="uid://crv0ic1kxw0nt" path="res://audio/sfx/click.wav" id="3_co23l"]
+[ext_resource type="FontFile" uid="uid://bg7u20m8ne1oc" path="res://misc/font_small.png" id="3_hutdt"]
+[ext_resource type="AudioStream" uid="uid://k20lhvksdugo" path="res://audio/mus/menu.ogg" id="6_3ymif"]
+
+[sub_resource type="Gradient" id="Gradient_lx6cj"]
+offsets = PackedFloat32Array(0, 0.110497, 0.734807, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_2y0wm"]
+gradient = SubResource("Gradient_lx6cj")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_4a715"]
+lifetime_randomness = 0.31
+emission_shape = 3
+emission_box_extents = Vector3(160, 120, 1)
+particle_flag_disable_z = true
+direction = Vector3(1, 1, 0)
+spread = 90.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 2.9
+initial_velocity_max = 4.45
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+linear_accel_min = -0.55
+linear_accel_max = 0.6
+angle_min = -109.8
+angle_max = 85.4
+scale_min = 1.45
+scale_max = 2.3
+color = Color(0.890196, 0.890196, 0.890196, 0.760784)
+color_ramp = SubResource("GradientTexture1D_2y0wm")
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -16,7 +46,37 @@ theme = ExtResource("1_l8qyt")
 script = ExtResource("2_516qa")
 metadata/_edit_horizontal_guides_ = [-44.0]
 
+[node name="Start" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="Label" type="RichTextLabel" parent="Start"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/line_separation = 1
+theme_override_fonts/bold_font = ExtResource("3_hutdt")
+bbcode_enabled = true
+text = "[center]METAMORPHOSIS
+[b][color=888888]METAMORPHOSIS[/color][/b]
+working title[/center]"
+fit_content = true
+
+[node name="Label2" type="Label" parent="Start"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+text = "press any button"
+
 [node name="M" type="MarginContainer" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -55,10 +115,35 @@ text = "QUIT"
 visible = false
 layout_mode = 2
 
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+z_index = -1
+position = Vector2(160, 120)
+amount = 15
+process_material = SubResource("ParticleProcessMaterial_4a715")
+lifetime = 4.0
+randomness = 1.0
+visibility_rect = Rect2(-320, -240, 640, 480)
+local_coords = true
+
+[node name="Black" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
 [node name="ClickSFX" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_co23l")
 volume_db = -5.0
 bus = &"sfx"
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_3ymif")
+autoplay = true
+bus = &"mus"
 
 [connection signal="mouse_entered" from="M/Main/List/Start" to="." method="_on_start_mouse_entered"]
 [connection signal="mouse_exited" from="M/Main/List/Start" to="." method="_on_start_mouse_exited"]

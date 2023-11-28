@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://b77lvbvumc7uj"]
+[gd_scene load_steps=10 format=3 uid="uid://b77lvbvumc7uj"]
 
 [ext_resource type="Theme" uid="uid://t6wu146mxlyh" path="res://misc/theme.tres" id="1_2cuvk"]
 [ext_resource type="Script" path="res://scripts/settings_menu.gd" id="1_8aifg"]
 [ext_resource type="AudioStream" uid="uid://crv0ic1kxw0nt" path="res://audio/sfx/click.wav" id="2_buc8u"]
+[ext_resource type="Texture2D" uid="uid://cbtru5jb33n4" path="res://sprites/ui/ui_arrow.png" id="3_pg231"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_61ic0"]
 
@@ -122,8 +123,68 @@ theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_e03d1")
 theme_override_styles/focus = SubResource("StyleBoxFlat_47nqf")
 text = "FULLSCREEN"
 
+[node name="Aberration" type="CheckButton" parent="M/List"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_61ic0")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_c6v4o")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_61ic0")
+theme_override_styles/hover = SubResource("StyleBoxFlat_v1j3m")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_e03d1")
+theme_override_styles/focus = SubResource("StyleBoxFlat_47nqf")
+text = "ABERRATION"
+
+[node name="Controls" type="Button" parent="M/List"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_61ic0")
+theme_override_styles/hover = SubResource("StyleBoxFlat_c6v4o")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_c6v4o")
+theme_override_styles/focus = SubResource("StyleBoxFlat_c6v4o")
+text = "CONTROLS"
+icon = ExtResource("3_pg231")
+alignment = 0
+icon_alignment = 2
+
 [node name="Back" type="Button" parent="M/List"]
 layout_mode = 2
+text = "BACK"
+
+[node name="Controls" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="Scroll" type="ScrollContainer" parent="Controls"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+follow_focus = true
+scroll_vertical_custom_step = 10.0
+vertical_scroll_mode = 2
+
+[node name="V" type="VBoxContainer" parent="Controls/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="Reset" type="Button" parent="Controls"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_61ic0")
+theme_override_styles/hover = SubResource("StyleBoxFlat_c6v4o")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_c6v4o")
+theme_override_styles/focus = SubResource("StyleBoxFlat_c6v4o")
+text = "RESET CONTROLS"
+alignment = 0
+icon_alignment = 2
+
+[node name="Back" type="Button" parent="Controls"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 10
 text = "BACK"
 
 [node name="ClickSFX" type="AudioStreamPlayer" parent="."]
@@ -140,4 +201,8 @@ bus = &"sfx"
 [connection signal="drag_ended" from="M/List/Shake/HSlider" to="." method="_on_shake_drag_ended"]
 [connection signal="value_changed" from="M/List/Shake/HSlider" to="." method="_on_shake_value_changed"]
 [connection signal="toggled" from="M/List/Fullscreen" to="." method="_on_fullscreen_toggled"]
+[connection signal="toggled" from="M/List/Aberration" to="." method="_on_aberration_toggled"]
+[connection signal="pressed" from="M/List/Controls" to="." method="_on_controls_pressed"]
 [connection signal="pressed" from="M/List/Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Controls/Reset" to="." method="_on_reset_pressed"]
+[connection signal="pressed" from="Controls/Back" to="." method="_on_controls_back_pressed"]

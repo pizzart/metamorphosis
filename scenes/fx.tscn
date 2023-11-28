@@ -10,7 +10,6 @@ shader = ExtResource("1_1t6hs")
 shader_parameter/scanlines_shown = true
 shader_parameter/curvature_shown = false
 shader_parameter/warp_shown = false
-shader_parameter/aberration_amount = 1.0
 shader_parameter/static_intensity = 0.0
 shader_parameter/time_scale = 1.0
 shader_parameter/warp_amount = 0.05

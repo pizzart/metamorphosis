@@ -59,14 +59,17 @@ func _init(_health: int, _shuffle_min: float, _shuffle_max: float, _walk_speed: 
 	hit_stream.add_stream(2, preload("res://audio/sfx/hurt3.wav"))
 	hit_audio.stream = hit_stream
 	hit_audio.max_polyphony = 3
+	hit_audio.panning_strength = 1.5
 	
 	var prepare_stream = AudioStreamRandomizer.new()
 	prepare_stream.add_stream(0, preload("res://audio/sfx/enemy_prepare.wav"))
 	prepare_audio.stream = prepare_stream
+	prepare_audio.panning_strength = 1.5
 	
 	var attack_stream = AudioStreamRandomizer.new()
 	attack_stream.add_stream(0, preload("res://audio/sfx/enemy_shoot.wav"))
 	attack_audio.stream = attack_stream
+	attack_audio.panning_strength = 1.5
 	
 	var light = LIGHT.instantiate()
 	
@@ -147,6 +150,7 @@ func hit(damage: int, force: Vector2):
 func die():
 	super.die()
 	
+	collision_shape.set_deferred("disabled", true)
 	var chance = rng.randf()
 	if rigged_chance != -1:
 		chance = rigged_chance
@@ -158,7 +162,6 @@ func die():
 		var coin = CoinPickup.new()
 		coin.global_position = global_position
 		get_parent().add_child.call_deferred(coin)
-	collision_shape.set_deferred("disabled", true)
 	
 	var corpse = CORPSE.instantiate()
 	corpse.sprite_frames = sprite.sprite_frames

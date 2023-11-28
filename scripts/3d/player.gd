@@ -13,6 +13,7 @@ const TILT_AMOUNT = 0.07
 
 var health: int = MAX_HEALTH
 var jump_buffered: bool
+var was_on_floor: bool
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var camera = $Camera3D
@@ -54,10 +55,14 @@ func _physics_process(delta):
 
 	move_and_slide()
 	
-	if velocity.length_squared() < 2:
+	if (velocity * Vector3(1, 0, 1)).length_squared() < 2:
 		get_parent().get_node("CanvasLayer2/Sprite").pause()
+		$StepTimer.paused = true
 	else:
 		get_parent().get_node("CanvasLayer2/Sprite").play()
+		if not is_on_floor() and was_on_floor:
+			$StepSFX.play()
+		$StepTimer.paused = not is_on_floor()
 	
 	if velocity.length() > 25:
 		get_parent().get_node("CanvasLayer2/Sprite").speed_scale = 3
@@ -73,6 +78,8 @@ func _physics_process(delta):
 	
 	camera.rotation.z = lerpf(camera.rotation.z, -input_dir.x * TILT_AMOUNT, 0.1)
 	camera.fov = lerpf(camera.fov, 60 * clampf(velocity.length() / MAX_VELOCITY / 3 + 1, 1, 2), 0.05)
+	
+	was_on_floor = is_on_floor()
 
 func accelerate(direction: Vector3, prev_velocity: Vector3, acceleration: float, max_velocity: float):
 	var proj_velocity = velocity.dot(direction)
@@ -100,3 +107,6 @@ func _input(event):
 		$Camera3D/Revolver/AnimationPlayer.stop()
 		$Camera3D/Revolver/AnimationPlayer.play("shoot")
 		$ShootSFX.play()
+
+func _on_step_timer_timeout():
+	$StepSFX.play()

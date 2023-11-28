@@ -44,6 +44,7 @@ const TERRAIN_ID = 1
 const BOTTOM_ID = 2
 
 const GLITCH_MAT = preload("res://misc/glitch_mat.tres")
+const CHECK = preload("res://scenes/particles/check_particle.tscn")
 
 const ENEMY = preload("res://scenes/enemy.tscn")
 const NPC = preload("res://scenes/npc.tscn")
@@ -105,7 +106,7 @@ func generate_map_full(size):
 	var exit_pos = place_exit(GenerationType.Intermission, true)
 	var enemy_count = 0
 	for i in range(island_count):
-		enemy_count += rng.randi_range(4 + Global.current_area, 6 + Global.loop * 2 + Global.current_area + rng.randi_range(0, current_map + Global.current_area))
+		enemy_count += rng.randi_range(3 + Global.current_area, 6 + Global.loop * 2 + Global.current_area + rng.randi_range(0, current_map + Global.current_area))
 	enemies_left = enemy_count
 	place_enemies(enemy_count, exit_pos)
 	place_poles([exit_pos])
@@ -455,6 +456,13 @@ func _on_exit_moved(next_gen_type: GenerationType):
 func _on_enemy_dead():
 	enemies_left -= 1
 	if enemies_left <= 0:
-		get_tree().get_first_node_in_group("exit").enemies_gone = true
-		player.change_emotion(Player.Emotion.Correct)
+		await get_tree().create_timer(0.5).timeout
+		var exit = get_tree().get_first_node_in_group("exit")
+		exit.enemies_gone = true
+		exit.play_fin_sound()
+		var check = CHECK.instantiate()
+		check.restart()
+		check.global_position = player.global_position + Vector2(4, -4)
+		world.add_child(check)
 		world.transition_music("%s_intense" % AREA_NAMES[Global.current_area], "%s_calm" % AREA_NAMES[Global.current_area])
+		player.change_emotion(Player.Emotion.Correct)

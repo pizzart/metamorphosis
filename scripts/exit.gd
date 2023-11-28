@@ -79,6 +79,9 @@ func end_descent():
 	player.change_emotion(Player.Emotion.None)
 	player.sprite.play()
 
+func play_fin_sound():
+	$Finished.play()
+
 func _input(event):
 	if event.is_action_pressed("use"):
 #		if can_interact:

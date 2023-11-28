@@ -71,8 +71,9 @@ func _ready():
 		hat.show()
 		hat.texture = Global.HATS[Global.equipped_hat][1]
 	
-	for i in range(5):
-		add_coin()
+	if not OS.has_feature("editor"):
+		for i in range(5):
+			add_coin()
 	
 	UI.set_health_packs(health_packs)
 	
@@ -141,6 +142,7 @@ func _input(event):
 			heal(5)
 			health_packs -= 1
 			UI.set_health_packs(health_packs)
+			UI.hide_pack_help()
 
 func knockback(value: Vector2):
 	offset_velocity += value
@@ -184,10 +186,16 @@ func hit(damage: int, force: Vector2):
 	cam.add_trauma(float(damage) / 6)
 	Global.freeze_frame()
 	
-	if health < max_health / 3 and health_prev >= max_health / 3:
-		change_emotion(Player.Emotion.Energy)
-		var tween = create_tween()
-		tween.tween_method(Global.set_shader_param.bind("vignette_opacity"), Global.VIGNETTE_OPACITY, 0.5, 1.0)
+	if health < max_health / 3:
+		if health_prev >= max_health / 3:
+			change_emotion(Player.Emotion.Energy)
+			var tween = create_tween()
+			tween.tween_method(Global.set_shader_param.bind("vignette_opacity"), Global.VIGNETTE_OPACITY, 0.5, 1.0)
+		UI.flash_health()
+		if health_packs > 0:
+			UI.show_pack_help()
+	else:
+		UI.hide_pack_help()
 #	else:
 #		RenderingServer.global_shader_parameter_set("vignette_opacity", 0.035)
 	sprite.modulate = Color.RED
@@ -202,8 +210,8 @@ func replace_weapon(new_weapon: Weapon):
 		if gun != null:
 			old_weight = gun.weight
 	elif melee != null:
-			old_weight = melee.weight
-		
+		old_weight = melee.weight
+	
 	if new_weight > old_weight:
 		var free = max_health - health
 		var added = new_weight - old_weight
@@ -243,6 +251,9 @@ func replace_weapon(new_weapon: Weapon):
 	weapon_changed.emit(new_weapon)
 	change_sfx.play()
 	
+	if old_weapon != null:
+		Global.condition = false
+	
 	return old_weapon
 
 func add_coin():
@@ -264,6 +275,8 @@ func spend_coins(amount: int):
 func add_ammo(amount: float):
 	ammo = clampf(ammo + amount, 0, max_ammo)
 	change_emotion(Emotion.None)
+	if ammo == max_ammo:
+		UI.flash_ammo()
 
 func heal(amount: int):
 	health = mini(health + amount, max_health - buffer_health)
