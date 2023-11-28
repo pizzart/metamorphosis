@@ -1,6 +1,7 @@
 extends Node2D
 
 const BOSS = preload("res://scenes/bosses/boss_0.tscn")
+const CHECK = preload("res://scenes/particles/check_particle.tscn")
 
 var box: Box
 var pickup = WeaponPickup.new(Sword.NAME, Sword.new())
@@ -93,6 +94,13 @@ func _on_boss_dead():
 	var teleport = Teleporter.new($TelePos6.global_position, $TelePos4.global_position)
 	add_child.call_deferred(teleport)
 	$Exit.enemies_gone = true
+	await get_tree().create_timer(0.5).timeout
+	$Exit.play_fin_sound()
+	var check = CHECK.instantiate()
+	check.restart()
+	check.global_position = player.global_position + Vector2(4, -4)
+	add_child(check)
+	player.change_emotion(Player.Emotion.Correct)
 
 func _on_exit_moved():
 	get_tree().change_scene_to_file("res://scenes/pre_ui.tscn")

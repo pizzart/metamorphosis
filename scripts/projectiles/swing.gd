@@ -2,14 +2,14 @@ class_name Swing
 extends Projectile
 
 var timer = Timer.new()
+var sprite = AnimatedSprite2D.new()
+var collision_shape = CollisionShape2D.new()
 
 func _init(_damage: int, can_deflect: bool):
 	super._init()
-	var collision_shape = CollisionShape2D.new()
 	var rect = RectangleShape2D.new()
 	rect.size = Vector2(80, 64)
 	collision_shape.shape = rect
-	var sprite = AnimatedSprite2D.new()
 	sprite.sprite_frames = preload("res://resources/slash.tres")
 	sprite.play("default")
 	sprite.rotation = PI / 2

@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://ccfjmn2857i0f"]
+[gd_scene load_steps=30 format=3 uid="uid://ccfjmn2857i0f"]
 
 [ext_resource type="Script" path="res://scripts/world.gd" id="1_eoi30"]
 [ext_resource type="Shader" path="res://misc/matrix.gdshader" id="2_1rf8u"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://645mlkk68ti8" path="res://sprites/bgs/1/clouds3.png" id="10_eb2fp"]
 [ext_resource type="Texture2D" uid="uid://c2vbm3ognyrw4" path="res://sprites/bgs/3/bg3_2.png" id="10_gyw7h"]
 [ext_resource type="Texture2D" uid="uid://bwnvd63cs8345" path="res://sprites/bgs/2/bg2_0.png" id="11_6w7jm"]
+[ext_resource type="Material" uid="uid://c12pty6um8e6v" path="res://misc/glitch_mat.tres" id="13_y1ifh"]
 [ext_resource type="AudioStream" uid="uid://bvq8brjhyvtgh" path="res://audio/mus/boss3.ogg" id="16_u4s3l"]
 [ext_resource type="AudioStream" uid="uid://chby56s7kkdnf" path="res://audio/mus/mystique_calm.ogg" id="17_4b642"]
 [ext_resource type="AudioStream" uid="uid://dxjxmgo3vvmu0" path="res://audio/mus/mystique_intense.ogg" id="18_jg8vn"]
@@ -205,6 +206,7 @@ motion_mirroring = Vector2(640, 480)
 
 [node name="Sprite2D" type="Sprite2D" parent="AbyssBG/ParallaxLayer"]
 modulate = Color(0.380392, 0.380392, 0.380392, 1)
+material = ExtResource("13_y1ifh")
 texture = ExtResource("9_ktfkt")
 
 [node name="ParallaxLayer2" type="ParallaxLayer" parent="AbyssBG"]
@@ -214,6 +216,7 @@ motion_mirroring = Vector2(640, 480)
 
 [node name="Sprite2D" type="Sprite2D" parent="AbyssBG/ParallaxLayer2"]
 modulate = Color(0.533333, 0.533333, 0.533333, 1)
+material = ExtResource("13_y1ifh")
 texture = ExtResource("10_gyw7h")
 
 [node name="ParallaxLayer3" type="ParallaxLayer" parent="AbyssBG"]

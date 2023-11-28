@@ -396,7 +396,7 @@ func update_surroundings():
 			world.get_node("AbyssBG").show()
 			world.get_node("AbyssModulate").show()
 			
-			world.get_node("AbyssBG/ParallaxLayer/Sprite2D").material = GLITCH_MAT
+#			world.get_node("AbyssBG/ParallaxLayer/Sprite2D").material = GLITCH_MAT
 			tilemap.material = GLITCH_MAT
 
 func choose(dict: Dictionary):
@@ -456,9 +456,9 @@ func _on_exit_moved(next_gen_type: GenerationType):
 func _on_enemy_dead():
 	enemies_left -= 1
 	if enemies_left <= 0:
-		await get_tree().create_timer(0.5).timeout
 		var exit = get_tree().get_first_node_in_group("exit")
 		exit.enemies_gone = true
+		await get_tree().create_timer(0.5).timeout
 		exit.play_fin_sound()
 		var check = CHECK.instantiate()
 		check.restart()

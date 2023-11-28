@@ -66,7 +66,7 @@ theme_override_fonts/bold_font = ExtResource("3_hutdt")
 bbcode_enabled = true
 text = "[center]METAMORPHOSIS
 [b][color=888888]METAMORPHOSIS[/color][/b]
-working title[/center]"
+[color=888888]working title[/color][/center]"
 fit_content = true
 
 [node name="Label2" type="Label" parent="Start"]

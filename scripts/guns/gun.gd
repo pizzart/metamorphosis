@@ -7,6 +7,7 @@ var ammo_cost: int
 var spread: float
 var bullet_speed: float
 var bullet_acceleration: float
+var bullet_damage: int = 1
 
 var error_audio: AudioStreamPlayer2D = AudioStreamPlayer2D.new()
 
@@ -43,6 +44,7 @@ func attack():
 
 func send_bullet():
 	var bullet = Bullet.new(direction.rotated(rng.randfn(0, spread)) * bullet_speed, bullet_acceleration, true)
+	bullet.damage = bullet_damage
 	bullet.global_position = global_position
 	player.get_parent().add_child(bullet)
 	

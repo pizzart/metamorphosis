@@ -42,8 +42,8 @@ var step_timer: float
 
 var rng = RandomNumberGenerator.new()
 
-@onready var gun: Gun = Pistol.new()
-@onready var melee: Melee = Sword.new()
+@onready var gun: Gun = Minigun.new()
+@onready var melee: Melee = Sledgehammer.new()
 @onready var cam: Camera2D = $Camera
 @onready var shadow = $Shadow
 @onready var light = $Light

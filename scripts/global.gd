@@ -92,6 +92,7 @@ var weapon_pool = {
 		Rifle,
 		Shotgun,
 		Minigun,
+		Sniper,
 	],
 	"melee": [
 		Sledgehammer,
