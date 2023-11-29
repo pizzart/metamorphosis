@@ -1,0 +1,15 @@
+[gd_scene load_steps=5 format=3 uid="uid://bn0bsbmqf3cr6"]
+
+[ext_resource type="Texture2D" uid="uid://oj00vq5jplpx" path="res://sprites/menu/noddy.png" id="1_6y60p"]
+[ext_resource type="Shader" path="res://misc/bluemenu.gdshader" id="1_j4u2t"]
+[ext_resource type="Script" path="res://scripts/menu_sprite.gd" id="2_dmg4g"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v7bsm"]
+shader = ExtResource("1_j4u2t")
+shader_parameter/color = Color(0.309804, 0.643137, 0.721569, 0.454902)
+
+[node name="MenuSprite" type="Sprite2D"]
+z_index = -2
+material = SubResource("ShaderMaterial_v7bsm")
+texture = ExtResource("1_6y60p")
+script = ExtResource("2_dmg4g")

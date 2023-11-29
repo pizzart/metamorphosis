@@ -149,7 +149,7 @@ func generate_boss1():
 func generate_boss3():
 	cleanup()
 	tilemap.set_pattern(0, Vector2i.ZERO, tilemap.tile_set.get_pattern(1))
-	var _exit_placement = place_exit(GenerationType.Finale, true)
+	var _exit_placement = place_exit(GenerationType.Finale, true, true)
 #	place_player(exit_placement)
 	generated.emit()
 	world.init_boss3()
@@ -269,7 +269,7 @@ func place_walls(chance: float):
 					tile = BOTTOM_ID
 				tilemap.set_cell(0, cell + dir, tile, Vector2i.ZERO)
 
-func place_exit(next_gen_type: GenerationType, with_enemies: bool) -> Vector2i:
+func place_exit(next_gen_type: GenerationType, with_enemies: bool, is_boss: bool = false) -> Vector2i:
 	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
 	var center = tilemap.get_used_rect().get_center()
 	var placement = cells[0]
@@ -282,6 +282,9 @@ func place_exit(next_gen_type: GenerationType, with_enemies: bool) -> Vector2i:
 	var exit = EXIT.instantiate()
 	exit.enemies_gone = not with_enemies
 	exit.global_position = tilemap.map_to_local(placement)
+	if is_boss:
+		exit.long = true
+		exit.arrived.connect(world._on_exit_arrived)
 	exit.moved.connect(_on_exit_moved.bind(next_gen_type))
 	world.add_child.call_deferred(exit)
 	return placement

@@ -2,7 +2,7 @@ class_name Teleporter
 extends Area2D
 
 const ARROW = preload("res://sprites/arrow.png")
-const TIMEOUT = 2.5
+const TIMEOUT = 1.8
 var next_position: Vector2
 var inside: bool
 var can_interact: bool = true
@@ -38,7 +38,7 @@ func _input(event):
 		player.global_position = next_position
 		get_tree().call_group("teleporter", "make_inactive")
 		player.invincible = true
-		await get_tree().create_timer(0.5)
+		await get_tree().create_timer(0.4)
 		player.invincible = false
 
 func make_inactive():

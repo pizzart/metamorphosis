@@ -5,6 +5,7 @@ const CHECK = preload("res://scenes/particles/check_particle.tscn")
 
 var box: Box
 var pickup = WeaponPickup.new(Sword.NAME, Sword.new())
+var boss = BOSS.instantiate()
 
 @onready var player = $Player
 @onready var tilemap = $TileMap
@@ -12,11 +13,15 @@ var pickup = WeaponPickup.new(Sword.NAME, Sword.new())
 func _ready():
 	UI.show()
 	Global.set_game_cursor()
+	PauseMenu.can_show = true
 	
 	player.gun.queue_free()
 	player.melee.queue_free()
+	get_tree().call_group("upgrade", "queue_free")
 	player.ammo = 0
 	player.weight = 0
+	player.buffer_health = 0
+	player.health = player.max_health
 	player.dead.connect(_on_player_dead)
 	
 	box = Box.new(Pistol.new())
@@ -31,10 +36,14 @@ func _ready():
 	var teleport2 = Teleporter.new($TelePos2.global_position, $TelePos5.global_position)
 	var teleport3 = Teleporter.new($TelePos3.global_position, $TelePos4.global_position)
 	var teleport4 = Teleporter.new($TelePos5.global_position, $TelePos1.global_position)
+	var teleport_boss1 = Teleporter.new($TeleBoss1.global_position, $TeleBoss2.global_position)
+	var teleport_boss2 = Teleporter.new($TeleBoss2.global_position, $TeleBoss1.global_position)
 	add_child(teleport1)
 	add_child(teleport2)
 	add_child(teleport3)
 	add_child(teleport4)
+	add_child(teleport_boss1)
+	add_child(teleport_boss2)
 
 func _process(delta):
 	$BG/ParallaxLayer.motion_offset.x -= delta * 100
@@ -83,7 +92,6 @@ func _on_player_dead():
 	get_tree().reload_current_scene()
 
 func _on_boss_area_body_entered(body):
-	var boss = BOSS.instantiate()
 	boss.global_position = $BossPos.global_position
 	boss.dead.connect(_on_boss_dead)
 	add_child.call_deferred(boss)
@@ -91,8 +99,11 @@ func _on_boss_area_body_entered(body):
 	$BossArea.set_deferred("monitoring", false)
 
 func _on_boss_dead():
-	var teleport = Teleporter.new($TelePos6.global_position, $TelePos4.global_position)
-	add_child.call_deferred(teleport)
+	var pickup = UpgradePickup.new()
+	pickup.global_position = player.global_position
+	pickup.picked_up.connect(_on_upgrade_picked_up)
+	add_child(pickup)
+	
 	$Exit.enemies_gone = true
 	await get_tree().create_timer(0.5).timeout
 	$Exit.play_fin_sound()
@@ -101,6 +112,10 @@ func _on_boss_dead():
 	check.global_position = player.global_position + Vector2(4, -4)
 	add_child(check)
 	player.change_emotion(Player.Emotion.Correct)
+
+func _on_upgrade_picked_up():
+	var teleport = Teleporter.new($TelePos6.global_position, $TelePos4.global_position)
+	add_child.call_deferred(teleport)
 
 func _on_exit_moved():
 	get_tree().change_scene_to_file("res://scenes/pre_ui.tscn")

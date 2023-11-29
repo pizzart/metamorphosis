@@ -24,6 +24,8 @@ spread = 90.0
 gravity = Vector3(0, 0, 0)
 initial_velocity_min = 2.9
 initial_velocity_max = 4.45
+angular_velocity_min = -36.61
+angular_velocity_max = 61.02
 orbit_velocity_min = 0.0
 orbit_velocity_max = 0.0
 linear_accel_min = -0.55
@@ -65,11 +67,10 @@ theme_override_constants/line_separation = 1
 theme_override_fonts/bold_font = ExtResource("3_hutdt")
 bbcode_enabled = true
 text = "[center]METAMORPHOSIS
-[b][color=888888]METAMORPHOSIS[/color][/b]
-[color=888888]working title[/color][/center]"
+[b][color=888888]METAMORPHOSIS[/color][/b][/center]"
 fit_content = true
 
-[node name="Label2" type="Label" parent="Start"]
+[node name="Press" type="Label" parent="Start"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
@@ -107,13 +108,56 @@ text = "START GAME"
 layout_mode = 2
 text = "SETTINGS"
 
+[node name="Credits" type="Button" parent="M/Main/List"]
+layout_mode = 2
+text = "CREDITS"
+
 [node name="Quit" type="Button" parent="M/Main/List"]
 layout_mode = 2
 text = "QUIT"
 
+[node name="Credits" type="PanelContainer" parent="M"]
+visible = false
+custom_minimum_size = Vector2(170, 150)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="RichTextLabel" type="RichTextLabel" parent="M/Credits"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_vertical = 4
+bbcode_enabled = true
+text = "[center][color=aaa]development[/color]
+pizzart
+
+[color=aaa]playtesting[/color]
+teawhydee
+levi vilas boas
+twospacessg
+pingvinisious
+[/center]"
+fit_content = true
+
+[node name="CreditsBack" type="Button" parent="M/Credits"]
+layout_mode = 2
+size_flags_vertical = 8
+text = "back"
+
 [node name="Settings" parent="M" instance=ExtResource("3_5880d")]
 visible = false
 layout_mode = 2
+
+[node name="Dark" type="ColorRect" parent="."]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.239216)
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
 z_index = -1
@@ -145,9 +189,15 @@ stream = ExtResource("6_3ymif")
 autoplay = true
 bus = &"mus"
 
+[node name="PressTimer" type="Timer" parent="."]
+autostart = true
+
 [connection signal="mouse_entered" from="M/Main/List/Start" to="." method="_on_start_mouse_entered"]
 [connection signal="mouse_exited" from="M/Main/List/Start" to="." method="_on_start_mouse_exited"]
 [connection signal="pressed" from="M/Main/List/Start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="M/Main/List/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="M/Main/List/Credits" to="." method="_on_credits_pressed"]
 [connection signal="pressed" from="M/Main/List/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="M/Credits/CreditsBack" to="." method="_on_credits_back_pressed"]
 [connection signal="back" from="M/Settings" to="." method="_on_settings_back"]
+[connection signal="timeout" from="PressTimer" to="." method="_on_press_timer_timeout"]

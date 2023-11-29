@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://b77lvbvumc7uj"]
+[gd_scene load_steps=14 format=3 uid="uid://b77lvbvumc7uj"]
 
 [ext_resource type="Theme" uid="uid://t6wu146mxlyh" path="res://misc/theme.tres" id="1_2cuvk"]
 [ext_resource type="Script" path="res://scripts/settings_menu.gd" id="1_8aifg"]
@@ -29,6 +29,45 @@ expand_margin_right = 1.0
 expand_margin_bottom = 1.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_47nqf"]
+bg_color = Color(0.0313726, 0.0392157, 0.0509804, 0.615686)
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1p2ni"]
+content_margin_left = 1.0
+content_margin_top = 1.0
+content_margin_right = 1.0
+content_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tlq34"]
+content_margin_left = 1.0
+content_margin_top = 1.0
+content_margin_right = 1.0
+content_margin_bottom = 1.0
+bg_color = Color(0.0313726, 0.0392157, 0.0509804, 0.615686)
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_umkxk"]
+content_margin_left = 1.0
+content_margin_top = 1.0
+content_margin_right = 1.0
+content_margin_bottom = 1.0
+bg_color = Color(0.0313726, 0.0392157, 0.0509804, 0.615686)
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gbrv1"]
+content_margin_left = 1.0
+content_margin_top = 1.0
+content_margin_right = 1.0
+content_margin_bottom = 1.0
 bg_color = Color(0.0313726, 0.0392157, 0.0509804, 0.615686)
 expand_margin_left = 1.0
 expand_margin_top = 1.0
@@ -132,6 +171,7 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_61ic0")
 theme_override_styles/hover = SubResource("StyleBoxFlat_v1j3m")
 theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_e03d1")
 theme_override_styles/focus = SubResource("StyleBoxFlat_47nqf")
+button_pressed = true
 text = "ABERRATION"
 
 [node name="Controls" type="Button" parent="M/List"]
@@ -155,7 +195,7 @@ visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/separation = 0
+theme_override_constants/separation = 1
 
 [node name="Scroll" type="ScrollContainer" parent="Controls"]
 custom_minimum_size = Vector2(0, 100)
@@ -173,10 +213,10 @@ theme_override_constants/separation = 0
 [node name="Reset" type="Button" parent="Controls"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_styles/normal = SubResource("StyleBoxEmpty_61ic0")
-theme_override_styles/hover = SubResource("StyleBoxFlat_c6v4o")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_c6v4o")
-theme_override_styles/focus = SubResource("StyleBoxFlat_c6v4o")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_1p2ni")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tlq34")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_umkxk")
+theme_override_styles/focus = SubResource("StyleBoxFlat_gbrv1")
 text = "RESET CONTROLS"
 alignment = 0
 icon_alignment = 2

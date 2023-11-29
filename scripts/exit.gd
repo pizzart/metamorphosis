@@ -2,6 +2,7 @@ class_name Exit
 extends Area2D
 
 signal moved
+signal arrived
 
 const WAIT_TIME = 0.8
 
@@ -82,6 +83,7 @@ func end_descent():
 	player.can_move = true
 	player.change_emotion(Player.Emotion.None)
 	player.sprite.play()
+	arrived.emit()
 
 func play_fin_sound():
 	$Finished.play()

@@ -1,11 +1,13 @@
 class_name Swing
 extends Projectile
 
+signal hit(object)
+var can_deflect: bool
 var timer = Timer.new()
 var sprite = AnimatedSprite2D.new()
 var collision_shape = CollisionShape2D.new()
 
-func _init(_damage: int, can_deflect: bool):
+func _init(_damage: int, _can_deflect: bool):
 	super._init()
 	var rect = RectangleShape2D.new()
 	rect.size = Vector2(80, 64)
@@ -29,21 +31,24 @@ func _init(_damage: int, can_deflect: bool):
 	
 	timer.timeout.connect(_on_timeout)
 	body_entered.connect(_on_body_entered)
-	if can_deflect:
-		area_entered.connect(_on_area_entered)
+	area_entered.connect(_on_area_entered)
 	
 	damage = _damage
+	can_deflect = _can_deflect
 
 func _on_body_entered(body):
+	hit.emit(body)
 	if body.is_in_group("foe"):
 		body.hit(damage, get_parent().direction * 30)
 		set_deferred("monitoring", false)
 		audio.play()
 
 func _on_area_entered(area):
-	if area is Bullet:
+	if area is Bullet and can_deflect:
 		area.set_by_player()
 		area.velocity = -area.velocity
+	if area is Box:
+		hit.emit(area)
 
 func _on_timeout():
 	queue_free()

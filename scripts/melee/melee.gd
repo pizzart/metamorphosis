@@ -42,10 +42,10 @@ func _on_timer_timeout():
 	super._on_timer_timeout()
 	player.speed_multiplier = 1
 
-func _on_projectile_hit(body):
-	if body.is_in_group("foe"):
+func _on_projectile_hit(object):
+	if object.is_in_group("foe"):
 		player.knockback(-direction * knockback / 4)
 		player.add_ammo(10)
 		player.cam.add_trauma(0.2)
-	if body.is_in_group("tree") or body is Box:
+	if object.is_in_group("tree") or object is Box:
 		player.add_ammo(5)

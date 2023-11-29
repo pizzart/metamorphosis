@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="game-off-2023"
+config/name="Metamorphosis"
 run/main_scene="res://scenes/menu.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
 config/icon="res://icon.svg"

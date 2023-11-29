@@ -4,8 +4,6 @@ extends Foe
 const SPEED = 50.0
 const PARTICLES = preload("res://scenes/particles/hit_enemy_particles.tscn")
 
-var moving: bool = true
-
 @onready var hit_audio = $HitSFX
 @onready var shoot_audio = $ShootSFX
 @onready var death_audio = $DeathSFX
@@ -17,13 +15,6 @@ func _init():
 
 func _ready():
 	sprite = $AnimatedSprite2D
-
-func _physics_process(delta):
-	if moving:
-		var direction = global_position.direction_to(player.global_position)
-		velocity = direction * SPEED
-
-	move_and_slide()
 
 func hit(damage: int, force: Vector2):
 	health -= damage
@@ -51,20 +42,20 @@ func die():
 	queue_free()
 
 func _on_timer_timeout():
-	var time = rng.randf_range(3, 5)
+	var time = rng.randf_range(2, 4)
 	attack_timer.start(time)
-	
-	moving = false
 	
 #	sprite.animation = "attack"
 	await get_tree().create_timer(0.5).timeout
 	
-	shoot_audio.play()
-	for i in range(10):
-		var bullet = Bullet.new(global_position.direction_to(player.global_position).rotated(rng.randf_range(-1, 1)) * 5, -0.02, false)
-		bullet.global_position = global_position
-		get_parent().add_child(bullet)
+	for j in range(2):
+		shoot_audio.play()
+		for i in range(15):
+			var bullet = Bullet.new(global_position.direction_to(player.global_position).rotated((float(i) / 14 - 0.5) * 3 + rng.randf_range(-0.2, 0.2)) * 6, -0.05, false)
+			bullet.global_position = global_position
+			get_parent().add_child(bullet)
+			await get_tree().create_timer(0.007).timeout
+		await get_tree().create_timer(0.3).timeout
 	
 	await get_tree().create_timer(0.1).timeout
-	moving = true
 #	sprite.animation = "idle"

@@ -44,6 +44,7 @@ func _ready():
 	else:
 		play_music("%s_intense" % Generator.AREA_NAMES[Global.current_area])
 		generator.generate_map_full(Generator.AREA_SIZES[Global.current_area])
+#		generator.generate_boss3()
 #		init_finale()
 
 func _process(delta):
@@ -96,9 +97,6 @@ func init_boss2():
 	get_tree().change_scene_to_file("res://scenes/3d/world_3d.tscn")
 
 func init_boss3():
-	var boss = BOSS3.instantiate()
-	boss.dead.connect(_on_boss3_dead)
-	add_child.call_deferred(boss)
 	fade_music_out(1)
 	play_music("boss3")
 	fade_music_in("boss3", 2)
@@ -172,3 +170,8 @@ func _on_boss3_dead():
 
 func _on_player_dead():
 	get_tree().change_scene_to_file("res://scenes/pre_ui.tscn")
+
+func _on_exit_arrived():
+	var boss = BOSS3.instantiate()
+	boss.dead.connect(_on_boss3_dead)
+	add_child.call_deferred(boss)

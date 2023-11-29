@@ -15,7 +15,7 @@ func attack():
 	
 	var proj = HammerSwing.new(can_deflect)
 	proj.global_rotation = sprite.global_rotation
-	proj.body_entered.connect(_on_projectile_hit)
+	proj.hit.connect(_on_projectile_hit)
 	add_child(proj)
 	player.knockback(direction * knockback)
 	
