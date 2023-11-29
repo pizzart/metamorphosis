@@ -16,11 +16,11 @@ func _on_attack_timer_timeout():
 	offload_audio(time - 0.58)
 	
 	set_movement_target(player.global_position)
-	sprite.animation = "attack"
+	sprite.play("attack")
 	attack_audio.play()
 	shoot()
 	await get_tree().create_timer(0.5).timeout
-	sprite.animation = "idle"
+	sprite.play("idle")
 
 func offload_audio(time: float):
 	await get_tree().create_timer(time).timeout

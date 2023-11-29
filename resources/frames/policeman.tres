@@ -1,32 +1,58 @@
-[gd_resource type="SpriteFrames" load_steps=5 format=3 uid="uid://b5i48lrn5tpcs"]
+[gd_resource type="SpriteFrames" load_steps=10 format=3 uid="uid://b5i48lrn5tpcs"]
 
 [ext_resource type="Texture2D" uid="uid://bhfcjkasqwux3" path="res://sprites/enemies/policeman.png" id="1_6y5pl"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_rntnt"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_gnpkn"]
 atlas = ExtResource("1_6y5pl")
 region = Rect2(0, 32, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_5fc72"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_4jsk5"]
+atlas = ExtResource("1_6y5pl")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dyolt"]
+atlas = ExtResource("1_6y5pl")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pro3f"]
+atlas = ExtResource("1_6y5pl")
+region = Rect2(0, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8io6f"]
+atlas = ExtResource("1_6y5pl")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j7ujo"]
+atlas = ExtResource("1_6y5pl")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ksu06"]
 atlas = ExtResource("1_6y5pl")
 region = Rect2(0, 64, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_yjsr2"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ittkr"]
 atlas = ExtResource("1_6y5pl")
-region = Rect2(0, 0, 32, 32)
+region = Rect2(32, 64, 32, 32)
 
 [resource]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_rntnt")
+"texture": SubResource("AtlasTexture_gnpkn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4jsk5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dyolt")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack",
-"speed": 10.0
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_5fc72")
+"texture": SubResource("AtlasTexture_pro3f")
 }],
 "loop": false,
 "name": &"dead",
@@ -34,9 +60,23 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_yjsr2")
+"texture": SubResource("AtlasTexture_8io6f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j7ujo")
 }],
 "loop": true,
 "name": &"idle",
 "speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ksu06")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ittkr")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
 }]
