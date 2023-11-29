@@ -33,6 +33,8 @@ func start_descent():
 	player.can_move = false
 	player.global_position = global_position
 	player.sprite.animation = "front"
+	player.z_index = -5
+	z_index = -5
 	player.sprite.pause()
 	player.change_emotion(Player.Emotion.Waiting)
 	$Start.play()
@@ -44,6 +46,8 @@ func start_descent():
 	tween.tween_property(self, "global_position", global_position + Vector2(0, 200), 1.0)
 	tween.tween_property(player, "global_position", global_position + Vector2(0, 200), 1.0)
 	await tween.finished
+	player.z_index = 0
+	z_index = -1
 	player.can_move = true
 	player.change_emotion(Player.Emotion.None)
 	player.sprite.play()

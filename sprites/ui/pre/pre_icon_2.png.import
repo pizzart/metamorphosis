@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://brgyum6y2aaeb"
-path="res://.godot/imported/niko_hat_big.png-af3ec9152967b2e4cdb64f2285c667f2.ctex"
+uid="uid://cyu5jox0lw1hk"
+path="res://.godot/imported/pre_icon_2.png-ce30497e96d2d79ad0b60e12c47ba9f9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/shop/niko_hat_big.png"
-dest_files=["res://.godot/imported/niko_hat_big.png-af3ec9152967b2e4cdb64f2285c667f2.ctex"]
+source_file="res://sprites/ui/pre/pre_icon_2.png"
+dest_files=["res://.godot/imported/pre_icon_2.png-ce30497e96d2d79ad0b60e12c47ba9f9.ctex"]
 
 [params]
 

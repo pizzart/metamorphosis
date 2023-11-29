@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://8i1qiuxfmlcp"
-path="res://.godot/imported/wings_big.png-5418afd1f57c1204151ec770a0006bec.ctex"
+uid="uid://ca5ovxnsxfwkj"
+path="res://.godot/imported/pre_icon_1.png-a4981dd6e2e66f392e93c28da95e33ed.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/shop/wings_big.png"
-dest_files=["res://.godot/imported/wings_big.png-5418afd1f57c1204151ec770a0006bec.ctex"]
+source_file="res://sprites/ui/pre/pre_icon_1.png"
+dest_files=["res://.godot/imported/pre_icon_1.png-a4981dd6e2e66f392e93c28da95e33ed.ctex"]
 
 [params]
 

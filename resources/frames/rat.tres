@@ -1,0 +1,42 @@
+[gd_resource type="SpriteFrames" load_steps=5 format=3 uid="uid://dpuukmkmwpbn"]
+
+[ext_resource type="Texture2D" uid="uid://cdjw3b4vdp7sa" path="res://sprites/enemies/rat.png" id="1_k4osv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h0tjk"]
+atlas = ExtResource("1_k4osv")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_je45r"]
+atlas = ExtResource("1_k4osv")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ccv7h"]
+atlas = ExtResource("1_k4osv")
+region = Rect2(0, 0, 32, 32)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h0tjk")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_je45r")
+}],
+"loop": false,
+"name": &"dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ccv7h")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}]

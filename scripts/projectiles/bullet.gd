@@ -8,6 +8,7 @@ enum BulletType {
 var type: BulletType
 var velocity: Vector2
 var acceleration: float
+var piercing: bool = false
 
 var sprite = Sprite2D.new()
 
@@ -61,7 +62,7 @@ func _on_body_entered(body):
 	if type == BulletType.ENEMY and body.is_in_group("player"):
 		body.hit(damage, global_position.direction_to(body.global_position))
 	await get_tree().physics_frame
-	if has_overlapping_bodies():
+	if has_overlapping_bodies() and not piercing:
 		set_deferred("monitoring", false)
 		audio.play()
 		hide()

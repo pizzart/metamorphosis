@@ -42,7 +42,7 @@ var step_timer: float
 
 var rng = RandomNumberGenerator.new()
 
-@onready var gun: Gun = Minigun.new()
+@onready var gun: Gun = Charger.new()
 @onready var melee: Melee = Sledgehammer.new()
 @onready var cam: Camera2D = $Camera
 @onready var shadow = $Shadow
@@ -80,31 +80,38 @@ func _ready():
 	add_upgrade(TeleportUpgrade.new())
 
 func _physics_process(_delta):
-	if not can_move:
-		return
+	var direction: Vector2
+	if can_move:
+		direction = Input.get_vector("left", "right", "up", "down")
 	
-	var direction = Input.get_vector("left", "right", "up", "down")
 	velocity = lerp(velocity, direction * speed * speed_multiplier + offset_velocity, 0.3)
-	offset_velocity = lerp(offset_velocity, Vector2.ZERO, 0.3)
+	offset_velocity = lerp(offset_velocity, Vector2.ZERO, 0.2)
 	
 	move_and_slide()
 	
 	$Light.texture_scale = rng.randf_range(0.95, 1.04)
 	
+	if not can_move:
+		return
+	
 	sprite.speed_scale = velocity.length() / speed
-	if direction.x < 0:
+	var dir = direction
+	if not direction:
+		dir = global_position.direction_to(get_global_mouse_position())
+	
+	if dir.x < 0:
 		sprite.flip_h = true
-	if direction.x > 0:
+	if dir.x > 0:
 		sprite.flip_h = false
-	if abs(direction.x) > 0 and abs(direction.y) < 0.25:
+	if abs(dir.x) > 0 and abs(dir.y) < 0.25:
 		sprite.animation = "side"
-	if direction.y > 0 and abs(direction.x) >= 0.25:
+	if dir.y > 0 and abs(dir.x) >= 0.25:
 		sprite.animation = "diagonal_front"
-	if direction.y > 0 and abs(direction.x) < 0.25:
+	if dir.y > 0 and abs(dir.x) < 0.25:
 		sprite.animation = "front"
-	if direction.y < 0 and abs(direction.x) < 0.25:
+	if dir.y < 0 and abs(dir.x) < 0.25:
 		sprite.animation = "back"
-	if direction.y < 0 and abs(direction.x) >= 0.25:
+	if dir.y < 0 and abs(dir.x) >= 0.25:
 		sprite.animation = "diagonal_back"
 	
 #	shadow.global_position = global_position + Vector2(0, 4)
@@ -132,13 +139,13 @@ func _process(delta):
 	emotion_spr.visible = sprite.animation == "front"
 
 func _input(event):
-	if event.is_action_pressed("change_gun"):
+	if event.is_action_pressed("change_gun") and can_move:
 		if gun != null and melee != null:
 			gun.is_equipped = not gun.is_equipped
 			melee.is_equipped = not melee.is_equipped
 			change_sfx.play()
 	if event.is_action_pressed("heal"):
-		if health_packs > 0:
+		if health_packs > 0 and can_move:
 			heal(5)
 			health_packs -= 1
 			UI.set_health_packs(health_packs)
@@ -150,6 +157,8 @@ func knockback(value: Vector2):
 func hit(damage: int, force: Vector2):
 	if invincible:
 		return
+	
+	knockback(force * 10)
 	
 	var health_prev = health
 	

@@ -1,13 +1,33 @@
-[gd_scene load_steps=9 format=3 uid="uid://bkg0l5mggd3vq"]
+[gd_scene load_steps=14 format=3 uid="uid://bkg0l5mggd3vq"]
 
 [ext_resource type="Theme" uid="uid://t6wu146mxlyh" path="res://misc/theme.tres" id="1_77kc0"]
 [ext_resource type="Script" path="res://scripts/pre_ui.gd" id="1_llkcr"]
 [ext_resource type="FontFile" uid="uid://bolgg3n6g0m3n" path="res://misc/fontreadable.png" id="3_2mwmq"]
 [ext_resource type="Texture2D" uid="uid://cn6wejt4mke5y" path="res://sprites/ui/setup.png" id="3_yices"]
-[ext_resource type="Texture2D" uid="uid://ckhldamttabg8" path="res://sprites/ui/char_big.png" id="4_ehpnk"]
+[ext_resource type="Texture2D" uid="uid://no51si03voi7" path="res://sprites/ui/pre/pre_icon_0.png" id="4_1mbde"]
 [ext_resource type="Texture2D" uid="uid://ny64rqs17do3" path="res://sprites/hats/niko_hat.png" id="4_jrjye"]
-[ext_resource type="Texture2D" uid="uid://slxf0mpfgyl6" path="res://sprites/shop/cross.png" id="5_2j1bm"]
+[ext_resource type="Texture2D" uid="uid://ca5ovxnsxfwkj" path="res://sprites/ui/pre/pre_icon_1.png" id="5_nf6mm"]
+[ext_resource type="Texture2D" uid="uid://bae6e33krnaeq" path="res://sprites/shop/icons/shop_icon_0.png" id="6_67ufb"]
+[ext_resource type="Texture2D" uid="uid://cyu5jox0lw1hk" path="res://sprites/ui/pre/pre_icon_2.png" id="6_msd5q"]
 [ext_resource type="PackedScene" uid="uid://iwx7sruoi7vk" path="res://scenes/shop.tscn" id="6_ujy8l"]
+[ext_resource type="Shader" path="res://misc/bloom.gdshader" id="8_uedsd"]
+[ext_resource type="AudioStream" uid="uid://crv0ic1kxw0nt" path="res://audio/sfx/click.wav" id="12_vvx7q"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kdw2n"]
+shader = ExtResource("8_uedsd")
+shader_parameter/scanlines_shown = true
+shader_parameter/curvature_shown = false
+shader_parameter/warp_shown = false
+shader_parameter/static_intensity = 0.0
+shader_parameter/time_scale = 1.0
+shader_parameter/warp_amount = 0.05
+shader_parameter/scanlines_opacity = 0.03
+shader_parameter/scanlines_amount = 70.0
+shader_parameter/scanlines_speed = -0.004
+shader_parameter/scanlines_width = 0.1
+shader_parameter/bloom_threshold = 0.2
+shader_parameter/bloom_strength = 1.0
+shader_parameter/bloom_size = 4.0
 
 [node name="PreUI" type="Control"]
 layout_mode = 3
@@ -19,118 +39,38 @@ grow_vertical = 2
 theme = ExtResource("1_77kc0")
 script = ExtResource("1_llkcr")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("3_yices")
 
-[node name="Character" type="TextureRect" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.084375
-anchor_top = 0.225
-anchor_right = 0.484375
-anchor_bottom = 0.758333
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("4_ehpnk")
-stretch_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="M" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="Go" type="Button" parent="M"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
 layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 8
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Setup" type="Button" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
 theme_override_fonts/font = ExtResource("3_2mwmq")
-text = "go"
+icon = ExtResource("4_1mbde")
 metadata/_edit_use_anchors_ = true
 
-[node name="Shop" type="Button" parent="M"]
+[node name="Shop" type="Button" parent="CenterContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
 theme_override_fonts/font = ExtResource("3_2mwmq")
-text = "shop"
+icon = ExtResource("5_nf6mm")
 metadata/_edit_use_anchors_ = true
 
-[node name="Hats" type="HBoxContainer" parent="."]
+[node name="Go" type="Button" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
-anchor_left = 0.415625
-anchor_top = 0.120833
-anchor_right = 0.809375
-anchor_bottom = 0.245833
-size_flags_vertical = 3
-metadata/_edit_use_anchors_ = true
-
-[node name="Button" type="Button" parent="Hats"]
-layout_mode = 2
-size_flags_vertical = 0
 theme_override_fonts/font = ExtResource("3_2mwmq")
-toggle_mode = true
-icon = ExtResource("5_2j1bm")
-metadata/_edit_use_anchors_ = true
-
-[node name="List" type="ItemList" parent="Hats"]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("3_2mwmq")
-auto_height = true
-max_columns = 4
-metadata/_edit_use_anchors_ = true
-
-[node name="Items" type="HBoxContainer" parent="."]
-layout_mode = 2
-anchor_left = 0.490625
-anchor_top = 0.495833
-anchor_right = 1.02813
-anchor_bottom = 0.624999
-size_flags_vertical = 3
-metadata/_edit_use_anchors_ = true
-
-[node name="Button" type="Button" parent="Items"]
-layout_mode = 2
-size_flags_vertical = 0
-theme_override_fonts/font = ExtResource("3_2mwmq")
-toggle_mode = true
-icon = ExtResource("5_2j1bm")
-metadata/_edit_use_anchors_ = true
-
-[node name="List" type="ItemList" parent="Items"]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("3_2mwmq")
-auto_height = true
-max_columns = 4
-metadata/_edit_use_anchors_ = true
-
-[node name="HatTexture" type="TextureRect" parent="."]
-visible = false
-layout_mode = 2
-anchor_left = 0.190625
-anchor_top = 0.225
-anchor_right = 0.290625
-anchor_bottom = 0.358333
-texture = ExtResource("4_jrjye")
-stretch_mode = 2
+icon = ExtResource("6_msd5q")
+icon_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="ShopWindow" type="Window" parent="."]
@@ -146,10 +86,131 @@ content_scale_aspect = 1
 
 [node name="Shop" parent="ShopWindow" instance=ExtResource("6_ujy8l")]
 
-[connection signal="pressed" from="M/Go" to="." method="_on_go_pressed"]
-[connection signal="pressed" from="M/Shop" to="." method="_on_shop_pressed"]
-[connection signal="toggled" from="Hats/Button" to="." method="_on_hat_toggled"]
-[connection signal="item_selected" from="Hats/List" to="." method="_on_hat_list_item_selected"]
-[connection signal="toggled" from="Items/Button" to="." method="_on_item_toggled"]
-[connection signal="item_selected" from="Items/List" to="." method="_on_item_list_item_selected"]
+[node name="SetupWindow" type="Window" parent="."]
+canvas_item_default_texture_filter = 0
+initial_position = 2
+size = Vector2i(588, 588)
+visible = false
+unresizable = true
+always_on_top = true
+content_scale_size = Vector2i(196, 196)
+content_scale_mode = 2
+content_scale_aspect = 1
+
+[node name="Setup" type="Control" parent="SetupWindow"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="SetupWindow/Setup"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_yices")
+stretch_mode = 2
+
+[node name="HatTexture" type="TextureRect" parent="SetupWindow/Setup"]
+visible = false
+layout_mode = 2
+anchor_left = 0.190625
+anchor_top = 0.225
+anchor_right = 0.290625
+anchor_bottom = 0.358333
+offset_left = 13.6375
+offset_top = -7.1
+offset_right = 26.0375
+offset_bottom = -1.23327
+texture = ExtResource("4_jrjye")
+stretch_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Hats" type="HBoxContainer" parent="SetupWindow/Setup"]
+layout_mode = 2
+anchor_left = 0.415625
+anchor_top = 0.120833
+anchor_right = 0.809375
+anchor_bottom = 0.245833
+offset_left = 41.5375
+offset_top = -11.6833
+offset_right = 41.5374
+offset_bottom = -6.18325
+size_flags_vertical = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="Button" type="Button" parent="SetupWindow/Setup/Hats"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("3_2mwmq")
+toggle_mode = true
+icon = ExtResource("6_67ufb")
+metadata/_edit_use_anchors_ = true
+
+[node name="List" type="ItemList" parent="SetupWindow/Setup/Hats"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_2mwmq")
+auto_height = true
+max_columns = 4
+metadata/_edit_use_anchors_ = true
+
+[node name="Items" type="HBoxContainer" parent="SetupWindow/Setup"]
+layout_mode = 2
+anchor_left = 0.490625
+anchor_top = 0.495833
+anchor_right = 1.02813
+anchor_bottom = 0.624999
+offset_left = 50.8375
+offset_top = 6.81673
+offset_right = 50.8374
+offset_bottom = 11.5002
+size_flags_vertical = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="Button" type="Button" parent="SetupWindow/Setup/Items"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("3_2mwmq")
+toggle_mode = true
+icon = ExtResource("6_67ufb")
+metadata/_edit_use_anchors_ = true
+
+[node name="List" type="ItemList" parent="SetupWindow/Setup/Items"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_2mwmq")
+auto_height = true
+max_columns = 4
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="SetupWindow/Setup"]
+material = SubResource("ShaderMaterial_kdw2n")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ClickSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_vvx7q")
+volume_db = -5.0
+bus = &"sfx"
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/HBoxContainer/Setup" to="." method="_on_setup_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/HBoxContainer/Shop" to="." method="_on_shop_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Go" to="." method="_on_go_pressed"]
 [connection signal="close_requested" from="ShopWindow" to="." method="_on_shop_window_close_requested"]
+[connection signal="close_requested" from="SetupWindow" to="." method="_on_setup_window_close_requested"]
+[connection signal="toggled" from="SetupWindow/Setup/Hats/Button" to="." method="_on_hat_toggled"]
+[connection signal="item_selected" from="SetupWindow/Setup/Hats/List" to="." method="_on_hat_list_item_selected"]
+[connection signal="toggled" from="SetupWindow/Setup/Items/Button" to="." method="_on_item_toggled"]
+[connection signal="item_selected" from="SetupWindow/Setup/Items/List" to="." method="_on_item_list_item_selected"]

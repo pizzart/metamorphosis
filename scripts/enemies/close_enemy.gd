@@ -4,12 +4,12 @@ extends Enemy
 const MAX_DISTANCE = 400
 
 var area: Area2D
+var area_shape = CollisionShape2D.new()
 
 func _init(_health: int, _shuffle_min: float, _shuffle_max: float, _walk_speed: float, _attack_speed: float):
 	super._init(_health, _shuffle_min, _shuffle_max, _walk_speed, _attack_speed, MAX_DISTANCE)
 	
 	area = Area2D.new()
-	var area_shape = CollisionShape2D.new()
 	area_shape.shape = RectangleShape2D.new()
 	area_shape.shape.size = collision_shape.shape.size * 1.5
 	area.monitoring = false

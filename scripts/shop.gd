@@ -65,6 +65,7 @@ func _on_item_list_item_selected(index):
 	selected = idx
 	
 	$M/V/Buy.disabled = Global.coins < selected_dict[selected][0] or not can_buy
+	$M/Panel/Texture.texture = selected_dict[selected][3]
 	
 	$M/V/Disks.show()
 	$M/V/Disks/Disk.hide()

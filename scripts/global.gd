@@ -20,15 +20,15 @@ enum Modifier {
 }
 
 const HATS = {
-	Hat.None: [0, null, preload("res://sprites/shop/cross.png")],
-	Hat.Top: [1, preload("res://sprites/hats/top_hat.png"), preload("res://sprites/shop/top_hat_shop.png")],
-	Hat.Niko: [2, preload("res://sprites/hats/niko_hat.png"), preload("res://sprites/shop/niko_hat_shop.png")],
+	Hat.None: [0, null, preload("res://sprites/shop/icons/shop_icon_0.png"), null],
+	Hat.Top: [1, preload("res://sprites/hats/top_hat.png"), preload("res://sprites/shop/icons/shop_icon_2.png"), preload("res://sprites/shop/previews/shop_preview_1.png")],
+	Hat.Niko: [2, preload("res://sprites/hats/niko_hat.png"), preload("res://sprites/shop/icons/shop_icon_1.png"), preload("res://sprites/shop/previews/shop_preview_0.png")],
 }
 
 var ITEMS = {
-	Item.None: [0, preload("res://sprites/shop/cross.png"), null],
-	Item.Wings: [2, preload("res://sprites/shop/wings_shop.png"), WingsUpgrade],
-	Item.Watch: [3, preload("res://sprites/shop/wings_shop.png"), WatchUpgrade],
+	Item.None: [0, preload("res://sprites/shop/icons/shop_icon_0.png"), null, null],
+	Item.Wings: [2, preload("res://sprites/shop/icons/shop_icon_3.png"), WingsUpgrade, preload("res://sprites/shop/previews/shop_preview_2.png")],
+	Item.Watch: [3, preload("res://sprites/shop/icons/shop_icon_4.png"), WatchUpgrade, preload("res://sprites/shop/previews/shop_preview_3.png")],
 }
 
 var MODIFIERS = {
@@ -48,6 +48,7 @@ const DIALOGUES = {
 		preload("res://resources/dialogue_lines/area_2/1.tres"),
 		preload("res://resources/dialogue_lines/area_2/2.tres"),
 		preload("res://resources/dialogue_lines/area_2/3.tres"),
+		preload("res://resources/dialogue_lines/area_2/4.tres"),
 	],
 	2: []
 }
@@ -64,15 +65,16 @@ const IMAGE: PackedByteArray = [
 ]
 
 const VIGNETTE_OPACITY = 0.035
+const WINDOW_SIZE = Vector2i(320, 240)
 
-var current_area: Generator.Area = Generator.Area.Sky
+var current_area: Generator.Area = Generator.Area.City
 var after_boss: bool = false
 
 var coins: int = 0
 var equipped_hat: int = Hat.None
 var equipped_item: int = Item.None
-var unlocked_items: Array[Item] = []
-var unlocked_hats: Array[Hat] = []
+var unlocked_items: Array[Item] = [Item.Wings, Item.Watch]
+var unlocked_hats: Array[Hat] = [Hat.Top, Hat.Niko]
 var purchasable_items: Array[Item] = []
 var purchasable_hats: Array[Hat] = []
 var timer: float
@@ -93,10 +95,12 @@ var weapon_pool = {
 		Shotgun,
 		Minigun,
 		Sniper,
+		Charger,
 	],
 	"melee": [
 		Sledgehammer,
 		Sword,
+		Dagger,
 	]
 }
 var enemy_pool = {
@@ -110,12 +114,14 @@ var enemy_pool = {
 		BigBird: 2,
 		FlyingBird: 3,
 		Policeman: 5,
+		Rat: 5,
 	},
 	2: {
 		Birdie: 3,
 		BigBird: 3,
 		FlyingBird: 3,
 		Policeman: 3,
+		Rat: 2,
 	},
 }
 

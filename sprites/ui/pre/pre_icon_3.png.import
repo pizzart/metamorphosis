@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dmxpjtty51nk5"
-path="res://.godot/imported/top_hat_shop.png-79be1634e7fd1b4098292ca4137213f0.ctex"
+uid="uid://ck4jnp4tlk45"
+path="res://.godot/imported/pre_icon_3.png-1cc43a1ba6bdaec2a143b1295b8de3f1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/shop/top_hat_shop.png"
-dest_files=["res://.godot/imported/top_hat_shop.png-79be1634e7fd1b4098292ca4137213f0.ctex"]
+source_file="res://sprites/ui/pre/pre_icon_3.png"
+dest_files=["res://.godot/imported/pre_icon_3.png-1cc43a1ba6bdaec2a143b1295b8de3f1.ctex"]
 
 [params]
 

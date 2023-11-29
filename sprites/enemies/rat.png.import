@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dwclx6wxp8jm"
-path="res://.godot/imported/wings_shop.png-16fd3c8a44cb06c89ff09e13580cbfe7.ctex"
+uid="uid://cdjw3b4vdp7sa"
+path="res://.godot/imported/rat.png-2c93084c4bc8a89127fe763048e9d3f4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/shop/wings_shop.png"
-dest_files=["res://.godot/imported/wings_shop.png-16fd3c8a44cb06c89ff09e13580cbfe7.ctex"]
+source_file="res://sprites/enemies/rat.png"
+dest_files=["res://.godot/imported/rat.png-2c93084c4bc8a89127fe763048e9d3f4.ctex"]
 
 [params]
 

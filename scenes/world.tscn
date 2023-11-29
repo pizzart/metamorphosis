@@ -238,7 +238,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Front" type="ParallaxBackground" parent="."]
-layer = 3
+layer = 1
 
 [node name="ParallaxLayer8" type="ParallaxLayer" parent="Front"]
 motion_scale = Vector2(1.1, 1.1)

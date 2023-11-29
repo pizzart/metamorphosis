@@ -25,4 +25,4 @@ speaker = 1
 
 [resource]
 script = ExtResource("2_syvnl")
-lines = Array[ExtResource("1_bf2uk")]([SubResource("Resource_ft06s"), SubResource("Resource_pqwqk"), SubResource("Resource_dsl26"), SubResource("Resource_dsaf7"), null])
+lines = Array[ExtResource("1_bf2uk")]([SubResource("Resource_ft06s"), SubResource("Resource_pqwqk"), SubResource("Resource_dsl26"), SubResource("Resource_dsaf7")])
