@@ -97,24 +97,23 @@ func _physics_process(_delta):
 		return
 	
 	sprite.speed_scale = velocity.length() / speed
-	var dir = direction
-	if not direction:
-		dir = global_position.direction_to(get_global_mouse_position())
 	
-	if dir.x < 0:
-		sprite.flip_h = true
-	if dir.x > 0:
-		sprite.flip_h = false
-	if abs(dir.x) > 0 and abs(dir.y) < 0.25:
+	var i = int(8.0 * (velocity.rotated(PI / 8.0).angle() + PI) / TAU)
+	if i == 0 or i == 4:
 		sprite.animation = "side"
-	if dir.y > 0 and abs(dir.x) >= 0.25:
-		sprite.animation = "diagonal_front"
-	if dir.y > 0 and abs(dir.x) < 0.25:
-		sprite.animation = "front"
-	if dir.y < 0 and abs(dir.x) < 0.25:
-		sprite.animation = "back"
-	if dir.y < 0 and abs(dir.x) >= 0.25:
+	if i == 1 or i == 3:
 		sprite.animation = "diagonal_back"
+	if i == 2:
+		sprite.animation = "back"
+	if i == 6:
+		sprite.animation = "front"
+	if i == 5 or i == 7:
+		sprite.animation = "diagonal_front"
+	
+	if velocity.normalized().x < 0:
+		sprite.flip_h = true
+	elif velocity.normalized().x > 0:
+		sprite.flip_h = false
 	
 #	shadow.global_position = global_position + Vector2(0, 4)
 	

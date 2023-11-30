@@ -67,6 +67,12 @@ func _on_item_list_item_selected(index):
 	$M/V/Buy.disabled = Global.coins < selected_dict[selected][0] or not can_buy
 	$M/Panel/Texture.texture = selected_dict[selected][3]
 	
+	$M/Panel/Lock.visible = not can_buy
+	if can_buy:
+		$M/Panel/Texture.modulate = Color.WHITE
+	else:
+		$M/Panel/Texture.modulate = Color(1, 0.5, 0.5)
+	
 	$M/V/Disks.show()
 	$M/V/Disks/Disk.hide()
 	for i in $M/V/Disks.get_child_count():

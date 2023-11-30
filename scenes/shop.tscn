@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://iwx7sruoi7vk"]
+[gd_scene load_steps=12 format=3 uid="uid://iwx7sruoi7vk"]
 
 [ext_resource type="Theme" uid="uid://t6wu146mxlyh" path="res://misc/theme.tres" id="1_470nb"]
 [ext_resource type="Script" path="res://scripts/shop.gd" id="1_ine4k"]
 [ext_resource type="Texture2D" uid="uid://30c5pave1ak4" path="res://sprites/ui/rects/frame.png" id="3_f8t7f"]
 [ext_resource type="Texture2D" uid="uid://otjho05rs8w3" path="res://sprites/disk.png" id="3_v26hx"]
+[ext_resource type="Texture2D" uid="uid://364repsb4dw3" path="res://sprites/shop/lock.png" id="4_5e22m"]
 [ext_resource type="Texture2D" uid="uid://ck4jnp4tlk45" path="res://sprites/ui/pre/pre_icon_3.png" id="5_07u3p"]
 [ext_resource type="Shader" path="res://misc/bloom.gdshader" id="6_wrmtl"]
 [ext_resource type="AudioStream" uid="uid://crv0ic1kxw0nt" path="res://audio/sfx/click.wav" id="7_o3w42"]
@@ -70,6 +71,14 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_0en1i")
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
+stretch_mode = 3
+
+[node name="Lock" type="TextureRect" parent="M/Panel"]
+custom_minimum_size = Vector2(17, 17)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+texture = ExtResource("4_5e22m")
 stretch_mode = 3
 
 [node name="H" type="GridContainer" parent="M"]
