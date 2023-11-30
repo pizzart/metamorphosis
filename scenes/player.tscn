@@ -80,7 +80,6 @@ position = Vector2(0, 4)
 texture = ExtResource("4_8nt6r")
 
 [node name="Camera" type="Camera2D" parent="."]
-process_callback = 0
 position_smoothing_enabled = true
 position_smoothing_speed = 20.0
 drag_horizontal_enabled = true

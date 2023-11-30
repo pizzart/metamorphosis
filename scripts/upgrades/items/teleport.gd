@@ -32,7 +32,8 @@ func _input(event):
 		
 		timer.start()
 		var tilemap = player.get_parent().tilemap
-		if tilemap.get_cell_source_id(0, tilemap.local_to_map(player.global_position)) <= 0:
+		var id = tilemap.get_cell_source_id(0, tilemap.local_to_map(player.global_position))
+		if id <= 0 or id == 2:
 			player.can_move = false
 			var old_z = player.z_index
 			player.z_index = -10

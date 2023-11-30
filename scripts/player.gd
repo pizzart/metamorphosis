@@ -27,6 +27,7 @@ enum Emotion {
 var speed = INIT_SPEED
 var speed_multiplier: float = 1
 var offset_velocity: Vector2
+var override_velocity: Vector2
 var can_move: bool = true
 var invincible: bool = false
 var max_health: int = INIT_HEALTH
@@ -78,14 +79,17 @@ func _ready():
 	
 	UI.set_health_packs(health_packs)
 	
-	add_upgrade(TeleportUpgrade.new())
+	add_upgrade(DashUpgrade.new())
 
 func _physics_process(_delta):
 	var direction: Vector2
 	if can_move:
 		direction = Input.get_vector("left", "right", "up", "down")
 	
-	velocity = lerp(velocity, direction * speed * speed_multiplier + offset_velocity, 0.3)
+	if override_velocity:
+		velocity = override_velocity
+	else:
+		velocity = lerp(velocity, direction * speed * speed_multiplier + offset_velocity, 0.3)
 	offset_velocity = lerp(offset_velocity, Vector2.ZERO, 0.2)
 	
 	move_and_slide()
