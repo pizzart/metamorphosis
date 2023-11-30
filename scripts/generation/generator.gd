@@ -35,9 +35,9 @@ const AREA_SIZES = {
 	Area.Abyss: 15,
 }
 
-const ISLAND_SPREAD = 15
+const ISLAND_SPREAD = 18
 const INTERMISSION_SIZE = 5
-const TOWN_SIZE = 15
+const TOWN_SIZE = 14
 const MAP_COUNT = 2
 const MIN_TELEPORTER_DISTANCE = 50
 const TERRAIN_ID = 1
@@ -61,6 +61,9 @@ var current_map: int = 2
 var enemies_left: int
 var last_player_spawn: Vector2
 
+#var mutex: Mutex
+#var thread: Thread
+
 var player: Player
 var tilemap: TileMap
 @onready var world: World = get_parent()
@@ -72,75 +75,80 @@ func _init(_player, _tilemap):
 func _ready():
 	if not OS.has_feature("editor"):
 		current_map = 0
+#	mutex = Mutex.new()
+#	thread = Thread.new()
+
+	# stupid fix for betterterrain
+	for t in tilemap.tile_set.get_source(TERRAIN_ID).get_tiles_count():
+		tilemap.set_cell(0, Vector2i.ZERO, 1, tilemap.tile_set.get_source(TERRAIN_ID).get_tile_id(t), 0)
+	tilemap.set_cell(0, Vector2i.ZERO, -1)
+	
 	update_surroundings()
 #	world.play_music("abyss_intense")
 
 func generate_map(size):
 	var added_count = rng.randi_range(0, current_map + 1)
 	var island_count = rng.randi_range(1 + Global.current_area + added_count, 4 + Global.current_area + added_count)
-	var positions = place_islands(island_count, size)
+	var islands = place_islands(island_count, size)
 	if island_count > 1:
-		var new_positions = positions # what the hell
-#		for i in range(positions.size()):
-#			var to_add = true
-#			for j in range(positions.size()):
-#				if positions[i].distance_to(positions[j]) < MIN_TELEPORTER_DISTANCE:
-#					to_add = false
-#					break
-#			if to_add:
-#			new_positions.append(positions[i])
-		if new_positions.size() > 1:
-			for i in range(new_positions.size()):
+		if islands[0].size() > 1:
+			for i in range(islands[0].size()):
 				var j = i + 1
-				if j >= new_positions.size():
+				if j >= islands[0].size():
 					j = 0
-				var teleporter = Teleporter.new(new_positions[i], new_positions[j])
+				var teleporter = Teleporter.new(islands[0][i], islands[0][j])
 				world.add_child.call_deferred(teleporter)
-	if Global.current_area == Area.City:
-		place_walls(0.98)
-	return island_count
+#	if Global.current_area == Area.City:
+#		place_walls(0.98)
+	return [island_count, islands[1]]
 
 func generate_map_full(size):
+	UI.show_gen_text()
+#	mutex.lock()
 	cleanup()
-	var island_count = generate_map(size)
-	var exit_pos = place_exit(GenerationType.Intermission, true)
+	var islands = generate_map(size)
+	var exit_pos = place_exit(islands[1], GenerationType.Intermission, true)
 	var enemy_count = 0
-	for i in range(island_count):
+	for i in range(islands[0]):
 		enemy_count += rng.randi_range(3 + Global.current_area, 6 + Global.loop * 2 + Global.current_area + rng.randi_range(0, current_map + Global.current_area))
 	enemies_left = enemy_count
 	place_enemies(enemy_count, exit_pos)
-	place_poles([exit_pos])
+	place_poles(islands[1], [exit_pos])
 #	place_player(exit_placement)
+#	mutex.unlock()
 	generated.emit()
 
 func generate_intermission():
+	UI.show_gen_text.call_deferred()
+#	mutex.lock()
 	cleanup()
-	place_islands(1, INTERMISSION_SIZE)
-	place_pickups()
+	var islands = place_islands(1, INTERMISSION_SIZE)
+	place_pickups(islands[1])
 	var gen_type = GenerationType.Action
 	if current_map == MAP_COUNT:
 		gen_type = GenerationType.Boss
-	place_exit(gen_type, false)
+	place_exit(islands[1], gen_type, false)
 #	place_player(exit_placement)
+#	mutex.unlock()
 	generated.emit()
 
 func generate_town():
 	cleanup()
-	place_islands(1, TOWN_SIZE)
-	var exit_pos = place_exit(GenerationType.Action, false)
+	var islands = place_islands(1, TOWN_SIZE)[1]
+	var exit_pos = place_exit(islands[1], GenerationType.Action, false)
 #	var player_pos = place_player(exit_pos)
 	var all_positions: Array[Vector2i] = [exit_pos]
-	var prop_positions = place_props()
+	var prop_positions = place_props(islands[1])
 	all_positions.append_array(prop_positions)
-	var vending_pos = place_vending(all_positions)
+	var vending_pos = place_vending(islands[1], all_positions)
 	all_positions.append(vending_pos)
-	place_npcs(all_positions)
+	place_npcs(islands[1], all_positions)
 	generated.emit()
 
 func generate_boss1():
 	cleanup()
 	tilemap.set_pattern(0, Vector2i.ZERO, tilemap.tile_set.get_pattern(0))
-	var exit_pos = place_exit(GenerationType.Town, true)
+	var exit_pos = place_exit(tilemap.get_used_cells_by_id(0, TERRAIN_ID), GenerationType.Town, true)
 #	place_player(exit_placement)
 	place_enemies(10, exit_pos)
 	generated.emit()
@@ -149,7 +157,7 @@ func generate_boss1():
 func generate_boss3():
 	cleanup()
 	tilemap.set_pattern(0, Vector2i.ZERO, tilemap.tile_set.get_pattern(1))
-	var _exit_placement = place_exit(GenerationType.Finale, true, true)
+	var _exit_placement = place_exit(tilemap.get_used_cells_by_id(0, TERRAIN_ID), GenerationType.Finale, true, true)
 #	place_player(exit_placement)
 	generated.emit()
 	world.init_boss3()
@@ -172,14 +180,17 @@ func place_islands(count: int, size: int):
 			island_start = Vector2i(rng.randi_range(-ISLAND_SPREAD, ISLAND_SPREAD), rng.randi_range(-ISLAND_SPREAD, ISLAND_SPREAD))
 		cells.append_array(place_tile(cells, size, island_start, 0.8))
 		init_positions.append(tilemap.map_to_local(island_start))
-	tilemap.set_cells_terrain_connect(0, cells, 0, 0)
+	
+	BetterTerrain.set_cells(tilemap, 0, cells, 0)
+	BetterTerrain.update_terrain_cells(tilemap, 0, cells)
+	
 	var borders = place_borders(cells)
 	for cell in borders.keys():
 		if borders[cell]:
 			tilemap.set_cell(0, cell, BOTTOM_ID, Vector2i.ZERO)
 		else:
 			tilemap.set_cell(0, cell, 0, Vector2i.ZERO)
-	return init_positions
+	return [init_positions, cells]
 
 func place_tile(cells: Array[Vector2i], count: int, placement: Vector2i, chance: float):
 	if placement in cells:
@@ -269,16 +280,18 @@ func place_walls(chance: float):
 					tile = BOTTOM_ID
 				tilemap.set_cell(0, cell + dir, tile, Vector2i.ZERO)
 
-func place_exit(next_gen_type: GenerationType, with_enemies: bool, is_boss: bool = false) -> Vector2i:
-	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
+func place_exit(cells: Array[Vector2i], next_gen_type: GenerationType, with_enemies: bool, is_boss: bool = false) -> Vector2i:
+#	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
+	if cells.is_empty():
+		return Vector2i.ZERO
 	var center = tilemap.get_used_rect().get_center()
 	var placement = cells[0]
 	for cell in cells:
 		if (cell - center).length_squared() > (placement - center).length_squared():
 			placement = cell
-	tilemap.erase_cell(0, placement)
-	if tilemap.get_cell_source_id(0, placement + Vector2i.DOWN) == BOTTOM_ID:
-		tilemap.set_cell(0, placement + Vector2i.DOWN, 0, Vector2i.ZERO)
+#	tilemap.erase_cell(0, placement)
+#	if tilemap.get_cell_source_id(0, placement + Vector2i.DOWN) == BOTTOM_ID:
+#		tilemap.set_cell(0, placement + Vector2i.DOWN, 0, Vector2i.ZERO)
 	var exit = EXIT.instantiate()
 	exit.enemies_gone = not with_enemies
 	exit.global_position = tilemap.map_to_local(placement)
@@ -289,11 +302,12 @@ func place_exit(next_gen_type: GenerationType, with_enemies: bool, is_boss: bool
 	world.add_child.call_deferred(exit)
 	return placement
 
-func place_pickups():
-	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
-	var placement = cells.pop_at(rng.randi() % cells.size())
-	while placement + Vector2i.LEFT in cells and placement + Vector2i.RIGHT in cells and not cells.is_empty():
-		placement = cells.pop_at(rng.randi() % cells.size())
+func place_pickups(cells: Array[Vector2i]):
+#	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
+	var clone = cells.duplicate()
+	var placement = clone.pop_at(rng.randi() % clone.size())
+	while placement + Vector2i.LEFT in clone and placement + Vector2i.RIGHT in clone and not clone.is_empty():
+		placement = clone.pop_at(rng.randi() % clone.size())
 	
 #	var gun_placement = tilemap.map_to_local(placement + Vector2i.LEFT)
 #	var melee_placement = tilemap.map_to_local(placement + Vector2i.RIGHT)
@@ -307,19 +321,20 @@ func place_pickups():
 	world.add_child.call_deferred(gun_pickup)
 	world.add_child.call_deferred(melee_pickup)
 
-func place_npcs(taken_positions: Array[Vector2i]):
+func place_npcs(cells: Array[Vector2i], taken_positions: Array[Vector2i]):
 	var dialogues: Array = Global.DIALOGUES.get(Global.current_area, []).duplicate()
 	
-	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
+#	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
+	var clone = cells.duplicate()
 	var positions = []
 	for i in range(3):
-		if not cells.is_empty():
-			var j = rng.randi() % cells.size()
+		if not clone.is_empty():
+			var j = rng.randi() % clone.size()
 			for pos in taken_positions:
-				while tilemap.get_cell_source_id(1, cells[j]) != -1 or (cells[j] - pos).length() < 3:
-					cells.remove_at(j)
-					j = rng.randi() % cells.size()
-			positions.append(cells.pop_at(j))
+				while tilemap.get_cell_source_id(1, clone[j]) != -1 or (clone[j] - pos).length() < 3:
+					clone.remove_at(j)
+					j = rng.randi() % clone.size()
+			positions.append(clone.pop_at(j))
 	for pos in positions:
 		if dialogues.is_empty():
 			continue
@@ -328,20 +343,21 @@ func place_npcs(taken_positions: Array[Vector2i]):
 		npc.lines = dialogues.pop_at(rng.randi() % dialogues.size())
 		world.add_child.call_deferred(npc)
 
-func place_vending(taken_positions: Array[Vector2i]):
-	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
-	var j = rng.randi() % cells.size()
+func place_vending(cells: Array[Vector2i], taken_positions: Array[Vector2i]):
+#	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
+	var clone = cells.duplicate()
+	var j = rng.randi() % clone.size()
 	for pos in taken_positions:
-		while abs(cells[j].x - pos.x) < 4:
-			cells.remove_at(j)
-			j = rng.randi() % cells.size()
+		while abs(clone[j].x - pos.x) < 4:
+			clone.remove_at(j)
+			j = rng.randi() % clone.size()
 	var vending = VENDING.instantiate()
-	vending.global_position = tilemap.map_to_local(cells[j])
+	vending.global_position = tilemap.map_to_local(clone[j])
 	world.add_child.call_deferred(vending)
-	return cells[j]
+	return clone[j]
 
-func place_props():
-	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
+func place_props(cells: Array[Vector2i]):
+#	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
 	var sum = Vector2i.ZERO
 	for cell in cells:
 		sum += cell
@@ -352,16 +368,17 @@ func place_props():
 	world.add_child.call_deferred(tree)
 	return [position]
 
-func place_poles(taken_positions: Array[Vector2i]):
-	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
+func place_poles(cells: Array[Vector2i], taken_positions: Array[Vector2i]):
+#	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
+	var clone = cells.duplicate()
 	var pole_positions: Array[Vector2i] = []
 	for i in range(3):
-		var j = rng.randi() % cells.size()
+		var j = rng.randi() % clone.size()
 		for pos in taken_positions:
-			while (cells[j] - pos).length_squared() < 16:
-				cells.remove_at(j)
-				j = rng.randi() % cells.size()
-			pole_positions.append(cells[j])
+			while (clone[j] - pos).length_squared() < 16:
+				clone.remove_at(j)
+				j = rng.randi() % clone.size()
+			pole_positions.append(clone[j])
 	for pos in pole_positions:
 		var pole
 		if rng.randf() >= 0.5:

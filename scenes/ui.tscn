@@ -225,6 +225,12 @@ max_value = 1.0
 step = 0.01
 texture_progress = ExtResource("13_y2nbk")
 
+[node name="Time" type="Label" parent="Control/M"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_fonts/font = ExtResource("9_78whp")
+text = "0.0"
+
 [node name="Black" type="ColorRect" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
@@ -232,3 +238,21 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0)
+
+[node name="GenText" type="Label" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("9_78whp")
+text = "generating..."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GenTimer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[connection signal="timeout" from="GenTimer" to="." method="_on_gen_timer_timeout"]

@@ -26,30 +26,34 @@ func _ready():
 	UI.show()
 	RenderingServer.global_shader_parameter_set("vignette_opacity", Global.VIGNETTE_OPACITY)
 	Global.set_game_cursor()
+	UI.transition_in(0)
 	
 	if Global.player_state != null:
 		player = Global.player_state
 	else:
 		player = PLAYER.instantiate()
+	player.can_move = false
 	add_child(player)
 	
 	player.dead.connect(_on_player_dead)
 	
 	generator = Generator.new(player, tilemap)
+	generator.generated.connect(_on_generated)
 	add_child(generator)
 	if Global.after_boss:
 #		generator.generate_map_full(Generator.ISLAND_SIZE)
-		play_music("%s_calm" % Generator.AREA_NAMES[Global.current_area])
+#		play_music("%s_calm" % Generator.AREA_NAMES[Global.current_area])
 		generator.current_map = 2
 		generator.generate_town()
 	else:
 		play_music("%s_intense" % Generator.AREA_NAMES[Global.current_area])
+#		generator.thread.start(generator.generate_map_full.bind(Generator.AREA_SIZES[Global.current_area]))
 		generator.generate_map_full(Generator.AREA_SIZES[Global.current_area])
 #		generator.generate_boss3()
-#		init_finale()
 
 func _process(delta):
 	Global.timer += delta
+	UI.set_time(Global.timer)
 	if Global.current_area == Generator.Area.Sky:
 		$SkyBG/ParallaxLayer.motion_offset.x -= delta * 10
 		$SkyBG/ParallaxLayer3.motion_offset.x -= delta * 7
@@ -159,7 +163,8 @@ func init_new_area():
 	$SelectionWindow/SelectionUI/Weight.hide()
 	$SelectionWindow.hide()
 	fade_music_in("%s_intense" % Generator.AREA_NAMES[Global.current_area], 2)
-	generator.generate_map_full(Generator.AREA_SIZES[Global.current_area])
+#	generator.generate_map_full(Generator.AREA_SIZES[Global.current_area])
+
 
 func _on_mod_hovered(modifier):
 	$SelectionWindow/SelectionUI/Weight.show()
@@ -179,3 +184,7 @@ func _on_exit_arrived():
 	var boss = BOSS3.instantiate()
 	boss.dead.connect(_on_boss3_dead)
 	add_child.call_deferred(boss)
+
+func _on_generated():
+	UI.transition_out()
+	UI.hide_gen_text()

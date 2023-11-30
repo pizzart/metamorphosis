@@ -27,6 +27,7 @@ FX="*res://scenes/fx.tscn"
 PauseMenu="*res://scenes/pause_menu.tscn"
 Global="*res://scripts/global.gd"
 CyclopsAutoload="*res://addons/cyclops_level_builder/cyclops_global_scene.tscn"
+BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
 
 [display]
 
@@ -41,7 +42,7 @@ mouse_cursor/custom_image="res://sprites/cursor_menu.png"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/cyclops_level_builder/plugin.cfg")
+enabled=PackedStringArray("res://addons/better-terrain/plugin.cfg", "res://addons/cyclops_level_builder/plugin.cfg")
 
 [gui]
 

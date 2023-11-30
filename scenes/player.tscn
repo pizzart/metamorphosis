@@ -59,7 +59,6 @@ visibility_layer = 2
 position = Vector2(24, 24)
 sprite_frames = ExtResource("2_p00mm")
 animation = &"front"
-autoplay = "front"
 
 [node name="Hat" type="Sprite2D" parent="V/Sprite"]
 visible = false
