@@ -34,14 +34,17 @@ bus = &"sfx"
 
 [node name="Start" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_2xm5w")
+volume_db = 3.0
 bus = &"sfx"
 
 [node name="Loop" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5_6h68n")
+volume_db = 3.0
 bus = &"sfx"
 
 [node name="End" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_n8su1")
+volume_db = 3.0
 bus = &"sfx"
 
 [node name="Finished" type="AudioStreamPlayer2D" parent="."]

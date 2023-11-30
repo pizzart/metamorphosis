@@ -17,6 +17,11 @@ func _init():
 	combo_lost_timer.one_shot = true
 	add_child(combo_lost_timer)
 
+func _process(delta):
+	super._process(delta)
+	if not is_equipped:
+		combo_counter = 0
+
 func attack():
 	can_attack = false
 	combo_counter += 1

@@ -6,7 +6,7 @@ var help_cur_pos: Vector2
 var pack_help_init_pos: Vector2
 var pack_help_hidden_pos: Vector2
 var pack_help_cur_pos: Vector2
-var dot_count: int = 1
+@onready var timer = $Control/M/Time
 
 func _ready():
 	await get_tree().process_frame
@@ -94,17 +94,12 @@ func update_keys():
 	else:
 		$Control/M/Help/Text.text = use_event.as_text()
 
-func show_gen_text():
-	$GenText.show()
-
-func hide_gen_text():
-	$GenText.hide()
-
 func set_time(time: float):
 	var min = floori(time / 60)
-	$Control/M/Time.text = "%s:%s" % [str(min).pad_zeros(2), str(snappedf(time - min * 60, 0.001)).pad_decimals(3).pad_zeros(2)]
+	timer.text = "%s:%s" % [str(min).pad_zeros(2), str(snappedf(time - min * 60, 0.001)).pad_decimals(3).pad_zeros(2)]
 
-func _on_gen_timer_timeout():
-	dot_count += 1
-	dot_count = dot_count % 4
-	$GenText.text = "generating" + ".".repeat(dot_count) + " ".repeat(3 - dot_count)
+func set_timer_good():
+	timer.modulate = Color(0.85, 1, 0.88)
+
+func set_timer_bad():
+	timer.modulate = Color.WHITE

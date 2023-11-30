@@ -16,6 +16,7 @@ func _ready():
 	PauseMenu.can_show = false
 	Global.timer = 0
 	Global.current_area = Generator.Area.Sky
+	Global.condition = true
 	Global.set_menu_cursor()
 	RenderingServer.global_shader_parameter_set("vignette_opacity", Global.VIGNETTE_OPACITY)
 	

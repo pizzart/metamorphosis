@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://dph8pd3qblx44"]
+[gd_scene load_steps=23 format=3 uid="uid://dph8pd3qblx44"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_bsqet"]
 [ext_resource type="SpriteFrames" uid="uid://decjog7dp6jgi" path="res://resources/player.tres" id="2_p00mm"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://cmon6c5lgtffc" path="res://scenes/disk_box.tscn" id="9_aleyf"]
 [ext_resource type="Shader" path="res://misc/mask.gdshader" id="11_wrglk"]
 [ext_resource type="AudioStream" uid="uid://dqhmimg8fsh0c" path="res://audio/sfx/scary1.wav" id="12_6tig4"]
+[ext_resource type="AudioStream" uid="uid://cona7r36vk4is" path="res://audio/sfx/player_hurt.wav" id="12_h7v4u"]
 [ext_resource type="Shader" path="res://misc/mask2.gdshader" id="13_mf1ml"]
 [ext_resource type="AudioStream" uid="uid://bx7jlv0q2lsqf" path="res://audio/sfx/change_weapon.wav" id="13_oubmp"]
 [ext_resource type="AudioStream" uid="uid://bjokrmbkn56bi" path="res://audio/sfx/step.wav" id="14_ki3hq"]
@@ -30,6 +31,11 @@ shader_parameter/silhouette_color = Color(0.203922, 0.203922, 0.203922, 1)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_b3ial"]
 viewport_path = NodePath("V")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_t5v61"]
+streams_count = 1
+stream_0/stream = ExtResource("12_h7v4u")
+stream_0/weight = 1.0
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_dasfg"]
 streams_count = 1
@@ -123,6 +129,12 @@ z_as_relative = false
 material = SubResource("ShaderMaterial_wkdf5")
 position = Vector2(0, -7)
 texture = SubResource("ViewportTexture_b3ial")
+
+[node name="HurtSFX" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_t5v61")
+volume_db = 4.0
+max_polyphony = 3
+bus = &"sfx"
 
 [node name="DeathSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("12_6tig4")

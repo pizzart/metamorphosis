@@ -11,7 +11,7 @@ size = Vector2(10, 8)
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_cu4q1"]
 polygon = PackedVector2Array(-5, 10, -5, -4, 5, -4, 5, 10)
 
-[node name="Pole" type="StaticBody2D" groups=["cleanup", "tree"]]
+[node name="Turbine" type="StaticBody2D" groups=["cleanup"]]
 y_sort_enabled = true
 collision_layer = 32
 script = ExtResource("1_nf7b1")

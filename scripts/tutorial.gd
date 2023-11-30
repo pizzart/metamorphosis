@@ -119,7 +119,7 @@ func _on_upgrade_picked_up():
 	
 	$HelpWindow/Help/C/Key/Label.hide()
 	$HelpWindow/Help/C/Key/MouseLeft.hide()
-	$HelpWindow/Help/C/Key/MouseRight.hide()
+	$HelpWindow/Help/C/Key/MouseRight.show()
 	$HelpWindow.position = get_window().position + get_window().size - $HelpWindow.size
 	$HelpWindow.show()
 	

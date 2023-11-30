@@ -142,3 +142,6 @@ func _on_aberration_toggled(button_pressed):
 		Global.set_shader_param(1, "aberration_amount")
 	else:
 		Global.set_shader_param(0, "aberration_amount")
+
+func _on_timer_toggled(button_pressed):
+	UI.timer.visible = button_pressed

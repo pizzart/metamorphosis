@@ -22,10 +22,12 @@ var generator: Generator
 }
 
 func _ready():
-	PauseMenu.can_show = true
-	UI.show()
 	RenderingServer.global_shader_parameter_set("vignette_opacity", Global.VIGNETTE_OPACITY)
+	PauseMenu.can_show = true
 	Global.set_game_cursor()
+	UI.show()
+	if Global.condition:
+		UI.set_timer_good()
 	UI.transition_in(0)
 	
 	if Global.player_state != null:
@@ -38,7 +40,6 @@ func _ready():
 	player.dead.connect(_on_player_dead)
 	
 	generator = Generator.new(player, tilemap)
-	generator.generated.connect(_on_generated)
 	add_child(generator)
 	if Global.after_boss:
 #		generator.generate_map_full(Generator.ISLAND_SIZE)
@@ -52,8 +53,9 @@ func _ready():
 #		generator.generate_boss3()
 
 func _process(delta):
-	Global.timer += delta
-	UI.set_time(Global.timer)
+	if not $SelectionWindow.visible:
+		Global.timer += delta
+		UI.set_time(Global.timer)
 	if Global.current_area == Generator.Area.Sky:
 		$SkyBG/ParallaxLayer.motion_offset.x -= delta * 10
 		$SkyBG/ParallaxLayer3.motion_offset.x -= delta * 7
@@ -137,7 +139,9 @@ func fade_music_in(key: String, time: float):
 
 func show_selection():
 	fade_music_out(2)
+	PauseMenu.can_show = false
 	player.can_move = false
+	Global.set_menu_cursor()
 	var mod1 = Global.modifier_pool.pop_at(Global.rng.randi() % Global.modifier_pool.size())
 	var mod2 = Global.modifier_pool.pop_at(Global.rng.randi() % Global.modifier_pool.size())
 	$SelectionWindow/SelectionUI/Modifier1.icon = load("res://sprites/ui/modifiers/modifier_%s.png" % str(mod1).pad_zeros(2))
@@ -153,6 +157,8 @@ func show_selection():
 
 func _on_mod_pressed(modifier):
 	player.add_upgrade(Global.MODIFIERS[modifier].new())
+	PauseMenu.can_show = true
+	Global.set_game_cursor()
 	init_new_area()
 
 func init_new_area():
@@ -163,7 +169,7 @@ func init_new_area():
 	$SelectionWindow/SelectionUI/Weight.hide()
 	$SelectionWindow.hide()
 	fade_music_in("%s_intense" % Generator.AREA_NAMES[Global.current_area], 2)
-#	generator.generate_map_full(Generator.AREA_SIZES[Global.current_area])
+	generator.generate_map_full(Generator.AREA_SIZES[Global.current_area])
 
 
 func _on_mod_hovered(modifier):
@@ -184,7 +190,3 @@ func _on_exit_arrived():
 	var boss = BOSS3.instantiate()
 	boss.dead.connect(_on_boss3_dead)
 	add_child.call_deferred(boss)
-
-func _on_generated():
-	UI.transition_out()
-	UI.hide_gen_text()

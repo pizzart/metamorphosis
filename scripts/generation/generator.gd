@@ -103,7 +103,6 @@ func generate_map(size):
 	return [island_count, islands[1]]
 
 func generate_map_full(size):
-	UI.show_gen_text()
 #	mutex.lock()
 	cleanup()
 	var islands = generate_map(size)
@@ -119,7 +118,6 @@ func generate_map_full(size):
 	generated.emit()
 
 func generate_intermission():
-	UI.show_gen_text.call_deferred()
 #	mutex.lock()
 	cleanup()
 	var islands = place_islands(1, INTERMISSION_SIZE)
@@ -134,7 +132,7 @@ func generate_intermission():
 
 func generate_town():
 	cleanup()
-	var islands = place_islands(1, TOWN_SIZE)[1]
+	var islands = place_islands(1, TOWN_SIZE)
 	var exit_pos = place_exit(islands[1], GenerationType.Action, false)
 #	var player_pos = place_player(exit_pos)
 	var all_positions: Array[Vector2i] = [exit_pos]
@@ -371,14 +369,16 @@ func place_props(cells: Array[Vector2i]):
 func place_poles(cells: Array[Vector2i], taken_positions: Array[Vector2i]):
 #	var cells: Array[Vector2i] = tilemap.get_used_cells_by_id(0, TERRAIN_ID)
 	var clone = cells.duplicate()
+	var pos_clone = taken_positions.duplicate()
 	var pole_positions: Array[Vector2i] = []
 	for i in range(3):
 		var j = rng.randi() % clone.size()
-		for pos in taken_positions:
+		for pos in pos_clone:
 			while (clone[j] - pos).length_squared() < 16:
 				clone.remove_at(j)
 				j = rng.randi() % clone.size()
-			pole_positions.append(clone[j])
+		pole_positions.append(clone[j])
+		pos_clone.append(clone[j])
 	for pos in pole_positions:
 		var pole
 		if rng.randf() >= 0.5:

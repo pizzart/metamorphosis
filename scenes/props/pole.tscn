@@ -10,7 +10,7 @@ size = Vector2(10, 9)
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_cu4q1"]
 polygon = PackedVector2Array(-5, 9, -4, 10, 4, 10, 5, 9, 5, 4, 4, 3, -4, 3, -5, 4)
 
-[node name="Pole" type="StaticBody2D" groups=["cleanup", "tree"]]
+[node name="Pole" type="StaticBody2D" groups=["cleanup"]]
 y_sort_enabled = true
 collision_layer = 32
 

@@ -49,7 +49,6 @@ func start_descent():
 	await tween.finished
 	player.z_index = 0
 	z_index = -1
-	player.can_move = true
 	player.change_emotion(Player.Emotion.None)
 	player.sprite.play()
 	moved.emit()

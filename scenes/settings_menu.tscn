@@ -174,6 +174,17 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_47nqf")
 button_pressed = true
 text = "ABERRATION"
 
+[node name="Timer" type="CheckButton" parent="M/List"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_61ic0")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_c6v4o")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_61ic0")
+theme_override_styles/hover = SubResource("StyleBoxFlat_v1j3m")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_e03d1")
+theme_override_styles/focus = SubResource("StyleBoxFlat_47nqf")
+text = "TIMER"
+
 [node name="Controls" type="Button" parent="M/List"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -242,6 +253,7 @@ bus = &"sfx"
 [connection signal="value_changed" from="M/List/Shake/HSlider" to="." method="_on_shake_value_changed"]
 [connection signal="toggled" from="M/List/Fullscreen" to="." method="_on_fullscreen_toggled"]
 [connection signal="toggled" from="M/List/Aberration" to="." method="_on_aberration_toggled"]
+[connection signal="toggled" from="M/List/Timer" to="." method="_on_timer_toggled"]
 [connection signal="pressed" from="M/List/Controls" to="." method="_on_controls_pressed"]
 [connection signal="pressed" from="M/List/Back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="Controls/Reset" to="." method="_on_reset_pressed"]

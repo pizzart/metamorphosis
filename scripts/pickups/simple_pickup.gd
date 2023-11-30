@@ -5,12 +5,17 @@ const PARTICLES = preload("res://scenes/particles/pickup_particles.tscn")
 
 var time: float
 
+var audio = AudioStreamPlayer2D.new()
 var particles: CPUParticles2D
 
 func _init(shape: Shape2D, texture: Texture2D):
 	super._init(shape, texture)
 	
 	particles = PARTICLES.instantiate()
+	var stream = AudioStreamRandomizer.new()
+	stream.add_stream(0, preload("res://audio/sfx/collect.wav"))
+	audio.stream = stream
+	add_child(audio)
 	add_child(particles)
 
 func _input(event):
@@ -25,6 +30,7 @@ func interact():
 	set_deferred("monitoring", false)
 	can_interact = false
 	particles.emitting = false
+	audio.play()
 	var tween = create_tween().set_parallel()
 	tween.tween_property(sprite, "scale", Vector2(0, 10), 0.4).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
 	tween.tween_property(sprite, "position", Vector2(0, -150), 0.5).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)

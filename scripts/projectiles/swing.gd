@@ -42,6 +42,8 @@ func _on_body_entered(body):
 		body.hit(damage, get_parent().direction * 30)
 		set_deferred("monitoring", false)
 		audio.play()
+	if body.is_in_group("tree"):
+		body.hit()
 
 func _on_area_entered(area):
 	if area is Bullet and can_deflect:

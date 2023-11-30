@@ -52,6 +52,7 @@ var rng = RandomNumberGenerator.new()
 @onready var hat = $V/Sprite/Hat
 @onready var emotion_spr = $V/Sprite/Emotion
 @onready var sprite = $V/Sprite
+@onready var hurt_sfx = $HurtSFX
 @onready var death_sfx = $DeathSFX
 @onready var change_sfx = $ChangeSFX
 @onready var step_sfx = $StepSFX
@@ -92,6 +93,7 @@ func _physics_process(_delta):
 	$Light.texture_scale = rng.randf_range(0.95, 1.04)
 	
 	if not can_move:
+		sprite.speed_scale = 0
 		return
 	
 	sprite.speed_scale = velocity.length() / speed
@@ -183,6 +185,8 @@ func hit(damage: int, force: Vector2):
 		await get_tree().create_timer(3).timeout
 		dead.emit()
 	
+	hurt_sfx.play()
+	
 	invincible = true
 	$InvTimer.start()
 	
@@ -192,7 +196,7 @@ func hit(damage: int, force: Vector2):
 	particles.emitting = true
 	get_parent().add_child(particles)
 	
-	cam.add_trauma(float(damage) / 6)
+	cam.add_trauma(float(damage) / 4)
 	Global.freeze_frame()
 	
 	if health < max_health / 3:
@@ -262,6 +266,7 @@ func replace_weapon(new_weapon: Weapon):
 	
 	if old_weapon != null:
 		Global.condition = false
+		UI.set_timer_bad()
 	
 	return old_weapon
 

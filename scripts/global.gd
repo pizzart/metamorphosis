@@ -69,7 +69,7 @@ const IMAGE: PackedByteArray = [
 const VIGNETTE_OPACITY = 0.035
 const WINDOW_SIZE = Vector2i(320, 240)
 
-var current_area: Generator.Area = Generator.Area.Abyss
+var current_area: Generator.Area = Generator.Area.Sky
 var after_boss: bool = false
 
 var coins: int = 0
