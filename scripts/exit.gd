@@ -10,7 +10,7 @@ var counter: int
 var can_interact: bool
 var enemies_gone: bool
 var timer: float
-@export var long: bool
+@export var override_wait: float
 
 @onready var player: Player = get_tree().get_first_node_in_group("player")
 
@@ -56,8 +56,8 @@ func start_descent():
 
 func end_descent():
 	var end_position = global_position
-	if long:
-		global_position = end_position - Vector2(0, 1000)
+	if override_wait:
+		global_position = end_position - Vector2(0, override_wait * 200)
 	else:
 		global_position = end_position - Vector2(0, 200)
 	player.can_move = false
@@ -69,8 +69,8 @@ func end_descent():
 	var tween = create_tween().set_parallel()
 	tween.tween_callback(UI.transition_out)
 	var time = 1.0
-	if long:
-		time = 5.0
+	if override_wait:
+		time = override_wait
 	tween.tween_property(self, "global_position", end_position - Vector2(0, 50), time)
 	tween.tween_property(player, "global_position", end_position - Vector2(0, 50), time)
 	tween.chain().tween_callback($Loop.stop)

@@ -6,7 +6,7 @@ signal dead
 var health: int
 
 var sprite: AnimatedSprite2D
-var rng = RandomNumberGenerator.new()
+var rng = Global.rng
 @onready var player = get_tree().get_first_node_in_group("player")
 
 func _init():

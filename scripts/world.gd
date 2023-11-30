@@ -18,6 +18,7 @@ var generator: Generator
 	"city_intense": $MusicCityIntense,
 	"sky_calm": $MusicSkyCalm,
 	"sky_intense": $MusicSkyIntense,
+	"finale": $MusicFinale,
 }
 
 func _ready():
@@ -99,12 +100,14 @@ func init_boss2():
 func init_boss3():
 	fade_music_out(1)
 	play_music("boss3")
-	fade_music_in("boss3", 2)
+	fade_music_in("boss3", 3)
 
 func init_finale():
-	fade_music_out(10)
 #	player.global_position = Vector2.ZERO
 	add_child.call_deferred(preload("res://scenes/finale.tscn").instantiate())
+	fade_music_in("finale", 1)
+	await get_tree().create_timer(1).timeout
+	play_music("finale")
 
 func play_music(key: String):
 	mus[key].play()
@@ -167,6 +170,7 @@ func _on_mod_unhovered():
 
 func _on_boss3_dead():
 	get_tree().get_first_node_in_group("exit").enemies_gone = true
+	fade_music_out(10)
 
 func _on_player_dead():
 	get_tree().change_scene_to_file("res://scenes/pre_ui.tscn")

@@ -102,7 +102,7 @@ func _on_boss_dead():
 	var pickup = UpgradePickup.new()
 	pickup.global_position = player.global_position
 	pickup.picked_up.connect(_on_upgrade_picked_up)
-	add_child(pickup)
+	add_child.call_deferred(pickup)
 	
 	$Exit.enemies_gone = true
 	await get_tree().create_timer(0.5).timeout
@@ -116,6 +116,14 @@ func _on_boss_dead():
 func _on_upgrade_picked_up():
 	var teleport = Teleporter.new($TelePos6.global_position, $TelePos4.global_position)
 	add_child.call_deferred(teleport)
+	
+	$HelpWindow/Help/C/Key/Label.hide()
+	$HelpWindow/Help/C/Key/MouseLeft.hide()
+	$HelpWindow/Help/C/Key/MouseRight.hide()
+	$HelpWindow.position = get_window().position + get_window().size - $HelpWindow.size
+	$HelpWindow.show()
+	
+	$Timer.start()
 
 func _on_exit_moved():
 	get_tree().change_scene_to_file("res://scenes/pre_ui.tscn")

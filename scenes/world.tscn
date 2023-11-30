@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://ccfjmn2857i0f"]
+[gd_scene load_steps=31 format=3 uid="uid://ccfjmn2857i0f"]
 
 [ext_resource type="Script" path="res://scripts/world.gd" id="1_eoi30"]
 [ext_resource type="Shader" path="res://misc/matrix.gdshader" id="2_1rf8u"]
@@ -23,6 +23,7 @@
 [ext_resource type="AudioStream" uid="uid://by7ulyq7o5uba" path="res://audio/mus/sky_calm.ogg" id="21_0pm0g"]
 [ext_resource type="AudioStream" uid="uid://trubuidkt3k7" path="res://audio/mus/sky_intense.ogg" id="22_o54vx"]
 [ext_resource type="PackedScene" uid="uid://bvavc4mygdyug" path="res://scenes/selection_ui.tscn" id="22_rt06i"]
+[ext_resource type="AudioStream" uid="uid://dkxeugsjrj0tj" path="res://audio/mus/finale.ogg" id="23_sw0pw"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_k3f30"]
 noise_type = 5
@@ -297,6 +298,11 @@ bus = &"mus"
 [node name="MusicSkyIntense" type="AudioStreamPlayer" parent="."]
 process_mode = 3
 stream = ExtResource("22_o54vx")
+bus = &"mus"
+
+[node name="MusicFinale" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("23_sw0pw")
 bus = &"mus"
 
 [node name="SelectionWindow" type="Window" parent="."]

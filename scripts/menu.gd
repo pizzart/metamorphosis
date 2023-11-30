@@ -43,9 +43,8 @@ func _on_start_mouse_exited():
 	$M/Main/List/Start.remove_theme_font_override("font")
 
 func _on_start_pressed():
-	$M/Main/List/Start.disabled = true
-	$M/Main/List/Settings.disabled = true
-	$M/Main/List/Quit.disabled = true
+	for c in $M/Main/List.get_children():
+		c.disabled = true
 	UI.transition_in(0.1)
 	var tween = create_tween().set_parallel()
 	tween.tween_property($Black, "color", Color.BLACK, 3.0)

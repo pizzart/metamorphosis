@@ -283,7 +283,7 @@ func place_exit(next_gen_type: GenerationType, with_enemies: bool, is_boss: bool
 	exit.enemies_gone = not with_enemies
 	exit.global_position = tilemap.map_to_local(placement)
 	if is_boss:
-		exit.long = true
+		exit.override_wait = 10
 		exit.arrived.connect(world._on_exit_arrived)
 	exit.moved.connect(_on_exit_moved.bind(next_gen_type))
 	world.add_child.call_deferred(exit)

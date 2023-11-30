@@ -107,11 +107,12 @@ dialog_icon = 0
 
 [node name="Reward" type="NativeAcceptDialog" parent="."]
 title = "PROGRAM STATISTICS"
-dialog_text = "YOU HAVE EARNED A REWARD FOR YOUR DEDICATION."
+dialog_text = "YOU HAVE EARNED A REWARD FOR YOUR DEDICATION.
+YOU WILL FIND IT NEXT TO THE GATEWAY."
 dialog_icon = 0
 
 [node name="Exit" parent="." instance=ExtResource("8_ibxoh")]
-long = true
+override_wait = 5.0
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 position = Vector2(0, -451)
