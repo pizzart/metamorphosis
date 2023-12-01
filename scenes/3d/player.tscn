@@ -1,17 +1,18 @@
-[gd_scene load_steps=9 format=3 uid="uid://qyk1wq0h6ttu"]
+[gd_scene load_steps=10 format=3 uid="uid://qyk1wq0h6ttu"]
 
 [ext_resource type="Script" path="res://scripts/3d/player.gd" id="1_i5ib5"]
 [ext_resource type="PackedScene" uid="uid://0284mnhe44cj" path="res://3d/revolver.glb" id="2_gjged"]
-[ext_resource type="Shader" path="res://misc/psx.gdshader" id="3_7kjlj"]
+[ext_resource type="Shader" path="res://misc/psx.gdshader" id="3_bn7h6"]
 [ext_resource type="AudioStream" uid="uid://elyglt6ogd1" path="res://audio/sfx/shoot.wav" id="4_of83e"]
 [ext_resource type="AudioStream" uid="uid://bjokrmbkn56bi" path="res://audio/sfx/step.wav" id="5_xrprj"]
+[ext_resource type="AudioStream" uid="uid://cona7r36vk4is" path="res://audio/sfx/player_hurt.wav" id="6_41pl3"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lnfi8"]
 height = 1.5
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_s4jl3"]
 render_priority = 0
-shader = ExtResource("3_7kjlj")
+shader = ExtResource("3_bn7h6")
 shader_parameter/color_depth = 6
 shader_parameter/dithering = true
 shader_parameter/resolution_scale = 1
@@ -22,7 +23,6 @@ size = Vector2(2, 2)
 
 [node name="Player" type="CharacterBody3D" groups=["player_3d"]]
 collision_layer = 4
-collision_mask = 3
 script = ExtResource("1_i5ib5")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -54,8 +54,18 @@ stream = ExtResource("5_xrprj")
 unit_size = 0.8
 bus = &"3d_sfx"
 
+[node name="HitSFX" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("6_41pl3")
+unit_size = 0.8
+bus = &"3d_sfx"
+
 [node name="StepTimer" type="Timer" parent="."]
 wait_time = 0.5
 autostart = true
 
+[node name="ShootTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
 [connection signal="timeout" from="StepTimer" to="." method="_on_step_timer_timeout"]
+[connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timeout"]

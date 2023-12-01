@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://dph8pd3qblx44"]
+[gd_scene load_steps=28 format=3 uid="uid://dph8pd3qblx44"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_bsqet"]
 [ext_resource type="SpriteFrames" uid="uid://decjog7dp6jgi" path="res://resources/player.tres" id="2_p00mm"]
@@ -16,6 +16,7 @@
 [ext_resource type="Shader" path="res://misc/mask2.gdshader" id="13_mf1ml"]
 [ext_resource type="AudioStream" uid="uid://bx7jlv0q2lsqf" path="res://audio/sfx/change_weapon.wav" id="13_oubmp"]
 [ext_resource type="AudioStream" uid="uid://bjokrmbkn56bi" path="res://audio/sfx/step.wav" id="14_ki3hq"]
+[ext_resource type="AudioStream" uid="uid://dwftexafigtsm" path="res://audio/sfx/swoop.wav" id="16_clt84"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_onp71"]
 size = Vector2(16, 6)
@@ -43,10 +44,19 @@ streams_count = 1
 stream_0/stream = ExtResource("12_h7v4u")
 stream_0/weight = 1.0
 
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_dasfg"]
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_qhma1"]
 streams_count = 1
 stream_0/stream = ExtResource("14_ki3hq")
 stream_0/weight = 1.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_dasfg"]
+streams_count = 1
+stream_0/stream = ExtResource("16_clt84")
+stream_0/weight = 1.0
+
+[sub_resource type="Curve" id="Curve_on3v6"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 visibility_layer = 2
@@ -157,9 +167,24 @@ stream = ExtResource("13_oubmp")
 bus = &"sfx"
 
 [node name="StepSFX" type="AudioStreamPlayer2D" parent="."]
-stream = SubResource("AudioStreamRandomizer_dasfg")
+stream = SubResource("AudioStreamRandomizer_qhma1")
 volume_db = -20.0
 bus = &"sfx"
+
+[node name="DashSFX" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_dasfg")
+pitch_scale = 0.6
+bus = &"sfx"
+
+[node name="DashParticles" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 30
+emission_shape = 3
+emission_rect_extents = Vector2(5, 5)
+gravity = Vector2(0, 0)
+scale_amount_min = 2.15
+scale_amount_max = 2.85
+scale_amount_curve = SubResource("Curve_on3v6")
 
 [connection signal="frame_changed" from="V/Sprite" to="." method="_on_sprite_frame_changed"]
 [connection signal="timeout" from="InvTimer" to="." method="_on_inv_timer_timeout"]

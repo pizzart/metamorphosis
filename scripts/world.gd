@@ -5,6 +5,7 @@ const BOSS1 = preload("res://scenes/bosses/boss_1.tscn")
 const BOSS3 = preload("res://scenes/bosses/boss_3.tscn")
 const WINDOW = preload("res://scenes/window.tscn")
 const PLAYER = preload("res://scenes/player.tscn")
+const CHECK = preload("res://scenes/particles/check_particle.tscn")
 
 var player: Player
 var generator: Generator
@@ -171,7 +172,6 @@ func init_new_area():
 	fade_music_in("%s_intense" % Generator.AREA_NAMES[Global.current_area], 2)
 	generator.generate_map_full(Generator.AREA_SIZES[Global.current_area])
 
-
 func _on_mod_hovered(modifier):
 	$SelectionWindow/SelectionUI/Weight.show()
 	$SelectionWindow/SelectionUI/Weight.text = "+%s weight" % Global.MODIFIERS[modifier].WEIGHT
@@ -187,6 +187,24 @@ func _on_player_dead():
 	get_tree().change_scene_to_file("res://scenes/pre_ui.tscn")
 
 func _on_exit_arrived():
-	var boss = BOSS3.instantiate()
-	boss.dead.connect(_on_boss3_dead)
-	add_child.call_deferred(boss)
+	generator.boss = true
+	generator.place_enemies(10, tilemap.local_to_map(get_tree().get_first_node_in_group("exit").global_position))
+	await get_tree().create_timer(5).timeout
+	for i in range(50):
+		generator.place_enemies(Global.rng.randi_range(2, 3), tilemap.local_to_map(get_tree().get_first_node_in_group("exit").global_position))
+		await get_tree().create_timer(2).timeout
+	
+	var exit = get_tree().get_first_node_in_group("exit")
+	exit.enemies_gone = true
+	await get_tree().create_timer(0.5).timeout
+	exit.play_fin_sound()
+	var check = CHECK.instantiate()
+	check.restart()
+	check.global_position = player.global_position + Vector2(4, -4)
+	add_child(check)
+	fade_music_out(10)
+#	transition_music("%s_intense" % Generator.AREA_NAMES[Global.current_area], "%s_calm" % Generator.AREA_NAMES[Global.current_area])
+	player.change_emotion(Player.Emotion.Correct)
+#	var boss = BOSS3.instantiate()
+#	boss.dead.connect(_on_boss3_dead)
+#	add_child.call_deferred(boss)

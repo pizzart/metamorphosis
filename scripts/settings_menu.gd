@@ -70,6 +70,8 @@ func update_settings():
 	$M/List/Shake/HSlider.value = Global.shake_strength * 20
 	$M/List/Fullscreen.button_pressed = DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN
 	$M/List/Aberration.button_pressed = Global.aberration_enabled
+	$M/List/Timer.button_pressed = UI.timer.visible
+	$M/List/Skip.button_pressed = Global.skip_enabled
 	update_all_inputs()
 
 func _on_music_value_changed(value):
@@ -144,4 +146,9 @@ func _on_aberration_toggled(button_pressed):
 		Global.set_shader_param(0, "aberration_amount")
 
 func _on_timer_toggled(button_pressed):
+	$ClickSFX.play()
 	UI.timer.visible = button_pressed
+
+func _on_hold_toggled(button_pressed):
+	$ClickSFX.play()
+	Global.skip_enabled = button_pressed

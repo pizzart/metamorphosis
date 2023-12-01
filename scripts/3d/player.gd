@@ -1,5 +1,6 @@
 extends CharacterBody3D
 
+signal hit_floor
 const MAX_HEALTH = 15
 
 const ACCEL = 1.3
@@ -14,6 +15,9 @@ const TILT_AMOUNT = 0.07
 var health: int = MAX_HEALTH
 var jump_buffered: bool
 var was_on_floor: bool
+var can_move: bool = false
+var can_shoot: bool = true
+var shake: float
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var camera = $Camera3D
@@ -36,12 +40,16 @@ func _physics_process(delta):
 	if Input.is_action_just_released("jump"):
 		jump_buffered = false
 
-	var input_dir = Input.get_vector("left", "right", "up", "down")
-	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	var direction = Vector3.ZERO
+	var input_dir = Vector2.ZERO
+	if can_move:
+		input_dir = Input.get_vector("left", "right", "up", "down")
+		direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
 	var prev_velocity = velocity
 	var new_velo
 	if is_on_floor():
+		hit_floor.emit()
 		var speed = prev_velocity.length()
 		if speed != 0:
 			var drop = speed * FRICTION
@@ -81,6 +89,11 @@ func _physics_process(delta):
 	
 	was_on_floor = is_on_floor()
 
+func _process(delta):
+	$Camera3D.h_offset = Global.rng.randf_range(-shake, shake)
+	$Camera3D.v_offset = Global.rng.randf_range(-shake, shake)
+	shake = maxf(shake - delta, 0)
+
 func accelerate(direction: Vector3, prev_velocity: Vector3, acceleration: float, max_velocity: float):
 	var proj_velocity = velocity.dot(direction)
 	var accel_vel = acceleration
@@ -94,19 +107,30 @@ func damage(amount: int):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		get_tree().change_scene_to_file("res://scenes/pre_ui.tscn")
 	UI.get_node("Control/M/Bars/Health/Bar").value = health
+	$HitSFX.play()
+
+func shake_cam(amount: float):
+	shake += amount
 
 func _input(event):
 	if event is InputEventMouseMotion:
 		rotation.y -= event.relative.x * Global.mouse_sens
 		camera.rotation.x = clampf(camera.rotation.x - event.relative.y * Global.mouse_sens, -PI / 2, PI / 2)
 	if event.is_action_pressed("attack"):
-		if $Camera3D/Ray.is_colliding():
-			var col = $Camera3D/Ray.get_collider()
-			col.damage(1)
-		
-		$Camera3D/Revolver/AnimationPlayer.stop()
-		$Camera3D/Revolver/AnimationPlayer.play("shoot")
-		$ShootSFX.play()
+		if can_shoot:
+			if $Camera3D/Ray.is_colliding():
+				var col = $Camera3D/Ray.get_collider()
+				col.damage(1)
+			
+			$Camera3D/Revolver/AnimationPlayer.stop()
+			$Camera3D/Revolver/AnimationPlayer.play("shoot")
+			$ShootSFX.play()
+			
+			can_shoot = false
+			$ShootTimer.start()
 
 func _on_step_timer_timeout():
 	$StepSFX.play()
+
+func _on_shoot_timeout():
+	can_shoot = true

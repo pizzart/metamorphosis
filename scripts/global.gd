@@ -30,7 +30,7 @@ var ITEMS = {
 	Item.None: [0, preload("res://sprites/shop/icons/shop_icon_0.png"), null, null],
 	Item.Wings: [2, preload("res://sprites/shop/icons/shop_icon_3.png"), WingsUpgrade, preload("res://sprites/shop/previews/shop_preview_2.png")],
 	Item.Watch: [3, preload("res://sprites/shop/icons/shop_icon_4.png"), WatchUpgrade, preload("res://sprites/shop/previews/shop_preview_3.png")],
-	Item.Teleport: [1, preload("res://sprites/shop/icons/shop_icon_4.png"), TeleportUpgrade, null]
+#	Item.Teleport: [1, preload("res://sprites/shop/icons/shop_icon_4.png"), TeleportUpgrade, null]
 }
 
 var MODIFIERS = {
@@ -70,7 +70,7 @@ const IMAGE: PackedByteArray = [
 const VIGNETTE_OPACITY = 0.035
 const WINDOW_SIZE = Vector2i(320, 240)
 
-var current_area: Generator.Area = Generator.Area.City
+var current_area: Generator.Area = Generator.Area.Sky
 var after_boss: bool = false
 
 var coins: int = 0
@@ -85,6 +85,7 @@ var timer: float
 var mouse_sens: float = 0.003
 var shake_strength: float = 1
 var aberration_enabled: bool = true
+var skip_enabled: bool = false
 
 var player_state: Player
 var loop: int = 0

@@ -15,6 +15,7 @@ func _init():
 
 func _ready():
 	sprite = $AnimatedSprite2D
+	sprite.play("attack")
 
 func hit(damage: int, force: Vector2):
 	health -= damage
@@ -46,8 +47,10 @@ func _on_timer_timeout():
 	attack_timer.start(time)
 	
 #	sprite.animation = "attack"
-	await get_tree().create_timer(0.5).timeout
+	$PrepSFX.play()
+	await get_tree().create_timer(0.7).timeout
 	
+	sprite.play("attack")
 	for j in range(2):
 		shoot_audio.play()
 		for i in range(15):

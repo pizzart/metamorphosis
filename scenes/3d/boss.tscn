@@ -1,28 +1,175 @@
-[gd_scene load_steps=4 format=3 uid="uid://b237fa8wat8sd"]
+[gd_scene load_steps=20 format=3 uid="uid://b237fa8wat8sd"]
 
 [ext_resource type="Script" path="res://scripts/3d/boss.gd" id="1_xjeio"]
-[ext_resource type="Texture2D" uid="uid://c4naefxdaxf6t" path="res://sprites/bosses/clocklady.png" id="2_rkwnb"]
+[ext_resource type="Texture2D" uid="uid://cjg66vain0w7h" path="res://sprites/bosses/clock.png" id="2_co8gv"]
+[ext_resource type="AudioStream" uid="uid://cik4wisfdfhr5" path="res://audio/sfx/hurt1.wav" id="3_pt7ur"]
+[ext_resource type="AudioStream" uid="uid://cenmwjrpojswt" path="res://audio/sfx/hurt2.wav" id="4_iufdh"]
+[ext_resource type="AudioStream" uid="uid://6ayrg7mldub" path="res://audio/sfx/hurt3.wav" id="5_w8h0w"]
+[ext_resource type="AudioStream" uid="uid://wy8d7b8sp3jv" path="res://audio/sfx/death.wav" id="6_1dnwc"]
+[ext_resource type="Texture2D" uid="uid://bgogdrqjly2tk" path="res://sprites/bgs/1/clouds2.png" id="6_fceq2"]
+[ext_resource type="AudioStream" uid="uid://bis68hj4x3yv8" path="res://audio/sfx/enemy_shoot.wav" id="6_uyeeq"]
+[ext_resource type="AudioStream" uid="uid://b8j3ikemwwv0u" path="res://audio/sfx/glitchy.wav" id="7_8n3w2"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6713a"]
-size = Vector3(2.7, 5.1, 1.5)
+size = Vector3(5.5, 3.5, 5.5)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u5y1w"]
+atlas = ExtResource("2_co8gv")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_prmde"]
+atlas = ExtResource("2_co8gv")
+region = Rect2(256, 0, 256, 256)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0ayfo"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u5y1w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_prmde")
+}],
+"loop": true,
+"name": &"default",
+"speed": 3.0
+}]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_0bfjm"]
+streams_count = 3
+stream_0/stream = ExtResource("3_pt7ur")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("4_iufdh")
+stream_1/weight = 1.0
+stream_2/stream = ExtResource("5_w8h0w")
+stream_2/weight = 1.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_t4c7p"]
+streams_count = 1
+stream_0/stream = ExtResource("6_uyeeq")
+stream_0/weight = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_625en"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+shading_mode = 0
+diffuse_mode = 3
+albedo_texture = ExtResource("6_fceq2")
+texture_filter = 0
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_qp8t0"]
+material = SubResource("StandardMaterial3D_625en")
+
+[sub_resource type="Curve" id="Curve_o33rb"]
+min_value = -200.0
+max_value = 200.0
+_data = [Vector2(0.269, 2.005), 0.0, 0.0, 0, 0, Vector2(0.478, 2.191), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jm1j5"]
+size = Vector3(8, 2, 8)
 
 [node name="Boss" type="CharacterBody3D"]
 collision_layer = 2
-collision_mask = 5
+motion_mode = 1
 script = ExtResource("1_xjeio")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_6713a")
 
-[node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0358221, 0)
-pixel_size = 0.08
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
+pixel_size = 0.03
 billboard = 2
 texture_filter = 0
-texture = ExtResource("2_rkwnb")
+sprite_frames = SubResource("SpriteFrames_0ayfo")
+autoplay = "default"
+frame_progress = 0.381877
 
 [node name="AttackTimer" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 0.8
+one_shot = true
 autostart = true
 
+[node name="HitSFX" type="AudioStreamPlayer3D" parent="."]
+stream = SubResource("AudioStreamRandomizer_0bfjm")
+volume_db = 6.667
+unit_size = 33.39
+pitch_scale = 0.7
+bus = &"3d_sfx"
+attenuation_filter_cutoff_hz = 7230.0
+
+[node name="ShootSFX" type="AudioStreamPlayer3D" parent="."]
+stream = SubResource("AudioStreamRandomizer_t4c7p")
+volume_db = 6.667
+unit_size = 33.39
+pitch_scale = 0.7
+bus = &"3d_sfx"
+attenuation_filter_cutoff_hz = 7230.0
+
+[node name="SpawnSFX" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("6_1dnwc")
+volume_db = 9.333
+unit_size = 37.55
+pitch_scale = 0.6
+autoplay = true
+bus = &"3d_sfx"
+attenuation_filter_cutoff_hz = 7230.0
+
+[node name="DeathSFX" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("6_1dnwc")
+volume_db = 9.333
+unit_size = 37.55
+pitch_scale = 0.35
+autoplay = true
+bus = &"3d_sfx"
+attenuation_filter_cutoff_hz = 7230.0
+
+[node name="Talk1SFX" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("7_8n3w2")
+volume_db = 9.333
+unit_size = 37.55
+pitch_scale = 1.12
+autoplay = true
+bus = &"3d_sfx"
+attenuation_filter_cutoff_hz = 7230.0
+
+[node name="FloorParticles" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.66966, 0)
+emitting = false
+amount = 12
+lifetime = 3.0
+one_shot = true
+explosiveness = 1.0
+randomness = 0.43
+mesh = SubResource("QuadMesh_qp8t0")
+direction = Vector3(0, 1, 0)
+spread = 83.33
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 1.9
+initial_velocity_max = 3.74
+linear_accel_min = -0.27
+linear_accel_max = -0.08
+linear_accel_curve = SubResource("Curve_o33rb")
+damping_min = 1.265
+damping_max = 2.709
+angle_min = -106.7
+angle_max = 120.0
+scale_amount_min = 0.54
+scale_amount_max = 1.74
+
+[node name="Area" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.93081, 0)
+collision_layer = 0
+collision_mask = 4
+monitoring = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area"]
+shape = SubResource("BoxShape3D_jm1j5")
+
 [connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
+[connection signal="body_entered" from="Area" to="." method="_on_area_body_entered"]

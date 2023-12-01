@@ -1,18 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://dyxepl6lyuwtq"]
+[gd_scene load_steps=4 format=3 uid="uid://dyxepl6lyuwtq"]
 
 [ext_resource type="Script" path="res://scripts/3d/bullet.gd" id="1_djx6w"]
+[ext_resource type="Texture2D" uid="uid://bpe44ylds426b" path="res://sprites/bosses/clock_arrow.png" id="2_6jm6x"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_evayj"]
-size = Vector3(0.5, 0.5, 0.5)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_54rho"]
-emission_enabled = true
-emission = Color(0.301961, 1, 0.686275, 1)
-emission_energy_multiplier = 2.0
-
-[sub_resource type="BoxMesh" id="BoxMesh_d71ck"]
-material = SubResource("StandardMaterial3D_54rho")
-size = Vector3(0.5, 0.5, 0.5)
+size = Vector3(0.355, 0.315, 1.045)
 
 [node name="Bullet" type="Area3D"]
 collision_layer = 0
@@ -22,8 +14,18 @@ script = ExtResource("1_djx6w")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_evayj")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("BoxMesh_d71ck")
+[node name="Sprite3D" type="Sprite3D" parent="."]
+pixel_size = 0.019
+axis = 0
+texture_filter = 0
+texture = ExtResource("2_6jm6x")
+
+[node name="Sprite3D2" type="Sprite3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+pixel_size = 0.019
+axis = 0
+texture_filter = 0
+texture = ExtResource("2_6jm6x")
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 2.0

@@ -58,6 +58,8 @@ var rng = RandomNumberGenerator.new()
 @onready var death_sfx = $DeathSFX
 @onready var change_sfx = $ChangeSFX
 @onready var step_sfx = $StepSFX
+@onready var dash_sfx = $DashSFX
+@onready var dash_particles = $DashParticles
 
 func _ready():
 	add_child(gun)

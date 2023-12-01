@@ -61,6 +61,7 @@ var rng = RandomNumberGenerator.new()
 var current_map: int = 2
 var enemies_left: int
 var last_player_spawn: Vector2
+var boss: bool
 
 #var mutex: Mutex
 #var thread: Thread
@@ -118,7 +119,7 @@ func generate_map_full(size):
 	positions.append_array(place_poles(cells, [exit_pos]))
 	positions.append(exit_pos)
 	if Global.current_area == Area.City:
-		var wall_cells = place_walls(cells, positions, 0.01)
+		var wall_cells = place_walls(cells, positions)
 		cells.append_array(wall_cells)
 	place_borders(cells)
 #	place_player(exit_placement)
@@ -159,6 +160,7 @@ func generate_boss1():
 	tilemap.set_pattern(0, Vector2i.ZERO, tilemap.tile_set.get_pattern(0))
 	var exit_pos = place_exit(tilemap.get_used_cells_by_id(0, TERRAIN_ID), GenerationType.Town, true)
 #	place_player(exit_placement)
+	enemies_left = 10
 	place_enemies(10, exit_pos)
 	generated.emit()
 	world.init_boss1()
@@ -251,7 +253,7 @@ func place_enemies(count: int, exit_pos: Vector2i) -> Array[Vector2i]:
 		world.add_child.call_deferred(enemy)
 	return placements
 
-func place_walls(cells: Array[Vector2i], taken_positions: Array[Vector2i], chance: float) -> Array[Vector2i]:
+func place_walls(cells: Array[Vector2i], taken_positions: Array[Vector2i]) -> Array[Vector2i]:
 	var clone = cells.duplicate()
 	var taken_clone = taken_positions.duplicate()
 	var new_cells: Array[Vector2i] = []
@@ -333,7 +335,7 @@ func place_exit(cells: Array[Vector2i], next_gen_type: GenerationType, with_enem
 	exit.enemies_gone = not with_enemies
 	exit.global_position = tilemap.map_to_local(placement)
 	if is_boss:
-		exit.override_wait = 10
+		exit.override_wait = 38.4
 		exit.arrived.connect(world._on_exit_arrived)
 	exit.moved.connect(_on_exit_moved.bind(next_gen_type))
 	world.add_child.call_deferred(exit)
@@ -519,8 +521,10 @@ func _on_exit_moved(next_gen_type: GenerationType):
 			world.init_finale()
 
 func _on_enemy_dead():
+	if boss:
+		return
 	enemies_left -= 1
-	if enemies_left <= 0:
+	if enemies_left == 0:
 		var exit = get_tree().get_first_node_in_group("exit")
 		exit.enemies_gone = true
 		await get_tree().create_timer(0.5).timeout

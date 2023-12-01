@@ -1,11 +1,12 @@
-[gd_scene load_steps=12 format=3 uid="uid://bcx2rpy3kh0r6"]
+[gd_scene load_steps=13 format=3 uid="uid://bcx2rpy3kh0r6"]
 
 [ext_resource type="Script" path="res://scripts/finale.gd" id="1_xuuhp"]
 [ext_resource type="Texture2D" uid="uid://cju6qf6nijxw3" path="res://sprites/shadow.png" id="2_6q4gc"]
 [ext_resource type="Texture2D" uid="uid://dxfjnxiv5vuqo" path="res://sprites/sob.png" id="2_c36c2"]
-[ext_resource type="TileSet" uid="uid://dlbjv13cr2qh0" path="res://misc/tutorial_map.tres" id="2_osxt8"]
+[ext_resource type="Material" uid="uid://c12pty6um8e6v" path="res://misc/glitch_mat.tres" id="2_ja4et"]
 [ext_resource type="Script" path="res://scripts/npc.gd" id="2_pvx2t"]
 [ext_resource type="Resource" uid="uid://dljta2qwhm7x1" path="res://resources/dialogue_lines/area_3/final.tres" id="3_hj4sl"]
+[ext_resource type="TileSet" uid="uid://dl4dv3rme0emb" path="res://misc/tileset.tres" id="3_martr"]
 [ext_resource type="AudioStream" uid="uid://ch7eofx75pjbi" path="res://audio/sfx/talk.wav" id="7_jrnai"]
 [ext_resource type="PackedScene" uid="uid://csr2d2jr8sm67" path="res://scenes/exit.tscn" id="8_ibxoh"]
 [ext_resource type="Texture2D" uid="uid://brx4nhn4exru1" path="res://sprites/light_directional.png" id="9_1l2hc"]
@@ -25,7 +26,8 @@ clip_children = 2
 visibility_layer = 4
 z_index = -1
 y_sort_enabled = true
-tile_set = ExtResource("2_osxt8")
+material = ExtResource("2_ja4et")
+tile_set = ExtResource("3_martr")
 cell_quadrant_size = 24
 format = 2
 layer_0/name = "Ground"
@@ -112,6 +114,7 @@ YOU WILL FIND IT NEXT TO THE GATEWAY."
 dialog_icon = 0
 
 [node name="Exit" parent="." instance=ExtResource("8_ibxoh")]
+process_mode = 1
 override_wait = 5.0
 
 [node name="PointLight2D" type="PointLight2D" parent="."]

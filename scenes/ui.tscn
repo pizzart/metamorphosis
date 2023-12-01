@@ -40,6 +40,7 @@ texture_margin_bottom = 5.0
 axis_stretch_vertical = 1
 
 [node name="UI" type="CanvasLayer"]
+process_mode = 3
 layer = 2
 script = ExtResource("1_15qrl")
 

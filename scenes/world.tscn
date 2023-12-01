@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/world.gd" id="1_eoi30"]
 [ext_resource type="Shader" path="res://misc/matrix.gdshader" id="2_1rf8u"]
-[ext_resource type="TileSet" uid="uid://dlbjv13cr2qh0" path="res://misc/tutorial_map.tres" id="2_hqgsx"]
+[ext_resource type="TileSet" uid="uid://dl4dv3rme0emb" path="res://misc/tileset.tres" id="2_kivj2"]
 [ext_resource type="Texture2D" uid="uid://bl8yj5xlmibox" path="res://sprites/bgs/1/cloud_fill.png" id="6_3tv2d"]
 [ext_resource type="Texture2D" uid="uid://b5g8dpf40np5l" path="res://sprites/bgs/1/bg1_0.png" id="7_jgl2r"]
 [ext_resource type="Texture2D" uid="uid://dae4vt3bhwj3k" path="res://sprites/bgs/3/bg3_0.png" id="8_fhbtx"]
@@ -76,10 +76,11 @@ script = ExtResource("1_eoi30")
 [node name="TileMap" type="TileMap" parent="."]
 visibility_layer = 4
 y_sort_enabled = true
-tile_set = ExtResource("2_hqgsx")
+tile_set = ExtResource("2_kivj2")
 cell_quadrant_size = 24
 format = 2
 layer_0/name = "Ground"
+layer_0/y_sort_enabled = true
 layer_0/z_index = -3
 layer_1/name = "Walls"
 layer_1/enabled = true

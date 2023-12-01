@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://dsjohao4ok7mu"]
+
+[ext_resource type="Texture2D" uid="uid://b3qjlwhqu3phj" path="res://sprites/tilesets/tile.png" id="1_ipils"]
+
+[resource]
+shading_mode = 2
+diffuse_mode = 3
+specular_mode = 2
+albedo_texture = ExtResource("1_ipils")
+texture_filter = 0

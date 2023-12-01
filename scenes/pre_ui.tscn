@@ -130,7 +130,7 @@ texture = ExtResource("4_jrjye")
 stretch_mode = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="Hats" type="HBoxContainer" parent="SetupWindow/Setup"]
+[node name="Hats" type="VBoxContainer" parent="SetupWindow/Setup"]
 layout_mode = 2
 anchor_left = 0.415625
 anchor_top = 0.120833
@@ -138,8 +138,8 @@ anchor_right = 0.809375
 anchor_bottom = 0.245833
 offset_left = 41.5375
 offset_top = -11.6833
-offset_right = 41.5374
-offset_bottom = -6.18325
+offset_right = -5.6375
+offset_bottom = 7.8167
 size_flags_vertical = 3
 metadata/_edit_use_anchors_ = true
 
@@ -160,16 +160,16 @@ auto_height = true
 max_columns = 4
 metadata/_edit_use_anchors_ = true
 
-[node name="Items" type="HBoxContainer" parent="SetupWindow/Setup"]
+[node name="Items" type="VBoxContainer" parent="SetupWindow/Setup"]
 layout_mode = 2
 anchor_left = 0.490625
 anchor_top = 0.495833
 anchor_right = 1.02813
 anchor_bottom = 0.624999
 offset_left = 50.8375
-offset_top = 6.81673
-offset_right = 50.8374
-offset_bottom = 11.5002
+offset_top = -36.1833
+offset_right = -24.5135
+offset_bottom = -17.4996
 size_flags_vertical = 3
 metadata/_edit_use_anchors_ = true
 

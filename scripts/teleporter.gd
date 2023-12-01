@@ -45,7 +45,7 @@ func _process(delta):
 					player.global_position = next_position
 					get_tree().call_group("teleporter", "make_inactive")
 					player.invincible = true
-					await get_tree().create_timer(0.4)
+					await get_tree().create_timer(0.4).timeout
 					player.invincible = false
 		else:
 			timer = 0

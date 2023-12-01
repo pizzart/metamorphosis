@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://bmyc404ipwqqf"]
 
 [ext_resource type="Script" path="res://scripts/tutorial.gd" id="1_1ieuu"]
-[ext_resource type="TileSet" uid="uid://dlbjv13cr2qh0" path="res://misc/tutorial_map.tres" id="2_e001g"]
+[ext_resource type="TileSet" uid="uid://dl4dv3rme0emb" path="res://misc/tileset.tres" id="2_xhth3"]
 [ext_resource type="PackedScene" uid="uid://csr2d2jr8sm67" path="res://scenes/exit.tscn" id="5_54o1p"]
 [ext_resource type="Texture2D" uid="uid://bl8yj5xlmibox" path="res://sprites/bgs/1/cloud_fill.png" id="6_klm07"]
 [ext_resource type="PackedScene" uid="uid://dph8pd3qblx44" path="res://scenes/player.tscn" id="8_5qd2w"]
@@ -23,7 +23,7 @@ clip_children = 2
 visibility_layer = 4
 z_index = -1
 y_sort_enabled = true
-tile_set = ExtResource("2_e001g")
+tile_set = ExtResource("2_xhth3")
 cell_quadrant_size = 24
 format = 2
 layer_0/name = "Ground"
@@ -116,7 +116,7 @@ position = Vector2(122, -440)
 position = Vector2(216, -432)
 
 [node name="TelePos5" type="Marker2D" parent="."]
-position = Vector2(92, -555)
+position = Vector2(-71, -580)
 
 [node name="TelePos6" type="Marker2D" parent="."]
 position = Vector2(545, -749)
@@ -159,7 +159,7 @@ rigged_chance = 0.02
 [node name="Birdie6" type="CharacterBody2D" parent="."]
 position = Vector2(-64, -579)
 script = ExtResource("10_msxe0")
-rigged_chance = 0.05
+rigged_chance = 0.08
 
 [node name="Birdie3" type="CharacterBody2D" parent="."]
 position = Vector2(-339, -72)
@@ -176,6 +176,7 @@ one_shot = true
 [node name="HelpWindow" parent="." instance=ExtResource("10_t5oa6")]
 initial_position = 0
 position = Vector2i(0, 36)
+visible = false
 
 [connection signal="moved" from="Exit" to="." method="_on_exit_moved"]
 [connection signal="body_entered" from="BossArea" to="." method="_on_boss_area_body_entered"]

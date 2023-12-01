@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://chi1psou7ac1m"]
 
-[ext_resource type="Texture2D" uid="uid://dh6c2u6fxb8m3" path="res://sprites/enemy.png" id="1_f8kbd"]
 [ext_resource type="Script" path="res://scripts/npc.gd" id="1_vojk4"]
+[ext_resource type="Texture2D" uid="uid://v800k4ok3ir4" path="res://sprites/npc.png" id="2_mvwo4"]
 [ext_resource type="AudioStream" uid="uid://ch7eofx75pjbi" path="res://audio/sfx/talk.wav" id="3_ihslt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vns46"]
@@ -15,8 +15,7 @@ script = ExtResource("1_vojk4")
 shape = SubResource("RectangleShape2D_vns46")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(0.392157, 0.34902, 1, 1)
-texture = ExtResource("1_f8kbd")
+texture = ExtResource("2_mvwo4")
 
 [node name="TalkSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_ihslt")

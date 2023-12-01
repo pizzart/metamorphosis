@@ -2,27 +2,26 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bgogdrqjly2tk"
-path.s3tc="res://.godot/imported/clouds2.png-912aed0d7888a015cc49dfee27c5bf65.s3tc.ctex"
+uid="uid://cjg66vain0w7h"
+path="res://.godot/imported/clock.png-149cc3c0eba3121b6a5a8ac85c4441bc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/bgs/1/clouds2.png"
-dest_files=["res://.godot/imported/clouds2.png-912aed0d7888a015cc49dfee27c5bf65.s3tc.ctex"]
+source_file="res://sprites/bosses/clock.png"
+dest_files=["res://.godot/imported/clock.png-149cc3c0eba3121b6a5a8ac85c4441bc.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""

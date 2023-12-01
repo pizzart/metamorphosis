@@ -37,6 +37,8 @@ func _input(event):
 		active = true
 		player.invincible = true
 		area.set_deferred("monitoring", true)
+		player.dash_particles.emitting = true
+		player.dash_sfx.play()
 		
 		player.override_velocity = player.global_position.direction_to(player.get_global_mouse_position()) * 650
 		await get_tree().create_timer(0.15).timeout
@@ -45,6 +47,7 @@ func _input(event):
 		var tween = create_tween()
 		tween.tween_property(player, "override_velocity", Vector2.ZERO, 0.23).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 		await tween.finished
+		player.dash_particles.emitting = false
 		area.set_deferred("monitoring", false)
 		active = false
 		timer.start()
@@ -71,4 +74,5 @@ func _on_node_entered(node):
 		await tween.finished
 		active = false
 		player.invincible = false
+		player.dash_particles.emitting = false
 		area.set_deferred("monitoring", false)
