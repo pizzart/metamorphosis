@@ -12,6 +12,7 @@ var boss = BOSS.instantiate()
 
 func _ready():
 	UI.show()
+	UI.timer.hide()
 	Global.set_game_cursor()
 	PauseMenu.can_show = true
 	

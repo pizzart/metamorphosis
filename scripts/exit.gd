@@ -4,7 +4,7 @@ extends Area2D
 signal moved
 signal arrived
 
-const WAIT_TIME = 0.8
+const WAIT_TIME = 0.5
 
 var counter: int
 var can_interact: bool
@@ -18,14 +18,14 @@ func _ready():
 	end_descent()
 
 func _process(delta):
-	if Input.is_action_pressed("use") and can_interact:
-		timer += delta
-		UI.set_progress(timer / WAIT_TIME)
-		if timer >= WAIT_TIME:
+	if can_interact:
+		if Input.is_action_pressed("use"):
+			timer += delta
+			if timer >= WAIT_TIME:
+				timer = 0
+				start_descent()
+		else:
 			timer = 0
-			start_descent()
-	else:
-		timer = 0
 		UI.set_progress(timer / WAIT_TIME)
 
 func start_descent():
@@ -47,8 +47,8 @@ func start_descent():
 	tween.tween_property(self, "global_position", global_position + Vector2(0, 200), 1.0)
 	tween.tween_property(player, "global_position", global_position + Vector2(0, 200), 1.0)
 	await tween.finished
-	player.z_index = 0
-	z_index = -1
+	player.z_index = 1
+	z_index = 0
 	player.change_emotion(Player.Emotion.None)
 	player.sprite.play()
 	moved.emit()

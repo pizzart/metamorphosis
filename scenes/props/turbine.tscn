@@ -12,6 +12,7 @@ size = Vector2(10, 8)
 polygon = PackedVector2Array(-5, 10, -5, -4, 5, -4, 5, 10)
 
 [node name="Turbine" type="StaticBody2D" groups=["cleanup"]]
+z_index = 1
 y_sort_enabled = true
 collision_layer = 32
 script = ExtResource("1_nf7b1")

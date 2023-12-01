@@ -3,9 +3,11 @@ extends Area2D
 
 const ARROW = preload("res://sprites/arrow.png")
 const TIMEOUT = 1.8
+const WAIT_TIME = 0.25
 var next_position: Vector2
 var inside: bool
 var can_interact: bool = true
+var timer: float
 var player: Player
 
 func _init(_position, _next_position):
@@ -33,19 +35,29 @@ func _init(_position, _next_position):
 	next_position = _next_position
 	global_position = _position
 
-func _input(event):
-	if event.is_action_pressed("use") and inside and can_interact:
-		player.global_position = next_position
-		get_tree().call_group("teleporter", "make_inactive")
-		player.invincible = true
-		await get_tree().create_timer(0.4)
-		player.invincible = false
+func _process(delta):
+	if inside:
+		if Input.is_action_pressed("use") and can_interact:
+				timer += delta
+				UI.set_progress(timer / WAIT_TIME)
+				if timer >= WAIT_TIME:
+					timer = 0
+					player.global_position = next_position
+					get_tree().call_group("teleporter", "make_inactive")
+					player.invincible = true
+					await get_tree().create_timer(0.4)
+					player.invincible = false
+		else:
+			timer = 0
+			UI.set_progress(timer / WAIT_TIME)
 
 func make_inactive():
 	can_interact = false
 	modulate = Color.GRAY
 	await get_tree().create_timer(TIMEOUT).timeout
 	can_interact = true
+	if inside:
+		UI.show_help()
 	modulate = Color.WHITE
 
 func _on_body_entered(body):

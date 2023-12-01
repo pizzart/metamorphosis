@@ -5,8 +5,8 @@ const CORPSE = preload("res://scenes/corpse.tscn")
 const PARTICLES = preload("res://scenes/particles/hit_enemy_particles.tscn")
 const LIGHT = preload("res://scenes/pickup_light.tscn")
 
-const DROP_CHANCE = 0.07
-const HEALTH_DROP_CHANCE = 0.03
+const DROP_CHANCE = 0.092
+const HEALTH_DROP_CHANCE = 0.05
 const STUN_TIME = 0.2
 
 var walk_speed: float
@@ -40,6 +40,7 @@ func _init(_health: int, _shuffle_min: float, _shuffle_max: float, _walk_speed: 
 	navigation_agent.path_desired_distance = 5
 	navigation_agent.target_desired_distance = 3
 	navigation_agent.path_max_distance = 50
+	navigation_agent.avoidance_enabled = true
 	
 	nav_timer.wait_time = 5
 	
@@ -60,16 +61,19 @@ func _init(_health: int, _shuffle_min: float, _shuffle_max: float, _walk_speed: 
 	hit_audio.stream = hit_stream
 	hit_audio.max_polyphony = 3
 	hit_audio.panning_strength = 1.5
+	hit_audio.bus = "sfx"
 	
 	var prepare_stream = AudioStreamRandomizer.new()
 	prepare_stream.add_stream(0, preload("res://audio/sfx/enemy_prepare.wav"))
 	prepare_audio.stream = prepare_stream
 	prepare_audio.panning_strength = 1.5
+	prepare_audio.bus = "sfx"
 	
 	var attack_stream = AudioStreamRandomizer.new()
 	attack_stream.add_stream(0, preload("res://audio/sfx/enemy_shoot.wav"))
 	attack_audio.stream = attack_stream
 	attack_audio.panning_strength = 1.5
+	attack_audio.bus = "sfx"
 	
 	var light = LIGHT.instantiate()
 	
@@ -127,6 +131,9 @@ func get_close_position():
 	return global_position + Vector2(rng.randf_range(-30, 30), rng.randf_range(-30, 30))
 
 func hit(damage: int, force: Vector2):
+	if invincible:
+		return
+	
 	health -= damage
 	if health <= 0:
 		die()
@@ -150,6 +157,7 @@ func hit(damage: int, force: Vector2):
 func die():
 	super.die()
 	
+	invincible = true
 	collision_shape.set_deferred("disabled", true)
 	var chance = rng.randf()
 	if rigged_chance != -1:

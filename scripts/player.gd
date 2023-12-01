@@ -53,6 +53,7 @@ var rng = RandomNumberGenerator.new()
 @onready var hat = $V/Sprite/Hat
 @onready var emotion_spr = $V/Sprite/Emotion
 @onready var sprite = $V/Sprite
+@onready var heal_sfx = $HealSFX
 @onready var hurt_sfx = $HurtSFX
 @onready var death_sfx = $DeathSFX
 @onready var change_sfx = $ChangeSFX
@@ -73,7 +74,7 @@ func _ready():
 		hat.show()
 		hat.texture = Global.HATS[Global.equipped_hat][1]
 	
-	if not OS.has_feature("editor"):
+	if OS.has_feature("editor"):
 		for i in range(5):
 			add_coin()
 	
@@ -150,11 +151,15 @@ func _input(event):
 			melee.is_equipped = not melee.is_equipped
 			change_sfx.play()
 	if event.is_action_pressed("heal"):
-		if health_packs > 0 and can_move:
-			heal(5)
-			health_packs -= 1
-			UI.set_health_packs(health_packs)
-			UI.hide_pack_help()
+		if can_move:
+			if health_packs > 0:
+				heal(5)
+				health_packs -= 1
+				heal_sfx.play()
+				UI.set_health_packs(health_packs)
+				UI.hide_pack_help()
+			else:
+				change_sfx.play()
 
 func knockback(value: Vector2):
 	offset_velocity += value
@@ -179,6 +184,7 @@ func hit(damage: int, force: Vector2):
 		show_coins(coins)
 		
 		Global.coins += disks
+		PauseMenu.can_show = false
 		
 		death_sfx.play()
 		can_move = false

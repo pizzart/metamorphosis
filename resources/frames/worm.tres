@@ -1,0 +1,45 @@
+[gd_resource type="SpriteFrames" load_steps=5 format=3 uid="uid://de7l7hpfjumms"]
+
+[ext_resource type="Texture2D" uid="uid://cv0s4ltobg4db" path="res://sprites/enemies/worm.png" id="1_vhhyn"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i4sp3"]
+atlas = ExtResource("1_vhhyn")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_juprl"]
+atlas = ExtResource("1_vhhyn")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_etf5a"]
+atlas = ExtResource("1_vhhyn")
+region = Rect2(0, 0, 32, 32)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i4sp3")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_juprl")
+}],
+"loop": false,
+"name": &"dead",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_etf5a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i4sp3")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 3.0
+}]

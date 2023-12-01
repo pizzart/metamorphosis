@@ -1,11 +1,20 @@
-class_name FlyingBird
+class_name Worm
 extends CloseEnemy
 
+var attacking: bool
+var attacking_time: float
+
 func _init():
-	super._init(2, 1, 3, 120, 0)
+	super._init(1, 2, 5, 30, 7)
 	
-	sprite.sprite_frames = preload("res://resources/frames/flying_bird.tres")
+	sprite.sprite_frames = preload("res://resources/frames/worm.tres")
 	sprite.autoplay = "idle"
+
+func _process(delta):
+	if velocity.length_squared() > 1:
+		sprite.speed_scale = 1
+	else:
+		sprite.speed_scale = 0
 
 func _on_attack_timer_timeout():
 	attack_timer.start(rng.randf_range(1, 3))

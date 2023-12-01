@@ -3,7 +3,8 @@ extends CharacterBody2D
 
 signal dead
 
-var health: int
+var health: int = 1
+var invincible: bool = false
 
 var sprite: AnimatedSprite2D
 var rng = Global.rng

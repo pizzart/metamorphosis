@@ -12,4 +12,5 @@ func _init():
 	var stream = AudioStreamRandomizer.new()
 	stream.add_stream(0, preload("res://audio/sfx/bonk.wav"))
 	audio.stream = stream
+	audio.bus = "sfx"
 	add_child(audio)

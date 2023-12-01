@@ -11,6 +11,7 @@ func _ready():
 
 func _process(delta):
 	Global.timer += delta
+	UI.set_time(Global.timer)
 
 func _physics_process(_delta):
 	if not stop and Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:

@@ -15,6 +15,8 @@ func _init(shape: Shape2D, texture: Texture2D):
 	var stream = AudioStreamRandomizer.new()
 	stream.add_stream(0, preload("res://audio/sfx/collect.wav"))
 	audio.stream = stream
+	audio.bus = "sfx"
+	z_index = 1
 	add_child(audio)
 	add_child(particles)
 

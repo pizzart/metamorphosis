@@ -77,8 +77,9 @@ scale_max = 1.45
 color_ramp = SubResource("GradientTexture1D_fopyq")
 
 [node name="Tree" type="StaticBody2D" groups=["cleanup", "tree"]]
+z_index = 1
 y_sort_enabled = true
-collision_layer = 32
+collision_layer = 48
 script = ExtResource("1_stqcb")
 
 [node name="Shadow" type="Sprite2D" parent="."]

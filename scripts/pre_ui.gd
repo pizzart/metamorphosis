@@ -25,9 +25,10 @@ func _ready():
 	hat_button.icon = Global.HATS[equipped_hat][2]
 	item_button.icon = Global.ITEMS[equipped_item][1]
 	
-	get_window().content_scale_size = Vector2i(64, 64)
-	get_window().size = Vector2i(196, 196)
-	get_window().position += previous_size / 2 - get_window().size / 2
+	if get_window().mode != Window.MODE_FULLSCREEN:
+		get_window().content_scale_size = Vector2i(64, 64)
+		get_window().size = Vector2i(196, 196)
+		get_window().position += previous_size / 2 - get_window().size / 2
 
 func _on_hat_toggled(button_pressed):
 	click_sfx.play()
@@ -54,9 +55,10 @@ func _on_go_pressed():
 	click_sfx.play()
 	Global.equipped_hat = equipped_hat
 	Global.equipped_item = equipped_item
-	get_window().content_scale_size = Global.WINDOW_SIZE
-	get_window().size = previous_size
-	get_window().position = previous_pos
+	if get_window().mode != Window.MODE_FULLSCREEN:
+		get_window().content_scale_size = Global.WINDOW_SIZE
+		get_window().size = previous_size
+		get_window().position = previous_pos
 	get_tree().change_scene_to_file("res://scenes/world.tscn")
 
 func _on_item_list_item_selected(index):

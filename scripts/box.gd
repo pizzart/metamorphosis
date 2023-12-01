@@ -12,6 +12,7 @@ var item: Weapon
 
 func _init(_item):
 	set_collision_layer_value(1, false)
+	set_collision_mask_value(1, false)
 	set_collision_mask_value(3, true)
 	
 	area_entered.connect(_on_area_entered)
@@ -25,6 +26,17 @@ func _init(_item):
 	var collision_shape = CollisionShape2D.new()
 	collision_shape.shape = rect
 	
+	var static_body = StaticBody2D.new()
+	static_body.set_collision_layer_value(1, false)
+	static_body.set_collision_layer_value(5, true)
+	static_body.set_collision_layer_value(6, true)
+	var scollision_shape = CollisionShape2D.new()
+	var srect = RectangleShape2D.new()
+	srect.size = Vector2(6, 6)
+	scollision_shape.shape = srect
+	scollision_shape.position = Vector2(0, 4)
+	static_body.add_child(scollision_shape)
+	
 	if item is Gun:
 		sprite.texture = preload("res://sprites/props/box_gun.png")
 	else:
@@ -33,10 +45,12 @@ func _init(_item):
 	var stream = AudioStreamRandomizer.new()
 	stream.add_stream(0, preload("res://audio/sfx/box_hit.wav"))
 	audio.stream = stream
+	audio.bus = "sfx"
 	
 	add_child(sprite)
 	add_child(audio)
 	add_child(collision_shape)
+	add_child(static_body)
 	
 	set_collision_layer_value(6, true)
 	set_collision_mask_value(6, true)

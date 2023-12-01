@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="DialogueLines" load_steps=7 format=3 uid="uid://dqnm602gdjmpm"]
+
+[ext_resource type="Script" path="res://resources/dialogue_line.gd" id="1_v6qso"]
+[ext_resource type="Script" path="res://resources/dialogue.gd" id="2_qs53k"]
+
+[sub_resource type="Resource" id="Resource_7d57y"]
+script = ExtResource("1_v6qso")
+line = "i just shit my pants"
+speaker = 1
+
+[sub_resource type="Resource" id="Resource_vifha"]
+script = ExtResource("1_v6qso")
+line = "okay"
+speaker = 0
+
+[sub_resource type="Resource" id="Resource_87atq"]
+script = ExtResource("1_v6qso")
+line = "we are in the sky
+you know"
+speaker = 1
+
+[sub_resource type="Resource" id="Resource_gxmfo"]
+script = ExtResource("1_v6qso")
+line = "skyward and all that"
+speaker = 1
+
+[resource]
+script = ExtResource("2_qs53k")
+lines = Array[ExtResource("1_v6qso")]([SubResource("Resource_7d57y"), SubResource("Resource_vifha"), SubResource("Resource_87atq"), SubResource("Resource_gxmfo")])

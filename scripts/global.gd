@@ -45,6 +45,7 @@ const DIALOGUES = {
 		preload("res://resources/dialogue_lines/area_1/1.tres"),
 		preload("res://resources/dialogue_lines/area_1/2.tres"),
 		preload("res://resources/dialogue_lines/area_1/3.tres"),
+		preload("res://resources/dialogue_lines/area_1/4.tres"),
 	],
 	1: [
 		preload("res://resources/dialogue_lines/area_2/1.tres"),
@@ -69,7 +70,7 @@ const IMAGE: PackedByteArray = [
 const VIGNETTE_OPACITY = 0.035
 const WINDOW_SIZE = Vector2i(320, 240)
 
-var current_area: Generator.Area = Generator.Area.Sky
+var current_area: Generator.Area = Generator.Area.City
 var after_boss: bool = false
 
 var coins: int = 0
@@ -111,6 +112,7 @@ var enemy_pool = {
 		Birdie: 5,
 		BigBird: 2,
 		FlyingBird: 3,
+		Worm: 5,
 	},
 	1: {
 		Birdie: 2,
@@ -118,6 +120,7 @@ var enemy_pool = {
 		FlyingBird: 3,
 		Policeman: 5,
 		Rat: 5,
+		Worm: 1,
 	},
 	2: {
 		Birdie: 3,
@@ -125,6 +128,7 @@ var enemy_pool = {
 		FlyingBird: 3,
 		Policeman: 3,
 		Rat: 2,
+		Worm: 1,
 	},
 }
 

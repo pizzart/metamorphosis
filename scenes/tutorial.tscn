@@ -175,7 +175,7 @@ one_shot = true
 
 [node name="HelpWindow" parent="." instance=ExtResource("10_t5oa6")]
 initial_position = 0
-visible = false
+position = Vector2i(0, 36)
 
 [connection signal="moved" from="Exit" to="." method="_on_exit_moved"]
 [connection signal="body_entered" from="BossArea" to="." method="_on_boss_area_body_entered"]

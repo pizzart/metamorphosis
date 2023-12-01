@@ -68,7 +68,7 @@ func update_settings():
 	$M/List/Sound/HSlider.value = db_to_linear(AudioServer.get_bus_volume_db(2)) * 20
 	$M/List/Sensitivity/HSlider.value = ((Global.mouse_sens + 0.0005) * 100 - 0.01) * 20
 	$M/List/Shake/HSlider.value = Global.shake_strength * 20
-	$M/List/Fullscreen.button_pressed = DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN
+	$M/List/Fullscreen.button_pressed = DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN
 	$M/List/Aberration.button_pressed = Global.aberration_enabled
 	update_all_inputs()
 
@@ -102,7 +102,7 @@ func _on_shake_value_changed(value):
 func _on_fullscreen_toggled(button_pressed):
 	$ClickSFX.play()
 	if button_pressed:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 	else:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 	get_tree().call_group("settings", "update_settings")

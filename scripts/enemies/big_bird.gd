@@ -8,6 +8,6 @@ func _init():
 	sprite.autoplay = "idle"
 
 func shoot():
-	var bullet = Bullet.new(global_position.direction_to(player.global_position) * 5, -0.02, false)
+	var bullet = Bullet.new(global_position.direction_to(player.global_position).rotated(rng.randfn(0, 0.5)) * 5, -0.02, false)
 	bullet.global_position = global_position
 	get_parent().add_child(bullet)

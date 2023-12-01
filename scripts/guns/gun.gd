@@ -24,6 +24,7 @@ func _init(_ammo_cost: int, _reload_speed: float, _knockback: float, _spread: fl
 	stream.add_stream(0, preload("res://audio/sfx/shoot.wav"))
 	audio.stream = stream
 	error_audio.stream = preload("res://audio/sfx/error.wav")
+	error_audio.bus = "sfx"
 	add_child(error_audio)
 
 func _input(event):
