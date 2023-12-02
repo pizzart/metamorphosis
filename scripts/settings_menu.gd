@@ -71,7 +71,7 @@ func update_settings():
 	$M/List/Fullscreen.button_pressed = DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN
 	$M/List/Aberration.button_pressed = Global.aberration_enabled
 	$M/List/Timer.button_pressed = UI.timer.visible
-	$M/List/Skip.button_pressed = Global.skip_enabled
+	$M/List/Hold.button_pressed = Global.skip_enabled
 	update_all_inputs()
 
 func _on_music_value_changed(value):

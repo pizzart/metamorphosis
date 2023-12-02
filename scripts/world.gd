@@ -1,8 +1,6 @@
 class_name World
 extends Node2D
 
-const BOSS1 = preload("res://scenes/bosses/boss_1.tscn")
-const BOSS3 = preload("res://scenes/bosses/boss_3.tscn")
 const WINDOW = preload("res://scenes/window.tscn")
 const PLAYER = preload("res://scenes/player.tscn")
 const CHECK = preload("res://scenes/particles/check_particle.tscn")
@@ -75,29 +73,6 @@ func _physics_process(_delta):
 			closest = [dist, i]
 	if closest[1] != null:
 		closest[1].can_interact = true
-
-func init_boss1():
-	pass
-#	get_window().set_canvas_cull_mask_bit(2, false)
-	
-#	var tilemap_window = WINDOW.instantiate()
-#	tilemap_window.world_2d = get_window().world_2d
-#	tilemap_window.set_canvas_cull_mask_bit(2, false)
-#	tilemap_window.size = Vector2(600, 600)
-#	add_child(tilemap_window)
-#	remove_child(tilemap)
-#	tilemap_window.add_child(tilemap)
-
-#	var enemy_window = WINDOW.instantiate()
-#	var boss = BOSS.instantiate()
-#	enemy_window.camera = boss.get_node("Camera")
-#	enemy_window.world_2d = get_window().world_2d
-##	enemy_window.set_canvas_cull_mask_bit(1, false)
-#	enemy_window.set_canvas_cull_mask_bit(3, false)
-#	add_child(enemy_window)
-#	enemy_window.add_child(boss)
-	
-#	get_window().mode = Window.MODE_FULLSCREEN
 
 func init_boss2():
 	Global.player_state = player

@@ -1,8 +1,6 @@
 class_name Gun
 extends Weapon
 
-const HAND_SPRITE = preload("res://sprites/hand.png")
-
 var ammo_cost: int
 var spread: float
 var bullet_speed: float

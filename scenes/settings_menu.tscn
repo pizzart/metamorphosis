@@ -188,7 +188,7 @@ text = "TIMER"
 
 [node name="Hold" type="CheckButton" parent="M/List"]
 layout_mode = 2
-tooltip_text = "HOLD TO SKIP ELEVATOR."
+tooltip_text = "HOLD THE USE KEY TO SKIP ELEVATOR."
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_styles/normal = SubResource("StyleBoxEmpty_61ic0")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_c6v4o")
